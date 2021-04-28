@@ -1,0 +1,138 @@
+const journal = {
+
+    namespaced: true,
+    state: () => ({
+      list: [],
+      history:[],
+      journalData:{
+        symbol: "",
+        businessplan:"",
+        period:"",
+        buyexecution:"",
+        sellexecution:"",
+        risklevel:"",
+        risktotal:"",
+        bemerkung:"",
+        strategy:"",
+        myentry:"",
+        myentryline:"",
+        myexit:"",
+        freitext1:"",
+        freitext2:"",
+        freitext3:"",
+        freitext4:"",
+        fehler1:"",
+        fehler2:"",
+        fehler3:"",
+        fehler4:"",
+        buyfib1:"",
+        buyfib2:"",
+        buyfib3:"",
+        buyfib4:"",
+        sellfib1:"",
+        sellfib2:"",
+        sellfib3:"",
+        sellfib4:"",
+        sellfib1Result:"",
+        sellfib2Result:"",
+        sellfib3Result:"",
+        sellfib4Result:"",
+        stickToPlan: "",
+        isDocumented: "",
+riskplan: "",
+risk: "",
+fireandforgeteinstiegtyp: "",
+fireandforgeteinstieg: "",
+fireandforgetstoploss:"",
+fireandforgettp1reached: "",
+fireandforgettp1level: "",
+fireandforgettp2reached: "",
+fireandforgettp2level: "",
+fireandforgettp3reached: "",
+fireandforgettp3level: "",
+fireandforgettp4reached: "",
+fireandforgettp4level: "",
+fireandforgettp1ordernr: "",
+fireandforgettp2ordernr: "",
+fireandforgettp3ordernr: "",
+fireandforgettp4ordernr: "",
+
+      },
+
+    }),
+    mutations: {
+      setJournalData(state, journalData) {
+        state.journalData = journalData
+  
+      },
+      setHistory(state, history) {
+        state.history = history
+  
+      },
+      
+      resetJournalData(state) {
+        state.journalData = {
+          symbol: "",
+          businessplan:"",
+          period:"",
+          buyexecution:"",
+          sellexecution:"",
+          risklevel:"",
+          risktotal:"",
+          bemerkung:"",
+          strategy:"",
+          myentry:"",
+          myentryline:"",
+          myexit:"",
+          freitext1:"",
+          freitext2:"",
+          freitext3:"",
+          freitext4:"",
+          fehler1:"",
+          fehler2:"",
+          fehler3:"",
+          fehler4:"",
+          buyfib1:"",
+          buyfib2:"",
+          buyfib3:"",
+          buyfib4:"",
+          sellfib1:"",
+          sellfib2:"",
+          sellfib3:"",
+          sellfib4:"",
+          sellfib1Result:"",
+          sellfib2Result:"",
+          sellfib3Result:"",
+          sellfib4Result:"",    
+        stickToPlan: false,
+        isDocumented: false,
+
+
+        riskplan: "",
+        risk: "",
+        fireandforgeteinstiegtyp: "",
+        fireandforgeteinstieg: "",
+        fireandforgetstoploss:"",
+        fireandforgettp1reached: "",
+        fireandforgettp1level: "",
+        fireandforgettp2reached: "",
+        fireandforgettp2level: "",
+        fireandforgettp3reached: "",
+        fireandforgettp3level: "",
+        fireandforgettp4reached: "",
+        fireandforgettp4level: "",
+        fireandforgettp1ordernr: "",
+        fireandforgettp2ordernr: "",
+        fireandforgettp3ordernr: "",
+        fireandforgettp4ordernr: "",
+
+        }
+      },
+    },
+    getters:{
+        gettest: state => state.tester
+    }
+  }
+export default journal;
+
+
