@@ -1,26 +1,29 @@
-version: '2'
+version: "3.9"
 services:
   server:
+    image: server
+    build:
+      context: .
+      dockerfile: ./server/Dockerfile
     build:
       context: ./server/
-    command: /usr/app/node_modules/.bin/nodemon src/index.js
+    command: ["node", "--inspect=0.0.0.0:9229", "index.js"]
     volumes:
-      - ./server/:/usr/app
-      - /usr/app/node_modules
-    ports:
-      - "8080:8080"
-    # env_file: ./server/.env # TODO - uncomment this to auto-load your .env file!
-    environment:
-      - NODE_ENV=development
-      - CHOKIDAR_USEPOLLING=true
-  client:
-    build:
-      context: ./client/
-    command: npm start
-    volumes:
-      - ./client/:/usr/app
-      - /usr/app/node_modules
-    depends_on:
-      - server
+      - type: bind
+        source: /Users/florianparzefall/SynologyDrive/SynologyDrive/Trading/Tool/DB
+        target: /db
     ports:
       - "3000:3000"
+  client:
+    image: client
+    build:
+      context: .
+      dockerfile: ./client/Dockerfile
+    build:
+      context: ./client/
+    volumes:
+      - '.:/app'
+      - '/app/node_modules'
+    ports:
+      - '8081:8080'
+
