@@ -1,18 +1,47 @@
 {
-  "name": "node-react-docker-compose",
+  "name": "tradingcheck",
   "version": "1.0.0",
-  "description": "A reference for running a node server and create-react-app app via docker-compose.",
-  "main": "src/index.js",
-  "scripts": {
-    "start": "node src/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "Peter Coles",
-  "license": "MIT",
+  "description": "test",
+  "main": "app.js",
   "dependencies": {
-    "express": "^4.17.1"
+    "archiver": "^4.0.1",
+    "body-parser": "^1.19.0",
+    "connect-flash": "^0.1.1",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "express-easy-zip": "^1.1.5",
+    "express-fileupload": "^1.1.7-alpha.3",
+    "express-session": "^1.17.0",
+    "express-zip": "^3.0.0",
+    "hound": "^1.0.5",
+    "lodash": "^4.17.20",
+    "morgan": "^1.10.0",
+    "nodemon": "^2.0.2",
+    "passport": "^0.4.1",
+    "passport-local": "^1.0.0",
+    "passport-utils": "^0.1.0",
+    "session": "^0.1.0",
+    "session-file-store": "^1.4.0",
+    "sqlite-async": "^1.0.12",
+    "sqlite3": "^4.1.1",
+    "util": "^0.12.3",
+    "uuid": "^7.0.3",
+    "vue": "^2.6.11",
+    "vue-virtual-scroller": "^1.0.0-beta.2",
+    "vue2-dropzone": "^3.6.0"
   },
-  "devDependencies": {
-    "nodemon": "^1.19.0"
-  }
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon index --ignore sessions/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TEGNoV/Tradingcheck.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TEGNoV/Tradingcheck/issues"
+  },
+  "homepage": "https://github.com/TEGNoV/Tradingcheck#readme"
 }
