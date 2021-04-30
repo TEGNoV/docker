@@ -71,7 +71,6 @@ async function dbOpen() {
             console.log("Change for Docker DB Patch")
             path = "/db/journal.db"
             console.log(path)
-
         }
         this.DB = await Database.open(path);
     } catch (error) {
