@@ -9,7 +9,10 @@ const checkPictures = async (auftragsnr , id) => {
     if (cfg.customPicture) {
         picpath = cfg.customPictureFolder
     }
-    
+    if(process.env.DOCKER == 'true'){
+        console.log("Change for Docker picture path")
+        picpath = "/picture"
+      }
     const aPicsinFolder = await fs.readdirSync(picpath)
     for (let i = 0; i < aPicsinFolder.length; i++) {
        

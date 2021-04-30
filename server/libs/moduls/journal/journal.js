@@ -71,6 +71,10 @@ const getSingleJournalPictures = async (id) => {
     if (cfg.customPicture) {
         picpath = cfg.customPictureFolder
     }
+    if(process.env.DOCKER == 'true'){
+        console.log("Change for Docker picture path")
+        picpath = "/picture"
+      }
     const historySQL = "select * from JOURNALHISTORYMAP as JOURNALHISTORYMAP "
         + " WHERE JOURNALHISTORYMAP.ID_Trade = '" + id + "'"
     const historyIDs = await myDB.get(historySQL)
@@ -96,6 +100,10 @@ const getSinglePictures = async (id) => {
     if (cfg.customPicture) {
         picpath = cfg.customPictureFolder
     }
+    if(process.env.DOCKER == 'true'){
+        console.log("Change for Docker picture path")
+        picpath = "/picture"
+      }
     const aPicsinFolder = await fs.readdirSync(picpath)
     for (let i = 0; i < aPicsinFolder.length; i++) {
         if (aPicsinFolder[i].includes(id)) {

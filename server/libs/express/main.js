@@ -6,20 +6,16 @@ require('events').EventEmitter.defaultMaxListeners = 15;
 
 const Server = () =>  {
   let app = express()
-  
   login.login(app)
-
-
-
-  app.use("/",express.static(path.join(__dirname, "../../../TC_Frontend/dist/")));
-  //app.use("/build",express.static(path.join(__dirname, "../../../TC_Frontend/dist/")));
-
+  app.use("/server/dist/static/",express.static(path.join(__dirname, "../../dist/static/")));
   let picpath = "./PICTURE"
   if(cfg.customPicture){
     picpath = cfg.customPictureFolder
   }
-
-
+  if(process.env.DOCKER == 'true'){
+    console.log("Change for Docker picture path")
+    picpath = "/picture"
+  }
 
   app.use(function(req, res, next) {
     if (!req.isAuthenticated() && req.path.indexOf('/images') === 0)
@@ -29,11 +25,6 @@ const Server = () =>  {
     next(); 
 });
   app.use('/images', express.static(picpath));
-  
-
-
-
-
   
   /* --------------------------------------------------------
                           Dashboard
@@ -67,7 +58,7 @@ const Server = () =>  {
   app.use("/", log);
 
   app.get(/.*/, (req, res) => {
-    res.sendFile(path.join(__dirname, "../../../TC_Frontend/dist/index.html"))
+    res.sendFile(path.join(__dirname, "../../dist/index.html"))
   });
 
   app.listen(3000, function () {

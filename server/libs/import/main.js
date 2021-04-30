@@ -123,7 +123,10 @@ async function movefile(path , filename) {
 if(cfg.customPicture){
   picpath = cfg.customPictureFolder
 }
-
+if(process.env.DOCKER == 'true'){
+  console.log("Change for Docker picture path")
+  picpath = "/picture"
+}
     await fs.renameSync(path ,  picpath + '' + filename );
     console.log("Delete: " + path)
   } catch (err) {

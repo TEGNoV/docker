@@ -3,10 +3,8 @@ services:
   server:
     image: server
     build:
-      context: .
-      dockerfile: ./server/Dockerfile
-    build:
       context: ./server/
+      dockerfile: ./server/Dockerfile
     command: ["node", "--inspect=0.0.0.0:9229", "index.js"]
     volumes:
       - type: bind
@@ -17,12 +15,10 @@ services:
   client:
     image: client
     build:
-      context: .
+      context: ./client/
       dockerfile: ./client/Dockerfile
       args:
         - NODE_ENV=development
-    build:
-      context: ./client/
     ports:
       - '8080:8080'
 
