@@ -7,7 +7,7 @@ require('events').EventEmitter.defaultMaxListeners = 15;
 const Server = () =>  {
   let app = express()
   login.login(app)
-  app.use("/server/dist/static/",express.static(path.join(__dirname, "../../dist/static/")));
+  app.use("/",express.static(path.join(__dirname, "../../dist/")));
   let picpath = "./PICTURE"
   if(cfg.customPicture){
     picpath = cfg.customPictureFolder
