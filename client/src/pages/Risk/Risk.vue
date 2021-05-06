@@ -4,10 +4,6 @@
       <v-col xs="12">
         <day-risk></day-risk>
       </v-col>
-
-      <v-col xs="12">
-        <day-risk></day-risk>
-      </v-col>
      </v-row>    <v-row>
       <v-col xs="12">
         <risk-positions></risk-positions>

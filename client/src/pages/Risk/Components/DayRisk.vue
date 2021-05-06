@@ -1,7 +1,55 @@
 <template>
   <v-row dense>
     <v-col>
-     
+  
+  <div class="md-layout">
+     <div
+        class="md-layout-item md-medium-size-50 md-xsmall-size-100 md-size-25"
+      >
+        <vue-stats-card data-background-color="green">
+          <template slot="header">
+            <md-icon>store</md-icon>
+          </template>
+
+          <template slot="content">
+            <p class="category">Revenue</p>
+            <h3 class="title">$34,245</h3>
+          </template>
+
+          <template slot="footer">
+            <div class="stats">
+              <md-icon>date_range</md-icon>
+              Last 24 Hours
+            </div>
+          </template>
+        </vue-stats-card>
+      </div>
+      
+             <div
+        class="md-layout-item md-medium-size-50 md-xsmall-size-100 md-size-25"
+      >
+        <vue-stats-card data-background-color="red">
+<template slot="header">
+  <v-icon>
+    mdi-information-outline</v-icon>
+</template>
+
+<template slot="content">
+  <p class="category">
+    Fixed Issues</p>
+  <h3 class="title">75</h3>
+</template>
+
+<template slot="footer">
+  <div class="stats">
+    <v-icon> mdi-information-outline</v-icon>
+  
+    Tracked from Github
+  </div>
+</template>
+        </vue-stats-card>
+      </div>
+      </div>
       <v-col cols="12" sm="6" xs="6">
         <v-card  height="270px">
           <v-col cols="12" sm="12" xs="12">
@@ -45,79 +93,131 @@
 
 
 <script>
-import axios from "axios";
-
-export default {
-  name: "simple-table",
-  components: {},
-  props: {
-    tableHeaderColor: {
-      type: String,
-      default: "",
+  import axios from "axios";
+  import VueStatsCard from "./../../../components/Cards/VueStatsCard"
+  
+  export default {
+    name: "simple-table",
+    components: {
+      VueStatsCard
     },
-  },
-  data() {
-    return {
-      color:{
-        current: '#ffa07a',
+    props: {
+      tableHeaderColor: {
+        type: String,
+        default: "",
       },
-      risk: {
-        allowedLose: 50,
-        openRisk: 25,
-        current: 10,
-      },
-      perc_allowed: "50%",
-      perc_open: "20%",
-      perc_current: "30%",
-    };
-  },
-  created() {
-    this.interval = setInterval(() => this.getData(), 60000);
-  },
-  mounted() {
-    this.getData();
-  },
-  methods: {
-    calculatePercent() {
-      let total =
-      this.risk.allowedLose + this.risk.openRisk + this.risk.current;
-      this.perc_allowed = (this.risk.allowedLose / total) * 100;
-      this.perc_allowed = this.perc_allowed + "%";
-
-      this.perc_open = (this.risk.openRisk / total) * 100;
-      this.perc_open = this.perc_open + "%";
-
-      this.perc_current = (this.risk.current / total) * 100;
-      this.perc_current = this.perc_current + "%";
     },
-    getData() {
-      axios.get("/api/getDayRisk").then(
-        (response) => {
-          // eslint-disable-next-line
-          console.log(response.data.risk);
-          this.risk = response.data.risk;
+    data() {
+      return {
 
-          if(this.risk.current > 0){ 
-            this.color.current = '#BCED91	'
+     
+      emailsSubscriptionChart: {
+        data: {
+          labels: [
+            "Ja",
+            "Fe",
+            "Ma",
+            "Ap",
+            "Mai",
+            "Ju",
+            "Jul",
+            "Au",
+            "Se",
+            "Oc",
+            "No",
+            "De"
+          ],
+          series: [[542, 443, 320, 780, 553, 453, 326, 434, 568, 610, 756, 895]]
+        },
+        options: {
+          axisX: {
+            showGrid: false
+          },
+          low: 0,
+          high: 1000,
+          chartPadding: {
+            top: 0,
+            right: 5,
+            bottom: 0,
+            left: 0
           }
         },
-        (error) => {
-          // eslint-disable-next-line
-          console.log(error);
-        }
-      );
-      this.calculatePercent();
+        responsiveOptions: [
+          [
+            "screen and (max-width: 640px)",
+            {
+              seriesBarDistance: 5,
+              axisX: {
+                labelInterpolationFnc: function(value) {
+                  return value[0];
+                }
+              }
+            }
+          ]
+        ]
+      },
+        color: {
+          current: '#ffa07a',
+        },
+        risk: {
+          allowedLose: 50,
+          openRisk: 25,
+          current: 10,
+        },
+        perc_allowed: "50%",
+        perc_open: "20%",
+        perc_current: "30%",
+      };
     },
-  },
-};
+    created() {
+      this.interval = setInterval(() => this.getData(), 60000);
+    },
+    mounted() {
+      this.getData();
+    },
+    methods: {
+      calculatePercent() {
+        let total =
+          this.risk.allowedLose + this.risk.openRisk + this.risk.current;
+        this.perc_allowed = (this.risk.allowedLose / total) * 100;
+        this.perc_allowed = this.perc_allowed + "%";
+  
+        this.perc_open = (this.risk.openRisk / total) * 100;
+        this.perc_open = this.perc_open + "%";
+  
+        this.perc_current = (this.risk.current / total) * 100;
+        this.perc_current = this.perc_current + "%";
+      },
+      getData() {
+        axios.get("/api/getDayRisk").then(
+          (response) => {
+            // eslint-disable-next-line
+            console.log(response.data.risk);
+            this.risk = response.data.risk;
+  
+            if (this.risk.current > 0) {
+              this.color.current = '#BCED91	'
+            }
+          },
+          (error) => {
+            // eslint-disable-next-line
+            console.log(error);
+          }
+        );
+        this.calculatePercent();
+      },
+    },
+  };
 </script>
+
 <style>
-.title {
-  color: white;
-}
-.text {
-  font-weight: bold;
-}
-.myText {
-}
+  .title {
+    color: white;
+  }
+  
+  .text {
+    font-weight: bold;
+  }
+  
+  .myText {}
 </style>

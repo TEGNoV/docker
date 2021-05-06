@@ -244,18 +244,11 @@ const getTrades = async (filter, startTime , endTime , settings ) => {
 
         winrate = retAVGWin.count / ( retAVGWin.count + retAVGLose.count) * 100
     } 
-  
-
     /*
         Add Data which is only in Journal
     */
-
     aPositions = await getJournalOnlyData(filter, startTime , endTime , settings, aPositions)
     aPositions = await getOpenOnlyData(filter, startTime , endTime , settings, aPositions)
-
-
-
-
     aProducts = getSingleProducts(position)
     let ret = {
         tradeItems: aPositions,
@@ -269,21 +262,14 @@ const getTrades = async (filter, startTime , endTime , settings ) => {
          maxloser : maxloser.toFixed(2)
         }
     
-
     return ret
-
 }
-
-
 exports.getTrades = getTrades;
  
-
 function noDublicate(position, aPostions){
     let ret = true
     for(let i=0; i<aPostions.length;i++){
-        
         if(aPostions[i].auftragsnr == position){
-           
             ret = false
             break
         }
@@ -304,7 +290,6 @@ function getSingleProducts(position){
 function arrayContains(array , value){
     var found = false;
     for(var i = 0; i < array.length; i++) {
-       
         if (array[i] == value) {
             found = true;
             break;

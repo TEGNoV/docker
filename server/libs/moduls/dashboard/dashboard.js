@@ -39,9 +39,9 @@ function getTargetsDataPoints(percent, startbalance, lineChartData, name) {
 }
 
 const getDayRisk = async () => {
-    const sqlPosition = 'select * from POSITION '
-    let position = await myDB.get(sqlPosition)
-    
+    let getPositions = await this.getPositions() 
+    let getPositionTotal = getPositions.position.total
+
      let options = {}
     let konto = await this.getKontostand(options)
     let kontostand = konto.kontostand
@@ -54,12 +54,7 @@ const getDayRisk = async () => {
     var endDayly = new Date();
     endDayly.setHours(23, 59, 59, 999);
 
-    let openRisk = 0
-    for (let i = 0; i < position.length; i++) {
-        let risk = (((1 - (Number(position[i].SL) / Number(position[i].KURS))) * Number(position[i].BETRAG)) * -1)
-        openRisk = Number(openRisk) + risk
-    }
-    openRisk = openRisk * -1
+    let openRisk = Number(getPositionTotal.risk)
 
     let total = 0
     const sqlLineChartData = 'select BETRAG as betrag , BETRAG as label from HISTORY where  BETRAG != 0 AND BETRAG != "-"  and TYP != "Einzahlung"  and TIMESTAMP BETWEEN  ' + startDayly.getTime() + ' and ' + endDayly.getTime()
@@ -72,8 +67,9 @@ const getDayRisk = async () => {
     }
     total = total * -1
 
-    let availableRisk = allowedRisk - (total + openRisk)
+    let availableRisk = allowedRisk - (total + (openRisk * -1))
     let current =  total 
+
     let ret = {
         risk:{
             allowedLose: allowedRisk.toFixed(2),
@@ -82,7 +78,7 @@ const getDayRisk = async () => {
             availableRisk: availableRisk.toFixed(2)
         }
     }
-
+    console.log(ret)
     
     return ret
 }
@@ -145,7 +141,6 @@ const getTargetCharts = async (options) => {
         if (lastTimestamp < Number(lineChartData[i].ts)) {
             lastTimestamp = Number(lineChartData[i].ts)
             if (i == 0) { lastDepositTimestamp = lastTimestamp }
-
 
             // check for new deposit
             for (let n = 0; n < depositData.length; n++) {
@@ -669,9 +664,7 @@ const getTargets = async (options) => {
             }
         }
     }
-
     return ret
-
 }
 
 
@@ -699,7 +692,7 @@ const getKontostand = async (options) => {
         sqlKontostand = 'select TIMESTAMP,   KONTOSTAND as kontostand from HISTORY where TIMESTAMP BETWEEN  ' + startDayly.getTime() + ' and ' + endDayly.getTime() + '  and  KONTOSTAND != 0 AND KONTOSTAND != "-" order by TIMESTAMP  DESC   '
         kontostand = await myDB.get(sqlKontostand)
         if (kontostand[0] == undefined) {
-            sqlKontostand = 'select TIMESTAMP,   KONTOSTAND as kontostand from HISTORY where  KONTOSTAND != 0 AND KONTOSTAND != "-" order by TIMESTAMP  ASC   '
+            sqlKontostand = 'select TIMESTAMP,   KONTOSTAND as kontostand from HISTORY where  KONTOSTAND != 0 AND KONTOSTAND != "-" order by TIMESTAMP  DESC   '
             kontostand = await myDB.get(sqlKontostand)
         }
     }
@@ -736,8 +729,11 @@ const getKontostand = async (options) => {
     startYear.setHours(0, 0, 0, 0);
     const sqlKontostandYearstart = 'select TIMESTAMP,   KONTOSTAND as kontostand from HISTORY where  KONTOSTAND != 0 AND KONTOSTAND != "-" AND betrag != "-" AND  TIMESTAMP BETWEEN  ' + startYear.getTime() + ' and ' + endDayly.getTime() + '  order by TIMESTAMP  ASC   '
     let kontostandYearstart = await myDB.get(sqlKontostandYearstart)
-    if (kontostandYearstart[0] == undefined) { kontostandYearstart = Number(kontostand[0].kontostand) }
+    if (kontostandYearstart[0] == undefined) { 
+        kontostandYearstart = Number(kontostand[0].kontostand) 
+    }
     kontostandYearstart = Number(kontostand)
+
 
     return {
         kontostand: kontostand,
@@ -748,7 +744,7 @@ const getKontostand = async (options) => {
     }
 }
 
-const getPositions = async (sql) => {
+const getPositions = async () => {
     const sqlPosition = 'select * from POSITION '
     let position = await myDB.get(sqlPosition)
 
@@ -796,6 +792,9 @@ const getPositions = async (sql) => {
 
     worstCase = konto.currentkontostand + riskSum
     bestCase = konto.currentkontostand + tpSum
+
+
+
 
     let ret = {
         position: {

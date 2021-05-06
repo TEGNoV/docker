@@ -14,6 +14,8 @@ import { store } from './store/store'
 import VueFusionCharts from 'vue-fusioncharts';
 import FusionCharts from 'fusioncharts';
 
+
+
 // register VueFusionCharts component
 Vue.use(VueFusionCharts, FusionCharts);
 import VueImg from 'v-img';

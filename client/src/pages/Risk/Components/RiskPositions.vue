@@ -5,6 +5,10 @@
         <v-row justify="center" dense>
           <v-col cols="sm-12 xs-12">
             <v-row justify="center" dense>
+
+     
+
+            <!--
               <v-col cols="12" sm="3" xs="6">
                 <v-card>
                   <v-card-title class="justify-center"
@@ -58,6 +62,7 @@
                   <v-card-text class="text-center"> {{ tp }}</v-card-text>
                 </v-card>
               </v-col>
+              -->
               <v-col cols="12" sm="3" xs="6">
                 <v-card>
                   <v-card-title class="justify-center">Worst Case</v-card-title>

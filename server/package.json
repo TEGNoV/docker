@@ -32,7 +32,11 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon index --ignore sessions/"
+    "dev": "nodemon index --ignore sessions/",
+    "prod": "node index.js ",
+    "build": "sudo docker build -t reg.flopar.de/journal .",
+    "push": "sudo docker push reg.flopar.de/journal",
+    "kill": "killall -s KILL node"
   },
   "repository": {
     "type": "git",

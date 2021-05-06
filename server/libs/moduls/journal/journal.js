@@ -3,23 +3,17 @@ const cfg = require('./../../../config/config.json');
 const fs = require('fs')
 
 const createInitalJournalEntry = async (myJ) => {
-   
     if(myJ.verlinken == true){
      
         var timestamp = new Date();
         myJ.journalId = timestamp.getTime()
     }
-
-    
     await createJournalEntry(myJ)
     const ret = await createHistoryJournalLink(myJ.historyMAP, myJ.journalId)
     return ret
-
 }
 
 const updateJournalEntry = async (myJ) => {
-   
-
     await updateJournal(myJ)
     const ret = await createHistoryJournalLink(myJ.historyMAP, myJ.journalId)
     return ret
@@ -27,14 +21,12 @@ const updateJournalEntry = async (myJ) => {
 
 
 const getSingleJournal = async (id) => {
- 
+
     const ret = {}
     const journalSQL = "select * from JOURNAL as JOURNAL "
         + "  WHERE JOURNAL.ID = '" + id + "'"
     let journalRet = await myDB.get(journalSQL)
     journalRet = journalRet[0]
-
-    
     const historySQL = "select * from JOURNALHISTORYMAP as JOURNALHISTORYMAP "
         + " WHERE JOURNALHISTORYMAP.ID_Trade = '" + id + "'"
     const historyID = await myDB.get(historySQL)
@@ -54,9 +46,7 @@ const getSingleJournal = async (id) => {
             history[i].historyData.push(historyData)
         }
     }
-
     journalRet.totalBetrag = totalSum
-    
     ret.journalPictures = await getSingleJournalPictures(id)
     ret.journal = journalRet
     ret.history = history
