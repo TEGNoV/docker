@@ -248,10 +248,7 @@ export default {
 };
 </script>
 <style>
-.title {
-  background: #90caf9;
-  color: white;
-}
+
 .text {
   background: #e3f2fd;
   font-weight: bold;

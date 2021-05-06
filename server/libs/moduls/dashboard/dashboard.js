@@ -70,7 +70,26 @@ const getDayRisk = async () => {
     let availableRisk = allowedRisk - (total + (openRisk * -1))
     let current =  total 
 
+    
+    let dayMaxRisk = allowedRisk
+    let dayWin = 0
+    let dayLose = 0
+    let dayOpen = openRisk
+    if(current > 0 ){
+        dayWin = current.toFixed(2)
+        dayLose = 0
+    }else{
+        dayLose = current.toFixed(2)
+        dayWin = 0
+    }
+    let dayAvailable = (dayMaxRisk +  dayWin) - ( dayLose + dayOpen)
+
     let ret = {
+        // 'Red',    // Lost
+        // 'Blue',   // Availible to lose  -  ( Win + Max Lose ) - ( Open Risk + Lost )
+        // 'Yellow', // Open Risk
+        // 'Green'   // Win
+        chartDataDay:[dayLose,dayAvailable,dayOpen,dayWin],
         risk:{
             allowedLose: allowedRisk.toFixed(2),
             openRisk: openRisk.toFixed(2),
@@ -673,7 +692,13 @@ const getKontostand = async (options) => {
 
     const sqlKontostandCurrent = 'select TIMESTAMP,   KONTOSTAND as kontostand from HISTORY where  KONTOSTAND != 0 AND KONTOSTAND != "-" order by TIMESTAMP  DESC   '
     let currentkontostand = await myDB.get(sqlKontostandCurrent)
-    currentkontostand = Number(currentkontostand[0].kontostand)
+   
+    if(currentkontostand[0] == undefined){
+        currentkontostand = 1
+    }else{
+        currentkontostand = Number(currentkontostand[0].kontostand)
+    }
+    
 
     var startDayly = new Date();
     startDayly.setDate(startDayly.getDate() - 1);
@@ -696,7 +721,12 @@ const getKontostand = async (options) => {
             kontostand = await myDB.get(sqlKontostand)
         }
     }
-    kontostand = Number(kontostand[0].kontostand)
+    if(kontostand[0] == undefined){
+        kontostand = 1
+    }else{
+        kontostand = Number(kontostand[0].kontostand)
+    }
+   
 
     var startWeek = new Date();
     for (i = 0; i < 8; i++) {
@@ -712,28 +742,34 @@ const getKontostand = async (options) => {
     const sqlKontostandWeekstart = 'select TIMESTAMP,   KONTOSTAND as kontostand from HISTORY where  KONTOSTAND != 0 AND KONTOSTAND != "-" AND betrag != "-" AND  TIMESTAMP BETWEEN  ' + startWeek.getTime() + ' and ' + endWeek.getTime() + '  order by TIMESTAMP  ASC   '
     let kontostandWeekstart = await myDB.get(sqlKontostandWeekstart)
     if (kontostandWeekstart[0] == undefined) {
+        kontostandWeekstart = 1
+    }else{
         kontostandWeekstart = kontostand
     }
-    kontostandWeekstart = kontostand
+   
 
     var date = new Date(), y = date.getFullYear(), m = date.getMonth();
     var firstDay = new Date(y, m, 1);
     const sqlKontostandMonthstart = 'select TIMESTAMP,   KONTOSTAND as kontostand from HISTORY where  KONTOSTAND != 0 AND KONTOSTAND != "-" AND betrag != "-" AND  TIMESTAMP BETWEEN  ' + firstDay.getTime() + ' and ' + endDayly.getTime() + '  order by TIMESTAMP  ASC   '
     let kontostandMonthstart = await myDB.get(sqlKontostandMonthstart)
     if (kontostandMonthstart[0] == undefined) { 
-        kontostandMonthstart = kontostand // Number(kontostand[0].kontostand) 
+        kontostandMonthstart = 1
+    }else{
+        kontostandMonthstart = Number(kontostandMonthstart[0].kontostand) 
     }
-    kontostandMonthstart = Number(kontostand)
+
 
     var startYear = new Date(yearStart);
     startYear.setHours(0, 0, 0, 0);
     const sqlKontostandYearstart = 'select TIMESTAMP,   KONTOSTAND as kontostand from HISTORY where  KONTOSTAND != 0 AND KONTOSTAND != "-" AND betrag != "-" AND  TIMESTAMP BETWEEN  ' + startYear.getTime() + ' and ' + endDayly.getTime() + '  order by TIMESTAMP  ASC   '
     let kontostandYearstart = await myDB.get(sqlKontostandYearstart)
-    if (kontostandYearstart[0] == undefined) { 
-        kontostandYearstart = Number(kontostand[0].kontostand) 
+  
+    if(kontostandYearstart[0] == undefined){
+        kontostandYearstart = 1
+    }else{
+        kontostandYearstart = Number(kontostandYearstart[0].kontostand)
     }
-    kontostandYearstart = Number(kontostand)
-
+   
 
     return {
         kontostand: kontostand,

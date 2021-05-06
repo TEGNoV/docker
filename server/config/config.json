@@ -2,7 +2,8 @@
     "customImport": false,
     "customImportFolder": "",
     "customDatabase": true,
-    "customDatabaseFolder": "/db/journal.db",
+    "customDatabaseFolder": "/Users/florianparzefall/SynologyDrive/SynologyDrive/Trading/Tool/journal.db",
+    "customDatabaseFolder2": "/db/journal.db",
     "customPicture": true,
     "customPictureFolder": "/picture"
 }

@@ -60,9 +60,16 @@ const ops = {
     }
   }
 }
+// Plugins
 // MaterialDashboard plugin
 import MaterialDashboard from "./material-dashboard";
+import GlobalComponents from "./globalComponents";
+import GlobalDirectives from "./globalDirectives";
+
 Vue.use(MaterialDashboard);
+Vue.use(GlobalComponents);
+Vue.use(GlobalDirectives);
+
 
 import axios from "axios";
 axios.defaults.withCredentials = true;
