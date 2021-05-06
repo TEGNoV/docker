@@ -4,7 +4,7 @@
       <v-col cols="sm-12 xs-12">
         <v-card flat>
           <v-card-text>
-            <pie-chart  :chart-data="chartData"></pie-chart
+            <pie-chart  :chart-data="chartData" :options='options'></pie-chart
           ></v-card-text>
         </v-card>
       </v-col>

@@ -38,68 +38,140 @@ function getTargetsDataPoints(percent, startbalance, lineChartData, name) {
 
 }
 
+const getAllowedRisk = async (kontostand , starttime, endtime , percent , openRisk) => {
+
+    const sqlLineChartData = 'select BETRAG as betrag , BETRAG as label from HISTORY where  BETRAG != 0 AND BETRAG != "-"  and TYP != "Einzahlung"  and TIMESTAMP BETWEEN  ' + starttime + ' and ' + endtime
+    let lineChartData = await myDB.get(sqlLineChartData)
+    let current = 0
+
+    for (let n = 0; n < lineChartData.length; n++) {
+        current = current + Number(lineChartData[n].betrag)
+    }
+    current = current * -1
+    let dayMaxRisk = Number(kontostand) * Number(percent)
+    let dayWin = 0
+    let dayLose = 0
+    let dayOpen = openRisk
+    if(current < 0.0 ){
+        dayWin = current
+        dayLose = 0.0
+    }else{
+        dayLose = current
+        dayWin = 0.0
+    }
+    let dayAvailable = (Number(dayMaxRisk) +  Number(dayWin)) -  (Number(dayLose) + Number(dayOpen))
+    let dayOverBudget = 0
+    let currentAvailable = dayAvailable
+    if(dayAvailable < 0.0){
+        dayOverBudget = dayAvailable *-1
+        dayAvailable = 0
+    }
+
+    let ret = {
+        total: currentAvailable.toFixed(2),
+        maxRisk: dayMaxRisk.toFixed(2),
+        chartdata: [dayLose,dayAvailable,dayOpen,dayWin,dayOverBudget]
+    }
+
+    return ret
+
+}
+
 const getDayRisk = async () => {
     let getPositions = await this.getPositions() 
     let getPositionTotal = getPositions.position.total
 
-     let options = {}
+    let options = {}
     let konto = await this.getKontostand(options)
-    let kontostand = konto.kontostand
+    let dayStartKontostand = konto.kontostand
+    let weekStartKontostand = konto.kontostandWeekstart
+    let monthtartKontostand = konto.kontostandMonthstart
 
-    let allowedRisk = Number(kontostand) * 0.04
-    var date = new Date();
     var startDayly = new Date();
     startDayly.setHours(0, 0, 0, 0);
-
     var endDayly = new Date();
     endDayly.setHours(23, 59, 59, 999);
-
     let openRisk = Number(getPositionTotal.risk)
 
-    let total = 0
-    const sqlLineChartData = 'select BETRAG as betrag , BETRAG as label from HISTORY where  BETRAG != 0 AND BETRAG != "-"  and TYP != "Einzahlung"  and TIMESTAMP BETWEEN  ' + startDayly.getTime() + ' and ' + endDayly.getTime()
-    
-    let lineChartData = await myDB.get(sqlLineChartData)
-    for (let n = 0; n < lineChartData.length; n++) {
-
-            total = total + Number(lineChartData[n].betrag)
-        
-    }
-    total = total * -1
-
-    let availableRisk = allowedRisk - (total + (openRisk * -1))
-    let current =  total 
-
-    
-    let dayMaxRisk = allowedRisk
-    let dayWin = 0
-    let dayLose = 0
-    let dayOpen = openRisk
-    if(current > 0 ){
-        dayWin = current.toFixed(2)
-        dayLose = 0
-    }else{
-        dayLose = current.toFixed(2)
-        dayWin = 0
-    }
-    let dayAvailable = (dayMaxRisk +  dayWin) - ( dayLose + dayOpen)
-
+    let timestamps = getTimestamps()
     let ret = {
         // 'Red',    // Lost
         // 'Blue',   // Availible to lose  -  ( Win + Max Lose ) - ( Open Risk + Lost )
         // 'Yellow', // Open Risk
         // 'Green'   // Win
-        chartDataDay:[dayLose,dayAvailable,dayOpen,dayWin],
+        // 'DeepRed // over budget
+        
+        chartDataDay: await getAllowedRisk(dayStartKontostand , timestamps.day.start, timestamps.day.end, 0.04 , openRisk),
+        chartDataWeek: await getAllowedRisk(weekStartKontostand , timestamps.week.start, timestamps.week.end, 0.10 , openRisk),
+        chartDataMonth:await getAllowedRisk(monthtartKontostand , timestamps.month.start, timestamps.month.end, 0.2 , openRisk),
         risk:{
-            allowedLose: allowedRisk.toFixed(2),
-            openRisk: openRisk.toFixed(2),
-            current: current.toFixed(2) *-1,
-            availableRisk: availableRisk.toFixed(2)
+            allowedLose:0,
+            openRisk: 0,
+            current: 0,
+            availableRisk: 0
         }
     }
-    console.log(ret)
-    
     return ret
+}
+
+const getTimestamps = () => {
+var startYesterdayDayly = new Date();
+startYesterdayDayly.setDate(startYesterdayDayly.getDate() - 1);
+startYesterdayDayly.setHours(0, 0, 0, 0);
+var endYesterdayDayly = new Date();
+endYesterdayDayly.setDate(endYesterdayDayly.getDate() - 1);
+endYesterdayDayly.setHours(23, 59, 59, 999);
+
+var startDayly = new Date();
+startDayly.setHours(0, 0, 0, 0);
+var endDayly = new Date();
+endDayly.setHours(23, 59, 59, 999);
+
+
+var startWeek = new Date();
+for (i = 0; i < 8; i++) {
+    var n = startWeek.getDay()
+    if (n == 1) {
+        startWeek.setHours(0, 0, 0, 0);
+    } else {
+        startWeek.setDate(startWeek.getDate() - 1);
+    }
+}
+var endWeek = new Date(startWeek.getTime())
+endWeek.setDate(endWeek.getDate() + 5)
+
+
+
+var date = new Date(), y = date.getFullYear(), m = date.getMonth();
+var firstDay = new Date(y, m, 1);
+
+var yearStart = "2021-01-01"
+var startYear = new Date(yearStart);
+    startYear.setHours(0, 0, 0, 0);
+
+    ret = {
+        day:{
+            start: startDayly.getTime(),
+            end: endDayly.getTime()
+        },
+        yesterday:{
+            start: startYesterdayDayly.getTime(),
+            end: endYesterdayDayly.getTime()
+        },
+        week:{
+            start: startWeek.getTime(),
+            end: endWeek.getTime()
+        },
+        month:{
+            start: firstDay.getTime(),
+            end: endDayly.getTime()
+        },
+        year:{
+            start: startYear.getTime(),
+            end: endDayly.getTime()
+        },
+    }
+return ret
 }
 
 const getTargetCharts = async (options) => {
