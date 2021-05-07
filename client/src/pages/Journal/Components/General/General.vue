@@ -4,6 +4,24 @@
           <template slot="header">Gernal</template>
           <template slot="content">
             <v-row dense>
+ <v-col class="d-flex mt-n3" cols="12" sm="12">
+   
+
+              <v-combobox
+          v-model="select"
+          :items="items"
+          label="I use chips"
+          multiple
+          chips
+           deletable-chips
+        >
+
+            
+        
+          </v-combobox>
+    
+
+ </v-col>
               <v-col class="d-flex mt-n3" cols="12" sm="6">
                 <v-checkbox
                   dense
@@ -59,7 +77,17 @@ export default {
   data() {
 
     return {
-    selectPeriodItems:   this.$store.state.global.settings.selectPeriodItems
+    selectPeriodItems:   this.$store.state.global.settings.selectPeriodItems,
+ select: ['Vuetify', 'Programming'],
+        items: [
+          'Programming',
+          'Design',
+          'Vue',
+          'Vuetify',
+        ],
+
+
+
     };
   },
 computed: mapState({
@@ -70,7 +98,9 @@ computed: mapState({
   }),
     mounted() {
   },
+ 
   methods: {
+     
     funcSymbol: function(value) {
       this.journalData = this.$store.state.journal.journalData
       this.journalData.symbol = value
@@ -98,6 +128,10 @@ computed: mapState({
 <style>
 .v-label {
   font-size: 12px !important;
+}
+
+.theme--light.v-chip{
+  background-color: aqua;
 }
 </style>
 
