@@ -72,7 +72,7 @@ async function dbOpen() {
             path = "/db/journal.db"
             console.log(path)
         }
-        console.log(path)
+       
         this.DB = await Database.open(path);
     } catch (error) {
         console.log(error)

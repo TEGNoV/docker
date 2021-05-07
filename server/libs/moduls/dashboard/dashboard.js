@@ -51,9 +51,9 @@ const getAllowedRisk = async (kontostand , starttime, endtime , percent , openRi
     let dayMaxRisk = Number(kontostand) * Number(percent)
     let dayWin = 0
     let dayLose = 0
-    let dayOpen = openRisk
+    let dayOpen = openRisk * -1
     if(current < 0.0 ){
-        dayWin = current
+        dayWin = current * -1
         dayLose = 0.0
     }else{
         dayLose = current

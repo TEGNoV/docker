@@ -301,7 +301,6 @@ export default {
         (response) => {
           // eslint-disable-next-line
           this.day = response.data.chartDataDay;
-          console.log(response.data.chartDataDay)
           this.chartDataDay.datasets[0].data =
             response.data.chartDataDay.chartdata;
 
