@@ -19,6 +19,7 @@ const init = async () => {
     await createJournalHistoryMap()
     await createHistory()
     await createJournal()
+    await createLabels()
 }
 
 const get = async (sql) => {
@@ -90,7 +91,25 @@ async function dbClose() {
 
 
 
-
+async function createLabels() {
+    let result = null
+    if (this.DB == null) {
+        await dbOpen()
+    }
+    try {
+        await DB.run(`
+            CREATE TABLE IF NOT EXISTS LABELS 
+            (
+                TRADE Text,
+                LABEL Text
+            )
+        `);
+    } catch (error) {
+        throw Error('Could not create table')
+    }
+    await dbClose()
+    return result
+}
 async function createJournal() {
     let result = null
     if (this.DB == null) {

@@ -228,7 +228,7 @@ export default {
         this.$store.getters.journalInfoPopUpId != null &&
         this.$store.getters.journalInfoPopUpTyp != "newtrade"
       ) {
-        console.log("oldTrade");
+       
         this.getData();
       }
       if (this.$store.getters.journalInfoPopUpTyp == "newtrade") {
@@ -367,8 +367,7 @@ export default {
       //init befüllung in die history map damit auch verlinkt werden kann. brauch ich nur für verlinken
       // Hier
       if (this.$store.getters.journalInfoPopUpVerlinken) {
-        console.log("Verlinken");
-        console.log(this.$store.getters.journalInfoPopUpVerlinken);
+       
         this.temp = [{ histID: this.$store.getters.journalInfoPopUpId }];
         this.$store.commit("journal/setHistory", this.temp);
       }
@@ -379,9 +378,7 @@ export default {
       ]);
       */
       this.setSingleHistory();
-      console.log(
-        "Prefill  Data - Journal id: " + this.$store.getters.journalInfoPopUpId
-      );
+     
       axios
         .get("/api/getSinglePictures", {
           params: {
@@ -398,11 +395,20 @@ export default {
           }
         );
     },
+   funcMylabels: function (value) {
+      this.journalData = this.$store.state.journal.journalData;
+      this.journalData.mylabels = value;
+      this.$store.commit("journal/setJournalData", this.journalData);
+    },
+       funcAlllabels: function (value) {
+      this.journalData = this.$store.state.journal.journalData;
+      this.journalData.alllabels = value;
+     
+      this.$store.commit("journal/setJournalData", this.journalData);
+    },
 
     getData() {
-      console.log(
-        "Get Data - Journal id: " + this.$store.getters.journalInfoPopUpId
-      );
+   
       axios
         .get("/api/getSingleJournal", {
           params: {
@@ -411,6 +417,12 @@ export default {
         })
         .then(
           (response) => {
+
+            this.funcMylabels(response.data.journal.mylabels)
+     
+           
+            this.funcAlllabels(response.data.journal.alllabels)
+
             this.pictures = response.data.journalPictures;
             this.history = response.data.history;
             this.$store.commit("setHistoryMap", [{ histID: this.history }]);

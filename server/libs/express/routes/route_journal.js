@@ -39,6 +39,8 @@ route_index.get('/api/getSinglePictures', async (req, res) => {
 route_index.get('/api/getSingleJournal', async (req, res) => {
   if (req.isAuthenticated()) {
     let ret = await journal.getSingleJournal(req.query.journalid)
+    console.log("ret")
+    console.log(ret)
     res.send(
       ret
     )

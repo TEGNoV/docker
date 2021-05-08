@@ -56,6 +56,8 @@ fireandforgettp1ordernr: "",
 fireandforgettp2ordernr: "",
 fireandforgettp3ordernr: "",
 fireandforgettp4ordernr: "",
+mylabels: [],
+alllabels: [],
 
       },
 
@@ -71,6 +73,10 @@ fireandforgettp4ordernr: "",
       },
       
       resetJournalData(state) {
+        
+        console.log("reset data")
+        console.log(state.journalData)
+        console.log("reset data2")
         state.journalData = {
           symbol: "",
           businessplan:"",
@@ -106,8 +112,6 @@ fireandforgettp4ordernr: "",
           sellfib4Result:"",    
         stickToPlan: false,
         isDocumented: false,
-
-
         riskplan: "",
         risk: "",
         fireandforgeteinstiegtyp: "",
@@ -125,8 +129,10 @@ fireandforgettp4ordernr: "",
         fireandforgettp2ordernr: "",
         fireandforgettp3ordernr: "",
         fireandforgettp4ordernr: "",
-
+        mylabels: [],
+        alllabels: [],
         }
+        console.log(state.journalData )
       },
     },
     getters:{

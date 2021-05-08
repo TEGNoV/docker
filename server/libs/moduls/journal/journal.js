@@ -4,24 +4,73 @@ const fs = require('fs')
 
 const createInitalJournalEntry = async (myJ) => {
     if(myJ.verlinken == true){
-     
         var timestamp = new Date();
         myJ.journalId = timestamp.getTime()
     }
     await createJournalEntry(myJ)
     const ret = await createHistoryJournalLink(myJ.historyMAP, myJ.journalId)
+    const ret2 = await addLabels(myJ.mylabels, myJ.journalId)
     return ret
 }
 
 const updateJournalEntry = async (myJ) => {
     await updateJournal(myJ)
     const ret = await createHistoryJournalLink(myJ.historyMAP, myJ.journalId)
+    const ret3 = await delLabels(myJ.journalId)
+    const ret2 = await addLabels(myJ.mylabels, myJ.journalId)
     return ret
 }
 
+const getAllLabels = async () => {
+    const checkSQL = "select DISTINCT LABEL from LABELS"  
+    const labels = await myDB.get(checkSQL)
+    let ret = []
+    for (let i = 0; i < labels.length; i++) {
+        ret.push(labels[i].LABEL)
+    }
+    return ret
+}
+
+const delLabels = async (trade) => {
+    const sqlDel1 = "delete  from LABELS where TRADE = '" + trade + "'"
+    await myDB.run(sqlDel1)
+}
+
+const addLabels = async (labels , trade) => {
+    // To Do - check if already exist
+    console.log("labels")
+    console.log(labels)
+    for (let i = 0; i < labels.length; i++) {
+        let label = labels[i].split(" ").join("")
+        const checkSQL = "select * from LABELS where LABEL = '" + label + "' and TRADE = '" + trade + "'"  
+        const ceck = await myDB.get(checkSQL)
+        if(ceck.length > 0){
+            console.log("label im trade bereits vorhanden")
+        }else{
+            console.log("Add label")
+            const labelSQL = "INSERT INTO LABELS (LABEL , TRADE"
+            + ") "
+             + " VALUES "
+             + " ('" + label + "' , '" + trade + "' )"    
+             const ret = await myDB.run(labelSQL)
+        } 
+    }
+}
+
+const getLabels = async (trade) => {
+    const checkSQL = "select * from LABELS where TRADE = '" + trade + "'"  
+
+    const labels = await myDB.get(checkSQL)
+    let ret = []
+    for (let i = 0; i < labels.length; i++) {
+        ret.push(labels[i].LABEL)
+    }
+
+    
+    return ret
+}
 
 const getSingleJournal = async (id) => {
-
     const ret = {}
     const journalSQL = "select * from JOURNAL as JOURNAL "
         + "  WHERE JOURNAL.ID = '" + id + "'"
@@ -48,6 +97,8 @@ const getSingleJournal = async (id) => {
     }
     journalRet.totalBetrag = totalSum
     ret.journalPictures = await getSingleJournalPictures(id)
+    journalRet.mylabels = await getLabels(id)
+    journalRet.alllabels = await getAllLabels()
     ret.journal = journalRet
     ret.history = history
 

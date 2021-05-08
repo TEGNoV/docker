@@ -30,7 +30,7 @@ route_index.post('/api/JournalUpdateCreate', jsonParser, async function  (req, r
   }*/
 
   const myJ = req.body
-  
+  console.log(myJ)
   let ret
   try{
     if(myJ.typ == "create"){
