@@ -35,42 +35,40 @@ export default {
       dailyWinRate: 100
     };
   },
-   created() {
+  created() {
     this.interval = setInterval(() => this.getData(), 60000);
   },
   mounted() {
-   this.getData()
+    this.getData();
   },
   methods: {
-    getData(){
-      
-      let settings = this.$store.getters.getSettings
+    getData() {
+      let settings = this.$store.getters.getSettings;
       axios
         .get("/api/overview", {
           params: {
             options: {
               sender: "Overview.vue",
               lineChart: {
-                
                 limit: settings.Dashboard.LinechartLimit,
                 order: this.lineChartOrder
               }
             }
           }
-        }).then(
-      response => {
-        // eslint-disable-next-line
+        })
+        .then(
+          response => {
+            // eslint-disable-next-line
         this.dailyTradeCount = response.data.daily.tradeCount
-        this.dailySum = response.data.daily.sum
-        this.dailyWinRate = response.data.daily.winRate
-      },
-      error => {
-        // eslint-disable-next-line
+            this.dailySum = response.data.daily.sum;
+            this.dailyWinRate = response.data.daily.winRate;
+          },
+          error => {
+            // eslint-disable-next-line
         console.log(error);
-      }
-    );
+          }
+        );
     }
-
   }
 };
 </script>

@@ -1,137 +1,83 @@
 <template>
   <div>
+  <!--
+    <v-row justify="center" dense>
+      <v-col cols="12" sm="6" xs="12">
+        <v-card>
+          <v-card-title class="justify-center"> Year Target</v-card-title>
+          <v-card-text class="text-center">
+            <v-row justify="center" dense>
+              <v-col cols="12" sm="8"> Kontostand zum Jahresstart</v-col>
+              <v-col cols="12" sm="4"> {{ kontostandYearstart }}</v-col>
+              <v-col cols="12" sm="4"> T1</v-col>
+              <v-col cols="12" sm="4"> {{ targets.year.T1.sum }}</v-col>
+              <v-col cols="12" sm="4"> {{ targets.year.T1.difPercent }}</v-col>
+              <v-col cols="12" sm="4"> T2</v-col>
+              <v-col cols="12" sm="4"> {{ targets.year.T2.sum }}</v-col>
+              <v-col cols="12" sm="4"> {{ targets.year.T2.difPercent }}</v-col>
+            </v-row>
+          </v-card-text>
+        </v-card>
+      </v-col>
 
-              <v-row justify="center" dense>
-                <v-col cols="12" sm="6" xs="12">
-                  <v-card>
-                    <v-card-title class="justify-center">
-                      Year Target</v-card-title
-                    >
-                    <v-card-text class="text-center">
-                      <v-row justify="center" dense>
-                        <v-col cols="12" sm="8">
-                          Kontostand zum Jahresstart</v-col
-                        >
-                        <v-col cols="12" sm="4">
-                          {{ kontostandYearstart }}</v-col
-                        >
-                        <v-col cols="12" sm="4"> T1</v-col>
-                        <v-col cols="12" sm="4">
-                          {{ targets.year.T1.sum }}</v-col
-                        >
-                        <v-col cols="12" sm="4">
-                          {{ targets.year.T1.difPercent }}</v-col
-                        >
-                        <v-col cols="12" sm="4"> T2</v-col>
-                        <v-col cols="12" sm="4">
-                          {{ targets.year.T2.sum }}</v-col
-                        >
-                        <v-col cols="12" sm="4">
-                          {{ targets.year.T2.difPercent }}</v-col
-                        >
-                      </v-row>
-                    </v-card-text>
-                  </v-card>
-                </v-col>
+      <v-col cols="12" sm="6" xs="12">
+        <v-card>
+          <v-card-title class="justify-center"> Month Target</v-card-title>
+          <v-card-text class="text-center">
+            <v-row justify="center" dense>
+              <v-col cols="12" sm="8"> Kontostand zum Monatsstart</v-col>
+              <v-col cols="12" sm="4"> {{ kontostandMonthstart }}</v-col>
+              <v-col cols="12" sm="4"> T1</v-col>
+              <v-col cols="12" sm="4"> {{ targets.month.T1.sum }}</v-col>
+              <v-col cols="12" sm="4"> {{ targets.month.T1.difPercent }}</v-col>
+              <v-col cols="12" sm="4"> T2</v-col>
+              <v-col cols="12" sm="4"> {{ targets.month.T2.sum }}</v-col>
+              <v-col cols="12" sm="4"> {{ targets.month.T2.difPercent }}</v-col>
+            </v-row>
+          </v-card-text>
+        </v-card>
+      </v-col>
 
-                <v-col cols="12" sm="6" xs="12">
-                  <v-card>
-                    <v-card-title class="justify-center">
-                      Month Target</v-card-title
-                    >
-                    <v-card-text class="text-center">
-                      <v-row justify="center" dense>
-                        <v-col cols="12" sm="8">
-                          Kontostand zum Monatsstart</v-col
-                        >
-                        <v-col cols="12" sm="4">
-                          {{ kontostandMonthstart }}</v-col
-                        >
-                        <v-col cols="12" sm="4"> T1</v-col>
-                        <v-col cols="12" sm="4">
-                          {{ targets.month.T1.sum }}</v-col
-                        >
-                        <v-col cols="12" sm="4">
-                          {{ targets.month.T1.difPercent }}</v-col
-                        >
-                        <v-col cols="12" sm="4"> T2</v-col>
-                        <v-col cols="12" sm="4">
-                          {{ targets.month.T2.sum }}</v-col
-                        >
-                        <v-col cols="12" sm="4">
-                          {{ targets.month.T2.difPercent }}</v-col
-                        >
-                      </v-row>
-                    </v-card-text>
-                  </v-card>
-                </v-col>
+      <v-col cols="12" sm="6" xs="12">
+        <v-card>
+          <v-card-title class="justify-center"> Week Target</v-card-title>
+          <v-card-text class="text-center">
+            <v-row justify="center" dense>
+              <v-col cols="12" sm="8"> Kontostand zum Wochenstart</v-col>
+              <v-col cols="12" sm="4"> {{ kontostandWeekstart }}</v-col>
+              <v-col cols="12" sm="4"> T1</v-col>
+              <v-col cols="12" sm="4"> {{ targets.week.T1.sum }}</v-col>
+              <v-col cols="12" sm="4"> {{ targets.week.T1.difPercent }}</v-col>
+              <v-col cols="12" sm="4"> T2</v-col>
+              <v-col cols="12" sm="4"> {{ targets.week.T2.sum }}</v-col>
+              <v-col cols="12" sm="4"> {{ targets.week.T2.difPercent }}</v-col>
+            </v-row>
+          </v-card-text>
+        </v-card>
+      </v-col>
 
-                <v-col cols="12" sm="6" xs="12">
-                  <v-card>
-                    <v-card-title class="justify-center">
-                      Week Target</v-card-title
-                    >
-                    <v-card-text class="text-center">
-                      <v-row justify="center" dense>
-                        <v-col cols="12" sm="8">
-                          Kontostand zum Wochenstart</v-col
-                        >
-                        <v-col cols="12" sm="4">
-                          {{ kontostandWeekstart }}</v-col
-                        >
-                        <v-col cols="12" sm="4"> T1</v-col>
-                        <v-col cols="12" sm="4">
-                          {{ targets.week.T1.sum }}</v-col
-                        >
-                        <v-col cols="12" sm="4">
-                          {{ targets.week.T1.difPercent }}</v-col
-                        >
-                        <v-col cols="12" sm="4"> T2</v-col>
-                        <v-col cols="12" sm="4">
-                          {{ targets.week.T2.sum }}</v-col
-                        >
-                        <v-col cols="12" sm="4">
-                          {{ targets.week.T2.difPercent }}</v-col
-                        >
-                      </v-row>
-                    </v-card-text>
-                  </v-card>
-                </v-col>
-
-                <v-col cols="12" sm="6" xs="12">
-                  <v-card>
-                    <v-card-title class="justify-center">
-                      Day Target</v-card-title
-                    >
-                    <v-card-text class="text-center">
-                      <v-row justify="center" dense>
-                        <v-col cols="12" sm="8">
-                          Kontostand zum Tagesstart</v-col
-                        >
-                        <v-col cols="12" sm="4"> {{ kontostand }}</v-col>
-                        <v-col cols="12" sm="4"> T1</v-col>
-                        <v-col cols="12" sm="4">
-                          {{ targets.day.T1.sum }}</v-col
-                        >
-                        <v-col cols="12" sm="4">
-                          {{ targets.day.T1.difPercent }}</v-col
-                        >
-                        <v-col cols="12" sm="4"> T2</v-col>
-                        <v-col cols="12" sm="4">
-                          {{ targets.day.T2.sum }}</v-col
-                        >
-                        <v-col cols="12" sm="4">
-                          {{ targets.day.T2.difPercent }}</v-col
-                        >
-                      </v-row>
-                    </v-card-text>
-                  </v-card>
-                </v-col>
-              </v-row>
-      
+      <v-col cols="12" sm="6" xs="12">
+        <v-card>
+          <v-card-title class="justify-center"> Day Target</v-card-title>
+          <v-card-text class="text-center">
+            <v-row justify="center" dense>
+              <v-col cols="12" sm="8"> Kontostand zum Tagesstart</v-col>
+              <v-col cols="12" sm="4"> {{ kontostand }}</v-col>
+              <v-col cols="12" sm="4"> T1</v-col>
+              <v-col cols="12" sm="4"> {{ targets.day.T1.sum }}</v-col>
+              <v-col cols="12" sm="4"> {{ targets.day.T1.difPercent }}</v-col>
+              <v-col cols="12" sm="4"> T2</v-col>
+              <v-col cols="12" sm="4"> {{ targets.day.T2.sum }}</v-col>
+              <v-col cols="12" sm="4"> {{ targets.day.T2.difPercent }}</v-col>
+            </v-row>
+          </v-card-text>
+        </v-card>
+      </v-col>
+    </v-row>
+      -->
   </div>
-</template>
 
+</template>
 
 <script>
 import axios from "axios";
@@ -146,8 +92,8 @@ export default {
   props: {
     tableHeaderColor: {
       type: String,
-      default: "",
-    },
+      default: ""
+    }
   },
   data() {
     return {
@@ -160,59 +106,58 @@ export default {
           T1: {
             sum: 0,
             percent: 0,
-            difPercent: 0,
+            difPercent: 0
           },
           T2: {
             sum: 0,
             percent: 0,
-            difPercent: 0,
-          },
+            difPercent: 0
+          }
         },
         day: {
           T1: {
             sum: 0,
             percent: 0,
-            difPercent: 0,
+            difPercent: 0
           },
           T2: {
             sum: 0,
             percent: 0,
-            difPercent: 0,
+            difPercent: 0
+          }
+        },
+
+        week: {
+          T1: {
+            sum: 0,
+            percent: 0,
+            difPercent: 0
           },
+          T2: {
+            sum: 0,
+            percent: 0,
+            difPercent: 0
+          }
         },
-      
-      week: {
-        T1: {
-          sum: 0,
-          percent: 0,
-          difPercent: 0,
-        },
-        T2: {
-          sum: 0,
-          percent: 0,
-          difPercent: 0,
-        },
-      },
-      month: {
-        T1: {
-          sum: 0,
-          percent: 0,
-          difPercent: 0,
-        },
-        T2: {
-          sum: 0,
-          percent: 0,
-          difPercent: 0,
-        },
-      },
-      },
+        month: {
+          T1: {
+            sum: 0,
+            percent: 0,
+            difPercent: 0
+          },
+          T2: {
+            sum: 0,
+            percent: 0,
+            difPercent: 0
+          }
+        }
+      }
     };
   },
   created() {
     this.interval = setInterval(() => this.getData(), 60000);
   },
   mounted() {
-
     this.getData();
   },
   methods: {
@@ -220,11 +165,11 @@ export default {
       axios
         .get("/api/getTargets", {
           params: {
-            options: this.$store.state.dashboard.dashboardStatsFilter,
-          },
+            options: this.$store.state.dashboard.dashboardStatsFilter
+          }
         })
         .then(
-          (response) => {
+          response => {
             // eslint-disable-next-line
        
             this.kontostand = response.data.kontostand;
@@ -238,17 +183,16 @@ export default {
             this.yearlyGoal = 0;
             this.monthlyGoal = 0;
           },
-          (error) => {
+          error => {
             // eslint-disable-next-line
             console.log(error);
           }
         );
-    },
-  },
+    }
+  }
 };
 </script>
 <style>
-
 .text {
   background: #e3f2fd;
   font-weight: bold;

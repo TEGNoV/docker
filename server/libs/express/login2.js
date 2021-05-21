@@ -69,7 +69,7 @@ const login = async (app) => {
         genid: (req) => {
             return uuid.v4() // use UUIDs for session IDs
         },
-        cookie: { maxAge: 600000 },
+        cookie: { maxAge: 6000000 },
         store: new FileStore(),
         secret: 'keyboard cat',
         resave: false,

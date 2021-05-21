@@ -8,20 +8,19 @@
         </sidebar-link>
         <sidebar-link to="/journal">
           <p>Journal</p>
-        </sidebar-link>  
-               
-                       <sidebar-link to="/risk">
+        </sidebar-link>
+
+        <sidebar-link to="/risk">
           <p>Risk</p>
-        </sidebar-link>  
+        </sidebar-link>
 
         <sidebar-link to="/upload">
           <p>Upload</p>
         </sidebar-link>
 
-            <sidebar-link to="/log">
+        <sidebar-link to="/log">
           <p>Log</p>
         </sidebar-link>
-
 
         <sidebar-blind-link>
           <v-switch v-model="switch1"></v-switch>
@@ -69,4 +68,3 @@ export default {
   }
 };
 </script>
-

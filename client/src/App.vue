@@ -33,9 +33,8 @@ export default {
       this.$store.commit("setAuthentication", status);
     },
     logout() {
-      this.setAuthenticated(false) 
+      this.setAuthenticated(false);
     }
   }
 };
 </script>
-

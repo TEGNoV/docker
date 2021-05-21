@@ -154,10 +154,8 @@
   </div>
 </template>
 
-<style scoped>
-</style>        
+<style scoped></style>
 
- 
 <script>
 //import axios from "axios";
 import axios from "axios";
@@ -183,7 +181,7 @@ export default {
       maxwinner: 0,
       maxloser: 0,
       avg: 0,
-      total: 0,
+      total: 0
     };
   },
   computed: {
@@ -192,16 +190,15 @@ export default {
     },
     updateNeeded() {
       return this.$store.getters.journalInfoPopUpUpdateNeeded;
-    },
+    }
   },
 
   watch: {
-    updateNeeded: function () {
-     
+    updateNeeded: function() {
       if (this.$store.getters.journalInfoPopUpUpdateNeeded != null) {
         this.getData();
       }
-    },
+    }
   },
   created() {
     (this.dates[0] = new Date().toISOString().split("T")[0]),
@@ -213,9 +210,9 @@ export default {
   },
 
   methods: {
-    openCreatePopUp: function (auftragsnr, produkt, verlinkt, journalID) {
+    openCreatePopUp: function(auftragsnr, produkt, verlinkt, journalID) {
       let myTyp;
-     
+
       if (verlinkt) {
         myTyp = "oldtrade";
         this.$store.commit("setJournalInfoPopUp", {
@@ -235,7 +232,6 @@ export default {
           verlinken: false
         });
       }
-    
     },
     changeProduct() {
       this.getData();
@@ -266,12 +262,12 @@ export default {
             startTime: time1,
             endTime: time2,
             settings: {
-              product: this.product,
-            },
-          },
+              product: this.product
+            }
+          }
         })
         .then(
-          (response) => {
+          response => {
             // eslint-disable-next-line
             this.products = response.data.products;
             this.tradeItems = response.data.tradeItems;
@@ -283,12 +279,12 @@ export default {
             this.maxwinner = response.data.maxwinner;
             this.maxloser = response.data.maxloser;
           },
-          (error) => {
+          error => {
             // eslint-disable-next-line
             console.log(error);
           }
         );
-    },
-  },
+    }
+  }
 };
 </script>

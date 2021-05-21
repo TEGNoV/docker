@@ -1,14 +1,57 @@
 <template>
   <div>
+    <div class="md-layout">
+      <div
+        class="md-layout-item md-medium-size-50 md-xsmall-size-50 md-size-50"
+      >
+        <vue-stats-card data-background-color="blue">
+          <template slot="header">
+            <v-icon>mdi-arrow-top-right-thick</v-icon>
+          </template>
+          <template slot="content">
+            <p class="category">Best Case</p>
+            <h3 class="title">{{ bestCase }} €</h3>
+          </template>
+          <template slot="content"> </template>
+          <template slot="footer">
+            <div class="stats">
+              <v-icon>mdi-date-range</v-icon>
+              Last 24 Hours
+            </div>
+          </template>
+        </vue-stats-card>
+      </div>
+      <div
+        class="md-layout-item md-medium-size-50 md-xsmall-size-50 md-size-50"
+      >
+        <vue-stats-card data-background-color="blue">
+          <template slot="header">
+            <v-icon>mdi-arrow-bottom-right-thick</v-icon>
+          </template>
+
+          <template slot="content">
+            <p class="category">Worst Case</p>
+            <h3 class="title">{{ worstCase }} €</h3>
+          </template>
+          <template slot="content"> </template>
+
+          <template slot="footer">
+            <div class="stats">
+              <v-icon>mdi-date-range</v-icon>
+              Last 24 Hours
+            </div>
+          </template>
+        </vue-stats-card>
+      </div>
+    </div>
+
     <v-row dense>
       <v-col cols="lg-12 md-12 sm-12 xs-12">
         <v-row justify="center" dense>
           <v-col cols="sm-12 xs-12">
-            <v-row justify="center" dense>
-
-     
-
             <!--
+            <v-row justify="center" dense>
+             
               <v-col cols="12" sm="3" xs="6">
                 <v-card>
                   <v-card-title class="justify-center"
@@ -62,7 +105,9 @@
                   <v-card-text class="text-center"> {{ tp }}</v-card-text>
                 </v-card>
               </v-col>
-              -->
+           
+
+              
               <v-col cols="12" sm="3" xs="6">
                 <v-card>
                   <v-card-title class="justify-center">Worst Case</v-card-title>
@@ -79,10 +124,17 @@
                 </v-card>
               </v-col>
             </v-row>
+   -->
 
-            <v-card>
-              <v-row justify="center">
-                <v-col cols="12" sm="12">
+            <div
+              class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-100"
+            >
+              <md-card>
+                <md-card-header data-background-color="blue">
+                  <h4 class="title">Open Positions</h4>
+                  <p class="category">Current Open Positions</p>
+                </md-card-header>
+                <md-card-content>
                   <md-table
                     v-model="positions"
                     :table-header-color="tableHeaderColor"
@@ -113,9 +165,9 @@
                       }}</md-table-cell>
                     </md-table-row>
                   </md-table>
-                </v-col>
-              </v-row>
-            </v-card>
+                </md-card-content>
+              </md-card>
+            </div>
           </v-col>
         </v-row>
       </v-col>
@@ -123,22 +175,24 @@
   </div>
 </template>
 
-
 <script>
 import axios from "axios";
 //import StatsCardWrapper from "./../../../components/Cards/StatsCardWrapper";
 //import CircleCard from "./../../../components/Circle/CircleCard";
+import VueStatsCard from "./../../../components/Cards/VueStatsCard";
+//import ChartCard from "./../../../components/Cards/ChartCard";
 export default {
   name: "simple-table",
   components: {
     //CircleCard,
     //StatsCardWrapper
+    VueStatsCard
   },
   props: {
     tableHeaderColor: {
       type: String,
-      default: "",
-    },
+      default: ""
+    }
   },
   data() {
     return {
@@ -163,9 +217,9 @@ export default {
           sl: "Oud-Turnhout",
           risk: "Oud-Turnhout",
           tp: "Oud-Turnhout",
-          profit: "Oud-Turnhout",
-        },
-      ],
+          profit: "Oud-Turnhout"
+        }
+      ]
     };
   },
   created() {
@@ -177,7 +231,7 @@ export default {
   methods: {
     getData() {
       axios.get("/api/dashboardPositions").then(
-        (response) => {
+        response => {
           // eslint-disable-next-line
 
           this.positions = response.data.position.positions;
@@ -197,17 +251,16 @@ export default {
             this.riskpercent = true;
           }
         },
-        (error) => {
+        error => {
           // eslint-disable-next-line
           console.log(error);
         }
       );
-    },
-  },
+    }
+  }
 };
 </script>
 <style>
-
 .text {
   font-weight: bold;
 }

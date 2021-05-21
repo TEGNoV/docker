@@ -27,7 +27,6 @@ const SidebarPlugin = {
     Vue.component("side-bar", Sidebar);
     Vue.component("sidebar-link", SidebarLink);
     Vue.component("sidebar-blind-link", SidebarBlindLink);
-  
   }
 };
 

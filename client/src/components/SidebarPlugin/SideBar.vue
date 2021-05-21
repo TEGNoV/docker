@@ -7,7 +7,7 @@
   >
     <div class="logo">
       <a href="#" class="simple-text logo-mini">
-        <div >
+        <div>
           <img :src="imgLogo" alt="" />
         </div>
       </a>

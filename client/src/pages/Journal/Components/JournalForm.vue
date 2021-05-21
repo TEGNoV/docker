@@ -21,16 +21,9 @@ export default {
   name: "journal-form",
 
   data() {
-    return {
-  
-    }
+    return {};
   },
-  computed: {
-    
-  },
-  methods: {
-   
-  },
+  computed: {},
+  methods: {}
 };
 </script>
-

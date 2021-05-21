@@ -1,13 +1,15 @@
 <template>
   <div>
-    <v-row dense> 
-      <v-col cols="lg-12 md-12 sm-12 xs-12">
-        <v-card>
-          <v-row justify="center" dense>
-            <v-col cols="sm-11 xs-11">
-              <v-card flat>
+
+          <div
+              class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-100"
+            >
+              <md-card>
+                <md-card-header data-background-color="blue">
+
+  
                 <v-expansion-panels accordion flat>
-                  <v-expansion-panel>
+                  <v-expansion-panel style= "background-color: transparent;">
                     <v-expansion-panel-header></v-expansion-panel-header>
                     <v-expansion-panel-content>
                       <v-row justify="center">
@@ -35,6 +37,10 @@
                     </v-expansion-panel-content>
                   </v-expansion-panel>
                 </v-expansion-panels>
+                  <h4 class="title">Targets</h4>
+                  <p class="category">Target Information</p>
+  </md-card-header>
+                <md-card-content>
                 <v-row justify="center">
                   <v-col cols="sm-12 xs-12">
                     <v-card flat>
@@ -48,15 +54,13 @@
                     </v-card>
                   </v-col>
                 </v-row>
-              </v-card>
-            </v-col>
-          </v-row>
-        </v-card>
-      </v-col>
-    </v-row>
+              
+
+          </md-card-content>
+          </md-card>
+          </div>
   </div>
 </template>
-
 
 <script>
 import axios from "axios";
@@ -65,7 +69,7 @@ import LineChart from "./LineChart.js";
 
 export default {
   components: {
-    LineChart,
+    LineChart
   },
 
   name: "Dashboard",
@@ -90,7 +94,7 @@ export default {
       options: {
         responsive: true,
         maintainAspectRatio: false,
-        loaded: false,
+        loaded: false
       },
       linedatacollection: null,
       lineoptions: {
@@ -104,19 +108,19 @@ export default {
                 suggestedMin: 50,
                 suggestedMax: 100,
                 beginAtZero: true,
-                bezierCurve: false,
-              },
-            },
-          ],
-        },
-      },
+                bezierCurve: false
+              }
+            }
+          ]
+        }
+      }
     };
   },
   computed: {
     cssPrimary() {
       return this.$vuetify.theme.themes[this.$store.getters.usedTheme].blue
         .accent2;
-    },
+    }
   },
   created() {
     this.interval = setInterval(() => this.getData(), 60000);
@@ -148,33 +152,32 @@ export default {
             ].blue.accent2,
             data: this.balance,
 
-            label: "Data One",
+            label: "Data One"
           },
-           {
-               backgroundColor: hexToRgbA(
+          {
+            backgroundColor: hexToRgbA(
               this.$vuetify.theme.themes[this.$store.getters.usedTheme].blue
                 .accent2,
               0
             ),
 
-            borderColor: '#14274e',
+            borderColor: "#14274e",
             data: this.t1,
 
-            label: "Data two",
+            label: "Data two"
           },
-                 {
-            
-   backgroundColor: hexToRgbA(
+          {
+            backgroundColor: hexToRgbA(
               this.$vuetify.theme.themes[this.$store.getters.usedTheme].blue
                 .accent2,
               0
             ),
-            borderColor: '#9ba4b4',
+            borderColor: "#9ba4b4",
             data: this.t2,
 
-            label: "Data two",
-          },
-        ],
+            label: "Data two"
+          }
+        ]
       }),
         (this.options.loaded = true);
     },
@@ -199,40 +202,34 @@ export default {
               sender: "Dashboard.vue",
               lineChart: {
                 limit: this.myLineChartLimit,
-                period: settings.Dashboard.LinechartPeriod,
-              },
-            },
-          },
+                period: settings.Dashboard.LinechartPeriod
+              }
+            }
+          }
         })
         .then(
-          (response) => {
+          response => {
             // eslint-disable-next-line
 
-   
-
             this.balance = response.data.lineChartData.map(
-              (value) => value.kontostand
+              value => value.kontostand
             );
 
-            this.t1 = response.data.lineChartData.map(
-              (value) => value.t1
-            );
-            this.t2 = response.data.lineChartData.map(
-              (value) => value.t2
-            );
+            this.t1 = response.data.lineChartData.map(value => value.t1);
+            this.t2 = response.data.lineChartData.map(value => value.t2);
             this.linechartLabels = response.data.lineChartData.map(
-              (value) => value.label
+              value => value.label
             );
 
             this.fillData();
           },
-          (error) => {
+          error => {
             // eslint-disable-next-line
             console.log(error);
           }
         );
-    },
-  },
+    }
+  }
 };
 
 function hexToRgbA(hex, trans) {
@@ -254,8 +251,3 @@ function hexToRgbA(hex, trans) {
   throw new Error("Bad Hex");
 }
 </script>
-
-
-
-
-

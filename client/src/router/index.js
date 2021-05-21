@@ -1,15 +1,15 @@
-import Vue from 'vue'
-import Router from 'vue-router'
-import DashboardLayout from "@/pages/Layout/DashboardLayout.vue"; 
+import Vue from "vue";
+import Router from "vue-router";
+import DashboardLayout from "@/pages/Layout/DashboardLayout.vue";
 import Journal from "@/pages/Journal/Journal.vue";
 import Dashboard from "@/pages/Dashboard/Dashboard.vue";
 import Upload from "@/pages/Upload.vue";
 import Login from "@/pages/Login.vue";
 import Log from "@/pages/Log/Log.vue";
 import Risk from "@/pages/Risk/Risk.vue";
-Vue.use(Router)
+Vue.use(Router);
 export default new Router({
-  mode: 'history',
+  mode: "history",
   routes: [
     {
       path: "/",
@@ -17,20 +17,20 @@ export default new Router({
       redirect: "/dashboard",
       children: [
         {
-          path: "dashboard", 
+          path: "dashboard",
           name: "Dashboard",
           component: Dashboard
         },
         {
-          path: "risk", 
+          path: "risk",
           name: "Risk",
           component: Risk
         },
-          {
-            path: "journal", 
-            name: "Journal",
-            component: Journal
-          },
+        {
+          path: "journal",
+          name: "Journal",
+          component: Journal
+        },
         {
           path: "log",
           name: "log",
@@ -42,11 +42,11 @@ export default new Router({
           component: Upload
         }
       ]
-    }, {
+    },
+    {
       path: "/login",
       component: Login,
       name: "Login"
     }
   ]
-})
-
+});

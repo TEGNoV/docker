@@ -14,7 +14,6 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </md-button>
-
       </div>
     </div>
   </md-toolbar>
@@ -23,9 +22,7 @@
 <script>
 export default {
   data() {
-    return {
-    
-    };
+    return {};
   },
   methods: {
     toggleSidebar() {

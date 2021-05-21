@@ -220,7 +220,7 @@
 
     [data-background-color="blue"],
     .md-tabs.md-info .md-tabs-navigation{
-        background: linear-gradient(60deg, $cyan-400, $cyan-600);
+        background: linear-gradient(60deg, $blue-1, $blue-2);
         @include shadow-big-color($brand-info);
     }
 

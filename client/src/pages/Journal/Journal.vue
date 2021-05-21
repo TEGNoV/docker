@@ -1,59 +1,83 @@
 <template>
   <div class="content">
-    <v-expansion-panels accordion>
-      <v-expansion-panel>
-        <v-expansion-panel-header>Datepicker</v-expansion-panel-header>
-        <v-expansion-panel-content>
-          <v-row>
-            <v-col cols="12" sm="6">
-              <v-row>
-                <v-col cols="12" sm="6">
-                  <v-date-picker v-model="dates" range></v-date-picker>
-                </v-col>
-                <v-col cols="12" sm="6">
-                  <v-radio-group v-model="filter" :mandatory="false">
-                    <v-radio label="Unlinked" value="empty"></v-radio>
-                    <v-radio label="Linked" value="linked"></v-radio>
-                    <v-radio label="All" value="all"></v-radio>
-                  </v-radio-group>
-                </v-col>
-              </v-row>
-              <v-row>
-                <v-col cols="12" sm="6">
-                  <v-btn @click="getData()">Reload</v-btn>
-                </v-col>
-              </v-row>
-            </v-col>
-            <v-col></v-col>
-          </v-row>
-        </v-expansion-panel-content>
-      </v-expansion-panel>
-    </v-expansion-panels>
+    <div
+      class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-100"
+    >
+      <v-expansion-panels accordion flat>
+        <v-expansion-panel>
+          <v-expansion-panel-header>Datepicker</v-expansion-panel-header>
+          <v-expansion-panel-content>
+            <v-row>
+              <v-col cols="12" sm="6">
+                <v-row>
+                  <v-col cols="12" sm="6">
+                    <v-date-picker v-model="dates" range></v-date-picker>
+                  </v-col>
+                  <v-col cols="12" sm="6">
+                    <v-radio-group v-model="filter" :mandatory="false">
+                      <v-radio label="Unlinked" value="empty"></v-radio>
+                      <v-radio label="Linked" value="linked"></v-radio>
+                      <v-radio label="All" value="all"></v-radio>
+                    </v-radio-group>
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col cols="12" sm="6">
+                    <v-btn @click="getData()">Reload</v-btn>
+                  </v-col>
+                  <v-col cols="sm-4 xs-12">
+                    <v-select
+                      v-model="product"
+                      v-on:change="changeProduct"
+                      :items="products"
+                      label="Products"
+                      dense
+                      outlined
+                    ></v-select>
+                  </v-col>
+                </v-row>
+              </v-col>
+              <v-col></v-col>
+            </v-row>
+          </v-expansion-panel-content>
+        </v-expansion-panel>
+      </v-expansion-panels>
+    </div>
+    <div
+      class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-100"
+    >
+      <md-card>
+        <md-card-header data-background-color="blue">
+          <h4 class="title">Open Positions</h4>
 
-    <v-row>
-      <v-col cols="sm-4 xs-12">
-        <v-select
-          v-model="product"
-          v-on:change="changeProduct"
-          :items="products"
-          label="Products"
-          dense
-          outlined
-        ></v-select>
-      </v-col>
-    </v-row>
-    <v-row>
-      <v-row>
-        <v-col cols="12" sm="1"> Total: {{ total }} </v-col>
-        <v-col cols="12" sm="1"> Winrate: {{ winrate }} </v-col>
-        <v-col cols="12" sm="1"> AVG: {{ avg }} </v-col>
-        <v-col cols="12" sm="1"> AVG Win: {{ avgwinner }} </v-col>
-        <v-col cols="12" sm="1"> AVG Lose: {{ avgloser }} </v-col>
-        <v-col cols="12" sm="1"> MAX Win: {{ maxwinner }} </v-col>
-        <v-col cols="12" sm="1"> Max Lose: {{ maxloser }} </v-col>
-      </v-row>
-      <v-col cols="12">
-        <div>
+          <v-row>
+            <v-col cols="12" sm="2">
+              Total: <br />
+              {{ total }}
+            </v-col>
+            <v-col cols="12" sm="2">
+              Winrate: <br />
+              {{ winrate }}
+            </v-col>
+            <v-col cols="12" sm="2">
+              AVG Win: <br />
+              {{ avgwinner }}
+            </v-col>
+            <v-col cols="12" sm="2">
+              AVG Lose: <br />
+              {{ avgloser }}
+            </v-col>
+            <v-col cols="12" sm="2">
+              MAX Win: <br />
+              {{ maxwinner }}
+            </v-col>
+            <v-col cols="12" sm="2">
+              Max Lose: <br />
+              {{ maxloser }}
+            </v-col>
+          </v-row>
+        </md-card-header>
+        <md-card-content>
           <md-table
             v-model="tradeItems"
             :table-header-color="
@@ -118,9 +142,9 @@
               </md-table-cell>
             </md-table-row>
           </md-table>
-        </div>
-      </v-col>
-    </v-row>
+        </md-card-content>
+      </md-card>
+    </div>
 
     <v-btn
       @click="openCreatePopUp('', '', false, '')"
@@ -140,10 +164,8 @@
   </div>
 </template>
 
-<style scoped>
-</style>        
+<style scoped></style>
 
- 
 <script>
 //import axios from "axios";
 import axios from "axios";
@@ -170,7 +192,7 @@ export default {
       maxwinner: 0,
       maxloser: 0,
       avg: 0,
-      total: 0,
+      total: 0
     };
   },
   computed: {
@@ -179,15 +201,15 @@ export default {
     },
     updateNeeded() {
       return this.$store.getters.journalInfoPopUpUpdateNeeded;
-    },
+    }
   },
 
   watch: {
-    updateNeeded: function () {
+    updateNeeded: function() {
       if (this.$store.getters.journalInfoPopUpUpdateNeeded != null) {
         this.getData();
       }
-    },
+    }
   },
   created() {
     (this.dates[0] = new Date().toISOString().split("T")[0]),
@@ -199,19 +221,15 @@ export default {
   },
 
   methods: {
-    openCreatePopUp: function (auftragsnr, produkt, verlinkt, journalID) {
+    openCreatePopUp: function(auftragsnr, produkt, verlinkt, journalID) {
       let myTyp;
       let overwrite = false;
       if (journalID == "" && auftragsnr == "") {
         journalID = new Date().getTime();
-        journalID = journalID.toString()
+        journalID = journalID.toString();
         overwrite = true;
       }
-      console.log("journalID: " + journalID)
-      console.log("auftragsnr: " + auftragsnr)
-
       if (verlinkt) {
-        console.log("Verlinkt")
         myTyp = "oldtrade";
         this.$store.commit("setJournalInfoPopUp", {
           status: true,
@@ -221,10 +239,7 @@ export default {
           verlinken: false
         });
       } else {
-        console.log("else")
-        
         if (journalID == 0) {
-          console.log("ID == 0")
           myTyp = "newtrade";
           this.$store.commit("setJournalInfoPopUp", {
             status: true,
@@ -242,11 +257,8 @@ export default {
             produkt: produkt,
             verlinken: false
           });
-        } else if (journalID == undefined && auftragsnr != '') {
-          console.log("richtig!")
+        } else if (journalID == undefined && auftragsnr != "") {
           myTyp = "newtrade";
-          
-         
 
           this.$store.commit("setJournalInfoPopUp", {
             status: true,
@@ -255,9 +267,8 @@ export default {
             produkt: produkt,
             verlinken: true
           });
-        }
-        else {
-           myTyp = "oldtrade";
+        } else {
+          myTyp = "oldtrade";
           this.$store.commit("setJournalInfoPopUp", {
             status: true,
             id: journalID,
@@ -303,16 +314,15 @@ export default {
             startTime: time1,
             endTime: time2,
             settings: {
-              product: this.product,
-            },
-          },
+              product: this.product
+            }
+          }
         })
         .then(
-          (response) => {
+          response => {
             // eslint-disable-next-line
             this.products = response.data.products;
             this.tradeItems = response.data.tradeItems;
-            console.log(this.tradeItems)
             this.total = response.data.total;
             this.avg = response.data.avg;
             this.winrate = response.data.winrate;
@@ -321,12 +331,12 @@ export default {
             this.maxwinner = response.data.maxwinner;
             this.maxloser = response.data.maxloser;
           },
-          (error) => {
+          error => {
             // eslint-disable-next-line
             console.log(error);
           }
         );
-    },
-  },
+    }
+  }
 };
 </script>

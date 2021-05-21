@@ -1,5 +1,5 @@
 <template>
-   <li class="md-list-item">
+  <li class="md-list-item">
     <div
       class="md-list-item-router md-list-item-container md-button-clean"
       @click="hideSidebar"
@@ -13,7 +13,8 @@
       </div>
     </div>
   </li>
-</template><script>
+</template>
+<script>
 export default {
   inject: {
     autoClose: {

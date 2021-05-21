@@ -2,26 +2,27 @@
   <div class="content">
     <div class="md-layout">
       <div
-        class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-33"
+        class="md-layout-item md-medium-size-33 md-xsmall-size-100 md-size-33"
       >
-        <vue-stats-card data-background-color="green">
+        <vue-stats-card data-background-color="blue">
           <template slot="header">
             <md-icon>Day</md-icon>
           </template>
-
           <template slot="content">
-            <p class="category">Total  {{ day.total }} €</p>
-            <p class="category">Max Risk  {{ day.maxRisk }} €</p>
-            <risk-pie-chart
-              v-if="loaded"
-              :chart-data="chartDataDay"
-              :options="optionsDay"
-            >
-              ></risk-pie-chart
-            >
+            <p class="category">Total {{ day.total }} €</p>
+            <p class="category">Max Risk {{ day.maxRisk }} €</p>
+
+            <div>
+              <risk-pie-chart
+                v-if="loaded"
+                :chart-data="chartDataDay"
+                :options="optionsDay"
+              >
+                ></risk-pie-chart
+              >
+            </div>
           </template>
           <template slot="content"> </template>
-
           <template slot="footer">
             <div class="stats">
               <v-icon>mdi-date-range</v-icon>
@@ -31,19 +32,18 @@
         </vue-stats-card>
       </div>
 
-
-            <div
-        class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-33"
+      <div
+        class="md-layout-item md-medium-size-33 md-xsmall-size-100 md-size-33"
       >
-        <vue-stats-card data-background-color="green">
+        <vue-stats-card data-background-color="blue">
           <template slot="header">
             <md-icon>Week</md-icon>
           </template>
 
           <template slot="content">
-            <p class="category">Total  {{ week.total }} €</p>
-            <p class="category">Max Risk  {{ week.maxRisk }} €</p>
-            
+            <p class="category">Total {{ week.total }} €</p>
+            <p class="category">Max Risk {{ week.maxRisk }} €</p>
+
             <risk-pie-chart
               v-if="loaded"
               :chart-data="chartDataWeek"
@@ -63,18 +63,17 @@
         </vue-stats-card>
       </div>
 
-
-            <div
-        class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-33"
+      <div
+        class="md-layout-item md-medium-size-33 md-xsmall-size-100 md-size-33"
       >
-        <vue-stats-card data-background-color="green">
+        <vue-stats-card data-background-color="blue">
           <template slot="header">
             <md-icon>Month</md-icon>
           </template>
 
           <template slot="content">
-             <p class="category">Total  {{ month.total }} €</p>
-            <p class="category">Max Risk  {{ month.maxRisk }} €</p>
+            <p class="category">Total {{ month.total }} €</p>
+            <p class="category">Max Risk {{ month.maxRisk }} €</p>
             <risk-pie-chart
               v-if="loaded"
               :chart-data="chartDataMonth"
@@ -93,12 +92,9 @@
           </template>
         </vue-stats-card>
       </div>
-
     </div>
-    
   </div>
 </template>
-
 
 <script>
 import axios from "axios";
@@ -108,13 +104,13 @@ export default {
   name: "simple-table",
   components: {
     VueStatsCard,
-    RiskPieChart,
+    RiskPieChart
   },
   props: {
     tableHeaderColor: {
       type: String,
-      default: "",
-    },
+      default: ""
+    }
   },
   data() {
     return {
@@ -137,7 +133,7 @@ export default {
           "Availible", // Availible to lose  -  ( Win + Max Lose ) - ( Open Risk + Lost )
           "Open", // Open Risk
           "Win", // Win
-          "Over Budget",
+          "Over Budget"
         ],
         datasets: [
           {
@@ -148,25 +144,26 @@ export default {
               "rgb(54, 162, 235)",
               "rgb(255, 205, 86)",
               "#008000",
-              "#8B0000",
+              "#8B0000"
             ],
-            hoverOffset: 4,
-          },
-        ],
+            hoverOffset: 4
+          }
+        ]
       },
       optionsDay: {
+        maintainAspectRatio: false,
         legend: {
-          display: false,
-        },
+          display: false
+        }
       },
 
- chartDataWeek: {
+      chartDataWeek: {
         labels: [
           "Lost", // Lost
           "Availible", // Availible to lose  -  ( Win + Max Lose ) - ( Open Risk + Lost )
           "Open", // Open Risk
           "Win", // Win
-          "Over Budget",
+          "Over Budget"
         ],
         datasets: [
           {
@@ -177,24 +174,25 @@ export default {
               "rgb(54, 162, 235)",
               "rgb(255, 205, 86)",
               "#008000",
-              "#8B0000",
+              "#8B0000"
             ],
-            hoverOffset: 4,
-          },
-        ],
+            hoverOffset: 4
+          }
+        ]
       },
       optionsWeek: {
+        maintainAspectRatio: false,
         legend: {
-          display: false,
-        },
+          display: false
+        }
       },
- chartDataMonth: {
+      chartDataMonth: {
         labels: [
           "Lost", // Lost
           "Availible", // Availible to lose  -  ( Win + Max Lose ) - ( Open Risk + Lost )
           "Open", // Open Risk
           "Win", // Win
-          "Over Budget",
+          "Over Budget"
         ],
         datasets: [
           {
@@ -205,18 +203,20 @@ export default {
               "rgb(54, 162, 235)",
               "rgb(255, 205, 86)",
               "#008000",
-              "#8B0000",
+              "#8B0000"
             ],
-            hoverOffset: 4,
-          },
-        ],
+            hoverOffset: 4
+          }
+        ]
       },
       optionsMonth: {
+        maintainAspectRatio: false,
         legend: {
           display: false,
-        },
+          width: "50px"
+        }
       },
-      
+
       emailsSubscriptionChart: {
         data: {
           labels: [
@@ -231,15 +231,13 @@ export default {
             "Se",
             "Oc",
             "No",
-            "De",
+            "De"
           ],
-          series: [
-            [542, 443, 320, 780, 553, 453, 326, 434, 568, 610, 756, 895],
-          ],
+          series: [[542, 443, 320, 780, 553, 453, 326, 434, 568, 610, 756, 895]]
         },
         options: {
           axisX: {
-            showGrid: false,
+            showGrid: false
           },
           low: 0,
           high: 1000,
@@ -247,8 +245,8 @@ export default {
             top: 0,
             right: 5,
             bottom: 0,
-            left: 0,
-          },
+            left: 0
+          }
         },
         responsiveOptions: [
           [
@@ -256,25 +254,25 @@ export default {
             {
               seriesBarDistance: 5,
               axisX: {
-                labelInterpolationFnc: function (value) {
+                labelInterpolationFnc: function(value) {
                   return value[0];
-                },
-              },
-            },
-          ],
-        ],
+                }
+              }
+            }
+          ]
+        ]
       },
       color: {
-        current: "#ffa07a",
+        current: "#ffa07a"
       },
       risk: {
         allowedLose: 50,
         openRisk: 25,
-        current: 10,
+        current: 10
       },
       perc_allowed: "50%",
       perc_open: "20%",
-      perc_current: "30%",
+      perc_current: "30%"
     };
   },
   created() {
@@ -298,20 +296,20 @@ export default {
     },
     getData() {
       axios.get("/api/getDayRisk").then(
-        (response) => {
+        response => {
           // eslint-disable-next-line
           this.day = response.data.chartDataDay;
           this.chartDataDay.datasets[0].data =
             response.data.chartDataDay.chartdata;
 
-                    this.month = response.data.chartDataMonth;
+          this.month = response.data.chartDataMonth;
+
           this.chartDataMonth.datasets[0].data =
             response.data.chartDataMonth.chartdata;
 
-                      this.week = response.data.chartDataWeek;
+          this.week = response.data.chartDataWeek;
           this.chartDataWeek.datasets[0].data =
             response.data.chartDataWeek.chartdata;
-
 
           if (this.risk.current > 0) {
             this.color.current = "#BCED91	";
@@ -319,14 +317,14 @@ export default {
 
           this.loaded = true;
         },
-        (error) => {
+        error => {
           // eslint-disable-next-line
           console.log(error);
         }
       );
       this.calculatePercent();
-    },
-  },
+    }
+  }
 };
 </script>
 

@@ -197,7 +197,7 @@ export default {
     CircleCard,
     JournalForm,
     JournalHistory,
-    JournalPictureUpload,
+    JournalPictureUpload
   },
   name: "journal-info-dialog",
   data() {
@@ -211,7 +211,7 @@ export default {
       buyexecution: 0,
       history: [],
       journal: {},
-      singleHistory: "00",
+      singleHistory: "00"
     };
   },
   computed: {
@@ -220,22 +220,10 @@ export default {
     },
     dialogOpenUpdate() {
       return this.$store.getters.journalInfoPopUpUpdateNeeded;
-    },
+    }
   },
   watch: {
-    dialogOpen: function () {
-      if (
-        this.$store.getters.journalInfoPopUpId != null &&
-        this.$store.getters.journalInfoPopUpTyp != "newtrade"
-      ) {
-       
-        this.getData();
-      }
-      if (this.$store.getters.journalInfoPopUpTyp == "newtrade") {
-        this.prefill();
-      }
-    },
-    dialogOpenUpdate: function () {
+    dialogOpen: function() {
       if (
         this.$store.getters.journalInfoPopUpId != null &&
         this.$store.getters.journalInfoPopUpTyp != "newtrade"
@@ -246,24 +234,35 @@ export default {
         this.prefill();
       }
     },
+    dialogOpenUpdate: function() {
+      if (
+        this.$store.getters.journalInfoPopUpId != null &&
+        this.$store.getters.journalInfoPopUpTyp != "newtrade"
+      ) {
+        this.getData();
+      }
+      if (this.$store.getters.journalInfoPopUpTyp == "newtrade") {
+        this.prefill();
+      }
+    }
   },
   beforeCreate() {},
   created() {},
   mounted() {},
   methods: {
-    closeFullSize: function () {
+    closeFullSize: function() {
       this.$store.commit("setJournalInfoPicturePopUp", false);
     },
-    fullsizeimage: function (value) {
+    fullsizeimage: function(value) {
       this.pictureID = value.target.value;
       this.$store.commit("setJournalInfoPicturePopUp", true);
     },
 
-    updateHistoryChild: function (myJson) {
+    updateHistoryChild: function(myJson) {
       this.journalHistoryValues = myJson;
     },
 
-    savePopUp: function () {
+    savePopUp: function() {
       this.myValues = this.$store.state.journal.journalData;
       this.myValues.historyMAP = this.$store.state.journal.history;
       this.myValues.buyexecution = this.buyexecution;
@@ -287,19 +286,19 @@ export default {
           this.historyMap = [];
           this.closeInfoPopUp();
         },
-        (error) => {
+        error => {
           // eslint-disable-next-line
           console.log(error);
         }
       );
     },
 
-    unlinkHistory: function (value) {
+    unlinkHistory: function(value) {
       if (confirm("Do you really want to delete?")) {
         axios
           .post("/api/unlinkHistory", {
             historyId: value.target.value,
-            journalId: this.$store.getters.journalInfoPopUpId,
+            journalId: this.$store.getters.journalInfoPopUpId
           })
           .then(
             () => {
@@ -307,25 +306,25 @@ export default {
 
               this.$store.commit("setJournalInfoPopUpUpdateNeeded", true);
             },
-            (error) => {
+            error => {
               // eslint-disable-next-line
               console.log(error);
             }
           );
       }
     },
-    deleteTrade: function (value) {
+    deleteTrade: function(value) {
       if (confirm("Do you really want to delete?")) {
         this.$store.commit("setJournalUpdateNeeded", true);
         axios
           .post("/api/deleteSingleJournal", {
-            journalId: value.target.value,
+            journalId: value.target.value
           })
           .then(
             () => {
               // eslint-disable-next-line
             },
-            (error) => {
+            error => {
               // eslint-disable-next-line
               console.log(error);
             }
@@ -335,11 +334,11 @@ export default {
           status: false,
           id: null,
           typ: "",
-          verlinken: false,
+          verlinken: false
         });
       }
     },
-    closeInfoPopUp: function () {
+    closeInfoPopUp: function() {
       this.$store.commit("journal/resetJournalData");
       this.$store.commit("setHistoryMap", [{}]);
       this.$store.commit("setJournalInfoPopUp", {
@@ -347,7 +346,7 @@ export default {
         id: null,
         typ: "",
         produkt: "",
-        verlinken: false,
+        verlinken: false
       });
     },
     setSingleHistory() {
@@ -367,7 +366,6 @@ export default {
       //init befüllung in die history map damit auch verlinkt werden kann. brauch ich nur für verlinken
       // Hier
       if (this.$store.getters.journalInfoPopUpVerlinken) {
-       
         this.temp = [{ histID: this.$store.getters.journalInfoPopUpId }];
         this.$store.commit("journal/setHistory", this.temp);
       }
@@ -378,50 +376,47 @@ export default {
       ]);
       */
       this.setSingleHistory();
-     
+
       axios
         .get("/api/getSinglePictures", {
           params: {
-            id: this.$store.getters.journalInfoPopUpId,
-          },
+            id: this.$store.getters.journalInfoPopUpId
+          }
         })
         .then(
-          (response) => {
+          response => {
             this.pictures = response.data.journalPictures;
           },
-          (error) => {
+          error => {
             // eslint-disable-next-line
             console.log(error);
           }
         );
     },
-   funcMylabels: function (value) {
+    funcMylabels: function(value) {
       this.journalData = this.$store.state.journal.journalData;
       this.journalData.mylabels = value;
       this.$store.commit("journal/setJournalData", this.journalData);
     },
-       funcAlllabels: function (value) {
+    funcAlllabels: function(value) {
       this.journalData = this.$store.state.journal.journalData;
       this.journalData.alllabels = value;
-     
+
       this.$store.commit("journal/setJournalData", this.journalData);
     },
 
     getData() {
-   
       axios
         .get("/api/getSingleJournal", {
           params: {
-            journalid: this.$store.getters.journalInfoPopUpId,
-          },
+            journalid: this.$store.getters.journalInfoPopUpId
+          }
         })
         .then(
-          (response) => {
+          response => {
+            this.funcMylabels(response.data.journal.mylabels);
 
-            this.funcMylabels(response.data.journal.mylabels)
-     
-           
-            this.funcAlllabels(response.data.journal.alllabels)
+            this.funcAlllabels(response.data.journal.alllabels);
 
             this.pictures = response.data.journalPictures;
             this.history = response.data.history;
@@ -516,13 +511,13 @@ export default {
             this.$store.commit("journal/setJournalData", this.journalData);
             this.setSingleHistory();
           },
-          (error) => {
+          error => {
             // eslint-disable-next-line
             console.log(error);
           }
         );
-    },
-  },
+    }
+  }
 };
 </script>
 

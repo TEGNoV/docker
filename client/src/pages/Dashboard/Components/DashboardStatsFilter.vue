@@ -1,8 +1,7 @@
 <template>
   <div>
-    <v-row justify="center" dense>
-      <v-col cols="12" sm="12">
-        <v-card  dense>
+
+        
           <v-expansion-panels accordion flat>
             <v-expansion-panel>
               <v-expansion-panel-header>
@@ -63,9 +62,8 @@
               </v-expansion-panel-content>
             </v-expansion-panel>
           </v-expansion-panels>
-        </v-card>
-      </v-col>
-    </v-row>
+        
+
   </div>
 </template>
 
@@ -79,37 +77,33 @@ export default {
   },
   data() {
     return {
-      selectStrategyItems: this.$store.state.global.settings.strategyItems ,
-      dates: [],
+      selectStrategyItems: this.$store.state.global.settings.strategyItems,
+      dates: []
     };
   },
   created() {
-     
- var startWeek = new Date();
+    var startWeek = new Date();
     for (var i = 0; i < 8; i++) {
-        var n = startWeek.getDay()
-        if (n == 1) {
-            startWeek.setHours(0, 0, 0, 0);
-        } else {
-            startWeek.setDate(startWeek.getDate() - 1);
-        }
+      var n = startWeek.getDay();
+      if (n == 1) {
+        startWeek.setHours(0, 0, 0, 0);
+      } else {
+        startWeek.setDate(startWeek.getDate() - 1);
+      }
     }
-       var endWeek = new Date(startWeek.getTime())
-    endWeek.setDate(endWeek.getDate() + 5)
-
-  
+    var endWeek = new Date(startWeek.getTime());
+    endWeek.setDate(endWeek.getDate() + 5);
 
     this.dashboardStatsFilter = this.$store.state.dashboard.dashboardStatsFilter;
-    this.dashboardStatsFilter.startDate = startWeek.toISOString().split("T")[0]
-    this.dashboardStatsFilter.endDate = endWeek.toISOString().split("T")[0]
+    this.dashboardStatsFilter.startDate = startWeek.toISOString().split("T")[0];
+    this.dashboardStatsFilter.endDate = endWeek.toISOString().split("T")[0];
     this.$store.commit(
       "dashboard/setDashboardStatsFilter",
       this.dashboardStatsFilter
     );
-    
   },
   watch: {
-    dates: function () {
+    dates: function() {
       let time1 = this.dates[0];
       let time2;
       if (this.dates[1] == null || this.dates[1] == undefined) {
@@ -133,17 +127,16 @@ export default {
         "dashboard/setDashboardStatsFilter",
         this.dashboardStatsFilter
       );
- 
-    },
+    }
   },
   mounted() {},
   computed: mapState({
-    isDocumented: (state) => state.dashboard.dashboardStatsUpdate.isDocumented,
-    isLinked: (state) => state.dashboard.dashboardStatsUpdate.isLinked,
-    strategy: (state) => state.dashboard.dashboardStatsUpdate.strategy,
+    isDocumented: state => state.dashboard.dashboardStatsUpdate.isDocumented,
+    isLinked: state => state.dashboard.dashboardStatsUpdate.isLinked,
+    strategy: state => state.dashboard.dashboardStatsUpdate.strategy
   }),
   methods: {
-    funcIsDocumented: function (value) {
+    funcIsDocumented: function(value) {
       this.dashboardStatsFilter = this.$store.state.dashboard.dashboardStatsFilter;
       this.dashboardStatsFilter.isDocumented = value;
       this.$store.commit(
@@ -151,7 +144,7 @@ export default {
         this.dashboardStatsFilter
       );
     },
-    funcIsLinked: function (value) {
+    funcIsLinked: function(value) {
       this.dashboardStatsFilter = this.$store.state.dashboard.dashboardStatsFilter;
       this.dashboardStatsFilter.isLinked = value;
       this.$store.commit(
@@ -159,14 +152,14 @@ export default {
         this.dashboardStatsFilter
       );
     },
-    funcStrategy: function (value) {
+    funcStrategy: function(value) {
       this.dashboardStatsFilter = this.$store.state.dashboard.dashboardStatsFilter;
       this.dashboardStatsFilter.strategy = value;
       this.$store.commit(
         "dashboard/setDashboardStatsFilter",
         this.dashboardStatsFilter
       );
-    },
-  },
+    }
+  }
 };
 </script>

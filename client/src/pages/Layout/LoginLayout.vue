@@ -1,19 +1,14 @@
 <template>
-<v-app>
- asdasdsad
-</v-app>
+  <v-app>
+    asdasdsad
+  </v-app>
 </template>
 
 <script>
-
-
-export default {components: {
-
-  },
+export default {
+  components: {},
   data() {
-    return {
-    };
+    return {};
   }
 };
 </script>
-

@@ -69,48 +69,47 @@ export default {
     return {
       selectPeriodItems: this.$store.state.global.settings.selectPeriodItems,
       select: ["Vuetify", "Programming"],
-      items: ["Programming", "Design", "Vue", "Vuetify"],
+      items: ["Programming", "Design", "Vue", "Vuetify"]
     };
   },
   computed: mapState({
-    
-    mylabels: (state) => state.journal.journalData.mylabels,
-    alllabels: (state) => state.journal.journalData.alllabels,
-    symbol: (state) => state.journal.journalData.symbol,
-    period: (state) => state.journal.journalData.period,
-    stickToPlan: (state) => state.journal.journalData.stickToPlan,
-    isDocumented: (state) => state.journal.journalData.isDocumented,
+    mylabels: state => state.journal.journalData.mylabels,
+    alllabels: state => state.journal.journalData.alllabels,
+    symbol: state => state.journal.journalData.symbol,
+    period: state => state.journal.journalData.period,
+    stickToPlan: state => state.journal.journalData.stickToPlan,
+    isDocumented: state => state.journal.journalData.isDocumented
   }),
   mounted() {},
 
   methods: {
-    funcMylabels: function (value) {
+    funcMylabels: function(value) {
       this.journalData = this.$store.state.journal.journalData;
       this.journalData.mylabels = value;
       console.log(value);
       this.$store.commit("journal/setJournalData", this.journalData);
     },
-    funcSymbol: function (value) {
+    funcSymbol: function(value) {
       this.journalData = this.$store.state.journal.journalData;
       this.journalData.symbol = value;
       this.$store.commit("journal/setJournalData", this.journalData);
     },
-    funcPeriod: function (value) {
+    funcPeriod: function(value) {
       this.journalData = this.$store.state.journal.journalData;
       this.journalData.period = value;
       this.$store.commit("journal/setJournalData", this.journalData);
     },
-    funcStickToPlan: function (value) {
+    funcStickToPlan: function(value) {
       this.journalData = this.$store.state.journal.journalData;
       this.journalData.stickToPlan = value;
       this.$store.commit("journal/setJournalData", this.journalData);
     },
-    funcIsDocumented: function (value) {
+    funcIsDocumented: function(value) {
       this.journalData = this.$store.state.journal.journalData;
       this.journalData.isDocumented = value;
       this.$store.commit("journal/setJournalData", this.journalData);
-    },
-  },
+    }
+  }
 };
 </script>
 
@@ -123,4 +122,3 @@ export default {
   background-color: aqua;
 }
 </style>
-

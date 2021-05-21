@@ -1,14 +1,25 @@
 <template>
-  <v-app>
-    <v-container>
-      <v-card min-width="100%" class="pa-2">
+
+      <div class="content">
+ <div
+      class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-100"
+    >
+     <md-card>
+        <md-card-header data-background-color="blue">
+          <h4 class="title">Open Positions</h4>
+ </md-card-header>
+        <md-card-content>
+    
         <v-row>
           <v-col cols="12" sm="12" md="12">
+           <!-- id="dropzone" -->
             <vue-dropzone
               ref="myVueDropzone"
-              id="dropzone"
+            
+              :include-styling="false"
               :options="dropzoneOptions"
               @vdropzone-complete="afterComplete"
+               id="customdropzone">
             ></vue-dropzone>
           </v-col>
         </v-row>
@@ -24,15 +35,56 @@
             </v-simple-table>
           </v-col>
         </v-row>
-      </v-card>
-    </v-container>
-  </v-app>
+     
+      </md-card-content>
+      </md-card>
+      </div>
+      </div>
+
 </template>
 
-<style scoped>
-</style>        
+<style>
+  #customdropzone {
+    background-color: white;
+      border-style: dotted;
+  border-width: 1px;
+    font-family: 'Arial', sans-serif;
+    letter-spacing: 0.2px;
+    color: #777;
+    transition: background-color .2s linear;
+    height: 200px;
+    padding: 40px;
+  }
 
+  #customdropzone .dz-preview {
+    width: 160px;
+    display: inline-block
+  }
+ #customdropzone .dz-preview .dz-image {
+    width: 80px;
+    height: 80px;
+    margin-left: 40px;
+    margin-bottom: 10px;
+  }
+  #customdropzone .dz-preview .dz-image > div {
+    width: inherit;
+    height: inherit;
+    border-radius: 50%;
+    background-size: contain;
+  }
+  #customdropzone .dz-preview .dz-image > img {
+    width: 100%;
+  }
 
+   #customdropzone .dz-preview .dz-details {
+    color: white;
+    transition: opacity .2s linear;
+    text-align: center;
+  }
+  #customdropzone .dz-success-mark, .dz-error-mark, .dz-remove {
+    display: none;
+  }
+</style>
 
 <script>
 import axios from "axios";
@@ -55,9 +107,7 @@ export default {
     };
   },
   methods: {
-    getFiles: function() {
-  
-    },
+    getFiles: function() {},
     afterComplete(file) {
       this.$refs.myVueDropzone.removeFile(file);
       this.uploaded.push({ name: file.name });
@@ -78,9 +128,3 @@ export default {
   }
 };
 </script>
-
-
-
-
-
-

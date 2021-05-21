@@ -48,16 +48,16 @@
         @change="changedTP1Level"
       ></v-select>
     </v-col>
-     <v-col class="d-flex mt-n3" cols="12" sm="6">
-                <v-text-field
-                  dense
-                  @change="changedTP1OrderNr"
-                  :value="fireandforgettp1ordernr"
-                  label="TP1 OrderNr"
-                  single-line
-                ></v-text-field>
-              </v-col>
-   <v-col class="d-flex mt-n3" cols="12" sm="12"> </v-col>
+    <v-col class="d-flex mt-n3" cols="12" sm="6">
+      <v-text-field
+        dense
+        @change="changedTP1OrderNr"
+        :value="fireandforgettp1ordernr"
+        label="TP1 OrderNr"
+        single-line
+      ></v-text-field>
+    </v-col>
+    <v-col class="d-flex mt-n3" cols="12" sm="12"> </v-col>
     <v-col class="d-flex mt-n3" cols="12" sm="6">
       <v-select
         dense
@@ -76,16 +76,16 @@
         @change="changedTP2Level"
       ></v-select>
     </v-col>
- <v-col class="d-flex mt-n3" cols="12" sm="6">
-                <v-text-field
-                  dense
-                  @change="changedTP2OrderNr"
-                  :value="fireandforgettp2ordernr"
-                  label="TP2 OrderNr"
-                  single-line
-                ></v-text-field>
-              </v-col>
-   <v-col class="d-flex mt-n3" cols="12" sm="12"> </v-col>
+    <v-col class="d-flex mt-n3" cols="12" sm="6">
+      <v-text-field
+        dense
+        @change="changedTP2OrderNr"
+        :value="fireandforgettp2ordernr"
+        label="TP2 OrderNr"
+        single-line
+      ></v-text-field>
+    </v-col>
+    <v-col class="d-flex mt-n3" cols="12" sm="12"> </v-col>
     <v-col class="d-flex mt-n3" cols="12" sm="6">
       <v-select
         dense
@@ -104,16 +104,16 @@
         @change="changedTP3Level"
       ></v-select>
     </v-col>
- <v-col class="d-flex mt-n3" cols="12" sm="6">
-                <v-text-field
-                  dense
-                  @change="changedTP3OrderNr"
-                  :value="fireandforgettp3ordernr"
-                  label="TP3 OrderNr"
-                  single-line
-                ></v-text-field>
-              </v-col>
-   <v-col class="d-flex mt-n3" cols="12" sm="12"> </v-col>
+    <v-col class="d-flex mt-n3" cols="12" sm="6">
+      <v-text-field
+        dense
+        @change="changedTP3OrderNr"
+        :value="fireandforgettp3ordernr"
+        label="TP3 OrderNr"
+        single-line
+      ></v-text-field>
+    </v-col>
+    <v-col class="d-flex mt-n3" cols="12" sm="12"> </v-col>
     <v-col class="d-flex mt-n3" cols="12" sm="6">
       <v-select
         dense
@@ -132,15 +132,15 @@
         @change="changedTP4Level"
       ></v-select>
     </v-col>
-       <v-col class="d-flex mt-n3" cols="12" sm="6">
-                <v-text-field
-                  dense
-                  @change="changedTP4OrderNr"
-                  :value="fireandforgettp4ordernr"
-                  label="TP4 OrderNr"
-                  single-line
-                ></v-text-field>
-              </v-col>
+    <v-col class="d-flex mt-n3" cols="12" sm="6">
+      <v-text-field
+        dense
+        @change="changedTP4OrderNr"
+        :value="fireandforgettp4ordernr"
+        label="TP4 OrderNr"
+        single-line
+      ></v-text-field>
+    </v-col>
   </v-row>
 </template>
 
@@ -158,7 +158,7 @@ export default {
         "Fib 50",
         "Fib 38.20",
         "Fib 23.60",
-        "Other",
+        "Other"
       ],
       selectEinstiegTypItems: ["", "Market", "Limit", "Stop", "Other"],
       selectStoplossItems: ["", "Direkt", "Punkt 3", "Other"],
@@ -170,136 +170,121 @@ export default {
         "Fib 161.8",
         "Fib 261.8",
         "Fib 423.6",
-        "Fib 581",
-      ],
+        "Fib 581"
+      ]
     };
   },
   computed: mapState({
-    fireandforgeteinstieg: (state) =>
+    fireandforgeteinstieg: state =>
       state.journal.journalData.fireandforgeteinstieg,
-    fireandforgeteinstiegtyp: (state) =>
+    fireandforgeteinstiegtyp: state =>
       state.journal.journalData.fireandforgeteinstiegtyp,
-    fireandforgetstoploss: (state) =>
+    fireandforgetstoploss: state =>
       state.journal.journalData.fireandforgetstoploss,
-    fireandforgettp1reached: (state) =>
+    fireandforgettp1reached: state =>
       state.journal.journalData.fireandforgettp1reached,
-    fireandforgettp1level: (state) =>
+    fireandforgettp1level: state =>
       state.journal.journalData.fireandforgettp1level,
-    fireandforgettp2reached: (state) =>
+    fireandforgettp2reached: state =>
       state.journal.journalData.fireandforgettp2reached,
-    fireandforgettp2level: (state) =>
+    fireandforgettp2level: state =>
       state.journal.journalData.fireandforgettp2level,
-    fireandforgettp3reached: (state) =>
+    fireandforgettp3reached: state =>
       state.journal.journalData.fireandforgettp3reached,
-    fireandforgettp3level: (state) =>
+    fireandforgettp3level: state =>
       state.journal.journalData.fireandforgettp3level,
-    fireandforgettp4reached: (state) =>
+    fireandforgettp4reached: state =>
       state.journal.journalData.fireandforgettp4reached,
-    fireandforgettp4level: (state) =>
+    fireandforgettp4level: state =>
       state.journal.journalData.fireandforgettp4level,
 
-          fireandforgettp1ordernr: (state) =>
+    fireandforgettp1ordernr: state =>
       state.journal.journalData.fireandforgettp1ordernr,
-          fireandforgettp2ordernr: (state) =>
+    fireandforgettp2ordernr: state =>
       state.journal.journalData.fireandforgettp2ordernr,
-          fireandforgettp3ordernr: (state) =>
+    fireandforgettp3ordernr: state =>
       state.journal.journalData.fireandforgettp3ordernr,
-          fireandforgettp4ordernr: (state) =>
-      state.journal.journalData.fireandforgettp4ordernr,
+    fireandforgettp4ordernr: state =>
+      state.journal.journalData.fireandforgettp4ordernr
   }),
   methods: {
-    changedEinstieg: function (value) {
+    changedEinstieg: function(value) {
       this.journalData = this.$store.state.journal.journalData;
       this.journalData.fireandforgeteinstieg = value;
       this.$store.commit("journal/setJournalData", this.journalData);
-     
     },
-    changedEinstiegTyp: function (value) {
+    changedEinstiegTyp: function(value) {
       this.journalData = this.$store.state.journal.journalData;
       this.journalData.fireandforgeteinstiegtyp = value;
       this.$store.commit("journal/setJournalData", this.journalData);
-     
     },
-    changedStoploss: function (value) {
+    changedStoploss: function(value) {
       this.journalData = this.$store.state.journal.journalData;
       this.journalData.fireandforgetstoploss = value;
       this.$store.commit("journal/setJournalData", this.journalData);
-     
     },
-    changedTP1Reached: function (value) {
+    changedTP1Reached: function(value) {
       this.journalData = this.$store.state.journal.journalData;
       this.journalData.fireandforgettp1reached = value;
       this.$store.commit("journal/setJournalData", this.journalData);
-     
     },
-    changedTP1Level: function (value) {
+    changedTP1Level: function(value) {
       this.journalData = this.$store.state.journal.journalData;
       this.journalData.fireandforgettp1level = value;
       this.$store.commit("journal/setJournalData", this.journalData);
-     
     },
-    changedTP2Reached: function (value) {
+    changedTP2Reached: function(value) {
       this.journalData = this.$store.state.journal.journalData;
       this.journalData.fireandforgettp2reached = value;
       this.$store.commit("journal/setJournalData", this.journalData);
-     
     },
-    changedTP2Level: function (value) {
+    changedTP2Level: function(value) {
       this.journalData = this.$store.state.journal.journalData;
       this.journalData.fireandforgettp2level = value;
       this.$store.commit("journal/setJournalData", this.journalData);
-     
     },
-    changedTP3Reached: function (value) {
+    changedTP3Reached: function(value) {
       this.journalData = this.$store.state.journal.journalData;
       this.journalData.fireandforgettp3reached = value;
       this.$store.commit("journal/setJournalData", this.journalData);
-     
     },
-    changedTP3Level: function (value) {
+    changedTP3Level: function(value) {
       this.journalData = this.$store.state.journal.journalData;
       this.journalData.fireandforgettp3level = value;
       this.$store.commit("journal/setJournalData", this.journalData);
-     
     },
-    changedTP4Reached: function (value) {
+    changedTP4Reached: function(value) {
       this.journalData = this.$store.state.journal.journalData;
       this.journalData.fireandforgettp4reached = value;
       this.$store.commit("journal/setJournalData", this.journalData);
-     
     },
-    changedTP4Level: function (value) {
+    changedTP4Level: function(value) {
       this.journalData = this.$store.state.journal.journalData;
       this.journalData.fireandforgettp4level = value;
       this.$store.commit("journal/setJournalData", this.journalData);
-     
     },
 
-        changedTP1OrderNr: function (value) {
+    changedTP1OrderNr: function(value) {
       this.journalData = this.$store.state.journal.journalData;
       this.journalData.fireandforgettp1ordernr = value;
       this.$store.commit("journal/setJournalData", this.journalData);
-     
     },
-            changedTP2OrderNr: function (value) {
+    changedTP2OrderNr: function(value) {
       this.journalData = this.$store.state.journal.journalData;
       this.journalData.fireandforgettp2ordernr = value;
       this.$store.commit("journal/setJournalData", this.journalData);
-     
     },
-            changedTP3OrderNr: function (value) {
+    changedTP3OrderNr: function(value) {
       this.journalData = this.$store.state.journal.journalData;
       this.journalData.fireandforgettp3ordernr = value;
       this.$store.commit("journal/setJournalData", this.journalData);
-     
     },
-        changedTP4OrderNr: function (value) {
+    changedTP4OrderNr: function(value) {
       this.journalData = this.$store.state.journal.journalData;
       this.journalData.fireandforgettp4ordernr = value;
       this.$store.commit("journal/setJournalData", this.journalData);
-     
-    },
-  },
+    }
+  }
 };
 </script>
 
@@ -308,4 +293,3 @@ export default {
   font-size: 12px !important;
 }
 </style>
-

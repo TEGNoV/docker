@@ -16,7 +16,6 @@
   </div>
 </template>
 
-
 <script>
 import axios from "axios";
 import { mapState } from "vuex";
@@ -24,7 +23,7 @@ import BarChart from "./BarChart.js";
 
 export default {
   components: {
-    BarChart,
+    BarChart
   },
 
   name: "Dashboard",
@@ -50,9 +49,8 @@ export default {
       options: {
         responsive: true,
         maintainAspectRatio: false,
-        loaded: false,
+        loaded: false
       },
-
 
       performanceDatacollection: null,
       performanceoptions: {
@@ -66,29 +64,28 @@ export default {
                 suggestedMin: 50,
                 suggestedMax: 100,
                 beginAtZero: true,
-                bezierCurve: false,
-              },
-            },
-          ],
-        },
-      },
+                bezierCurve: false
+              }
+            }
+          ]
+        }
+      }
     };
   },
-   computed: mapState({
-       cssPrimary() {
+  computed: mapState({
+    cssPrimary() {
       return this.$vuetify.theme.themes[this.$store.getters.usedTheme].blue
         .accent2;
     },
-    updateNeeded: (state) => state.dashboard.dashupdates.winloss,
+    updateNeeded: state => state.dashboard.dashupdates.winloss
   }),
-  
 
   watch: {
-    updateNeeded: function () {
+    updateNeeded: function() {
       if (this.$store.state.dashboard.dashupdates.winloss != null) {
         this.getData();
       }
-    },
+    }
   },
   created() {
     this.interval = setInterval(() => this.getData(), 60000);
@@ -120,9 +117,9 @@ export default {
             ].blue.accent2,
             data: this.linechartData,
 
-            label: "Data One",
-          },
-        ],
+            label: "Data One"
+          }
+        ]
       }),
         (this.options.loaded = true);
     },
@@ -147,32 +144,30 @@ export default {
               sender: "Dashboard.vue",
               lineChart: {
                 limit: settings.Dashboard.LinechartLimit,
-                period: settings.Dashboard.LinechartPeriod,
-              },
-            },
-          },
+                period: settings.Dashboard.LinechartPeriod
+              }
+            }
+          }
         })
         .then(
-          (response) => {
-                            this.$store.commit(
-      "dashboard/setDashboardWinlossUpdate", false
-    );
+          response => {
+            this.$store.commit("dashboard/setDashboardWinlossUpdate", false);
             // eslint-disable-next-line
             this.linechartData = response.data.lineChartData.map(
-              (value) => value.betrag
+              value => value.betrag
             );
             this.linechartLabels = response.data.lineChartData.map(
-              (value) => value.label
+              value => value.label
             );
             this.fillData();
           },
-          (error) => {
+          error => {
             // eslint-disable-next-line
             console.log(error);
           }
         );
-    },
-  },
+    }
+  }
 };
 
 function hexToRgbA(hex, trans) {
@@ -194,8 +189,3 @@ function hexToRgbA(hex, trans) {
   throw new Error("Bad Hex");
 }
 </script>
-
-
-
-
-

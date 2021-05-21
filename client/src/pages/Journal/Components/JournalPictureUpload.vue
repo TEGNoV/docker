@@ -3,8 +3,8 @@
     <template slot="header">Basic Select</template>
     <template slot="content">
       <v-row>
-        <v-col cols="12" sm="6" md="6">Journal: {{journalId}}</v-col>
-        <v-col cols="12" sm="6" md="6">History: {{historyId}}</v-col>
+        <v-col cols="12" sm="6" md="6">Journal: {{ journalId }}</v-col>
+        <v-col cols="12" sm="6" md="6">History: {{ historyId }}</v-col>
       </v-row>
       <v-row>
         <v-col cols="12" sm="12" md="12">
@@ -75,25 +75,22 @@ export default {
     },
     compDropzoneOptions() {
       let dropzoneOptions = {
-          url: "/api/picUpload",
-          thumbnailWidth: 150,
-          maxFilesize: 10,
-          headers: { "My-Awesome-Header": "header value" },
-          params: { journalId: this.journalId, historyId:this.historyId }
+        url: "/api/picUpload",
+        thumbnailWidth: 150,
+        maxFilesize: 10,
+        headers: { "My-Awesome-Header": "header value" },
+        params: { journalId: this.journalId, historyId: this.historyId }
       };
-      return dropzoneOptions
+      return dropzoneOptions;
     }
   },
   methods: {
     sendToParent: function() {
       this.$emit("send-to-parent", this.parentvalue);
-      
     },
-    getFiles: function() {
-    
-    },
+    getFiles: function() {},
     afterComplete(file) {
-      console.log("delete!")
+      console.log("delete!");
       this.$refs.myVueDropzone.removeFile(file);
       this.uploaded.push({ name: file.name });
     },
@@ -119,12 +116,3 @@ export default {
   font-size: 12px !important;
 }
 </style>
-
-
-
-
-
-
-
-
-

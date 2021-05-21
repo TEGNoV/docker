@@ -1,7 +1,12 @@
 <template>
   <v-row min-width="100%">
     <v-col cols="sm-12 xs-12" class="mycircle">
-      <v-progress-circular :value="circleValue" :size="circleSize" :color="circleColor" width="8">
+      <v-progress-circular
+        :value="circleValue"
+        :size="circleSize"
+        :color="circleColor"
+        width="8"
+      >
         <span style="color: #000">
           <slot name="content"></slot>
         </span>
@@ -10,7 +15,7 @@
   </v-row>
 </template>
 
-                  <script>
+<script>
 export default {
   name: "circle-card",
   props: {

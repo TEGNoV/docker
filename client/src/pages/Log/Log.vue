@@ -1,61 +1,52 @@
-
-
-
 <template>
   <div class="content">
-<v-virtual-scroll>
- <v-row>
-          <v-col
-            v-for="item in myLog"
-            :key="item.entry"
-            cols="12"
-            sm="6"
-            md="4"
-            lg="3"
-          >{{ item.entry }}</v-col></v-row>
-
-</v-virtual-scroll>
+    <v-virtual-scroll>
+      <v-row>
+        <v-col
+          v-for="item in myLog"
+          :key="item.entry"
+          cols="12"
+          sm="6"
+          md="4"
+          lg="3"
+          >{{ item.entry }}</v-col
+        ></v-row
+      >
+    </v-virtual-scroll>
   </div>
 </template>
 
-<style scoped>
-</style>        
+<style scoped></style>
 
- 
 <script>
 //import axios from "axios";
 import axios from "axios";
 
 export default {
-  components: {  },
+  components: {},
   name: "Log",
   data() {
     return {
-     myLog:[]
+      myLog: []
     };
   },
-  computed: {
-  },
-  created() {
-  },
+  computed: {},
+  created() {},
   mounted() {
     this.getData();
   },
 
   methods: {
     getData() {
-      
       axios
         .get("/api/getLog", {
-          params: {
-          
-          }
+          params: {}
         })
         .then(
           response => {
             // eslint-disable-next-line
             this.myLog = response.data.log;
-            console.log(response.data)
+            console.log(response.data);
           },
           error => {
             // eslint-disable-next-line
@@ -66,4 +57,3 @@ export default {
   }
 };
 </script>
-

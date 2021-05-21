@@ -118,7 +118,6 @@
   </div>
 </template>
 
-
 <script>
 import axios from "axios";
 //import StatsCardWrapper from "./../../../components/Cards/StatsCardWrapper";
@@ -132,8 +131,8 @@ export default {
   props: {
     tableHeaderColor: {
       type: String,
-      default: "",
-    },
+      default: ""
+    }
   },
   data() {
     return {
@@ -158,9 +157,9 @@ export default {
           sl: "Oud-Turnhout",
           risk: "Oud-Turnhout",
           tp: "Oud-Turnhout",
-          profit: "Oud-Turnhout",
-        },
-      ],
+          profit: "Oud-Turnhout"
+        }
+      ]
     };
   },
   created() {
@@ -172,7 +171,7 @@ export default {
   methods: {
     getData() {
       axios.get("/api/dashboardPositions").then(
-        (response) => {
+        response => {
           // eslint-disable-next-line
 
           this.positions = response.data.position.positions;
@@ -192,13 +191,13 @@ export default {
             this.riskpercent = true;
           }
         },
-        (error) => {
+        error => {
           // eslint-disable-next-line
           console.log(error);
         }
       );
-    },
-  },
+    }
+  }
 };
 </script>
 <style>

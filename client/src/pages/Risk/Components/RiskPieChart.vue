@@ -4,45 +4,36 @@
       <v-col cols="sm-12 xs-12">
         <v-card flat>
           <v-card-text>
-            <pie-chart  :chart-data="chartData" :options='options'></pie-chart
-          ></v-card-text>
+            <pie-chart :chart-data="chartData" :options="options"></pie-chart>
+          </v-card-text>
         </v-card>
       </v-col>
     </v-row>
   </div>
 </template>
 
-
 <script>
-//import axios from "axios";
 import { mapState } from "vuex";
 import PieChart from "./PieChart.js";
 
 export default {
   components: {
-    PieChart,
+    PieChart
   },
-  props:['chartData','options'],
+  props: ["chartData", "options"],
   name: "Dashboard",
   data() {
-   
-    return {  
-      
-        loaded: true
-          
-    }
+    return {
+      loaded: true
+    };
   },
-   computed: mapState({
-       cssPrimary() {
+  computed: mapState({
+    cssPrimary() {
       return this.$vuetify.theme.themes[this.$store.getters.usedTheme].blue
         .accent2;
-    },
+    }
   }),
-  
-
-  watch: {
-   
-  },
+  watch: {},
   created() {
     this.interval = setInterval(() => this.getData(), 60000);
   },
@@ -66,15 +57,14 @@ export default {
             ].blue.accent2,
             data: this.linechartData,
 
-            label: "Data One",
-          },
-        ],
+            label: "Data One"
+          }
+        ]
       }),
         (this.options.loaded = true);
     },
-    getData() {},
-     
-  },
+    getData() {}
+  }
 };
 
 function hexToRgbA(hex, trans) {

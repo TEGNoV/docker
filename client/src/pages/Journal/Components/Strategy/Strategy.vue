@@ -14,57 +14,54 @@
             ></v-select>
           </v-col>
 
- 
-            <fire-and-forget v-if="dynamicComponentFireAndForget"> </fire-and-forget>
- <umkehr v-if="dynamicComponentUmkehr"> </umkehr>
-
-        </v-row> 
-        
-        </template></subheader-card
+          <fire-and-forget v-if="dynamicComponentFireAndForget">
+          </fire-and-forget>
+          <umkehr v-if="dynamicComponentUmkehr"> </umkehr>
+        </v-row> </template></subheader-card
   ></v-col>
 </template>
 
 <script>
 import { mapState } from "vuex";
 import FireAndForget from "./../Strategy/FireAndForget";
-import Umkehr  from "./../Strategy/Umkehr";
+import Umkehr from "./../Strategy/Umkehr";
 import SubheaderCard from "../../../../components/Cards/SubheaderCard";
 export default {
-  components: { SubheaderCard, FireAndForget , Umkehr},
+  components: { SubheaderCard, FireAndForget, Umkehr },
   name: "strategy",
   props: {},
   data() {
     return {
       dynamicComponentFireAndForget: false,
       dynamicComponentUmkehr: false,
-      selectStrategyItems:   this.$store.state.global.settings.strategyItems
+      selectStrategyItems: this.$store.state.global.settings.strategyItems
     };
   },
   computed: mapState({
-    strategy: (state) => state.journal.journalData.strategy,
+    strategy: state => state.journal.journalData.strategy
   }),
 
-watch: {
+  watch: {
     strategy: function() {
-    this.changedStrategy(this.strategy)
+      this.changedStrategy(this.strategy);
     }
   },
 
   methods: {
-    changedStrategy: function (value) {
+    changedStrategy: function(value) {
       this.dynamicComponentFireAndForget = false;
-      this.dynamicComponentUmkehr = false
+      this.dynamicComponentUmkehr = false;
       if ("Fire-Forget" == value) {
         this.dynamicComponentFireAndForget = true;
       }
-            if ("Umkehr" == value) {
+      if ("Umkehr" == value) {
         this.dynamicComponentUmkehr = true;
       }
       this.journalData = this.$store.state.journal.journalData;
       this.journalData.strategy = value;
       this.$store.commit("journal/setJournalData", this.journalData);
-    },
-  },
+    }
+  }
 };
 </script>
 
@@ -73,4 +70,3 @@ watch: {
   font-size: 12px !important;
 }
 </style>
-

@@ -3,28 +3,26 @@
     <subheader-card>
       <template slot="header">Business Plan</template>
       <template slot="content">
-                <v-row dense>
+        <v-row dense>
           <v-col class="d-flex mt-n3" cols="12" sm="12">
+            <v-select
+              dense
+              :value="businessplan"
+              :items="selectBusinessplanItems"
+              label="Select Businessplan"
+              @change="changedBusinessplan"
+            ></v-select>
+          </v-col>
 
-         
-          <v-select
-            dense
-            :value="businessplan"
-            :items="selectBusinessplanItems"
-            label="Select Businessplan"
-            @change="changedBusinessplan"
-          ></v-select>
-        </v-col>
-
-        <business-plan-end v-if="dynamicComponentEOD"> </business-plan-end>
-                </v-row>
+          <business-plan-end v-if="dynamicComponentEOD"> </business-plan-end>
+        </v-row>
       </template>
     </subheader-card>
   </v-col>
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState } from "vuex";
 import BusinessPlanEnd from "./../Businessplan/BusinessPlanEnd";
 import SubheaderCard from "../../../../components/Cards/SubheaderCard";
 export default {
@@ -35,7 +33,7 @@ export default {
     return {
       selectBusinessplanItem: null,
       dynamicComponentEOD: false,
-      selectBusinessplanItems: ["Opening", "EOD", "SOD", "None"],
+      selectBusinessplanItems: ["Opening", "EOD", "SOD", "None"]
     };
   },
   computed: mapState({
@@ -43,16 +41,15 @@ export default {
   }),
   watch: {
     businessplan: function() {
-    this.changedBusinessplan(this.businessplan)
+      this.changedBusinessplan(this.businessplan);
     }
   },
   mounted() {
     //this.businessplan =  this.$store.state.journal.journalData.businessplan
-
   },
 
   methods: {
-    changedBusinessplan: function (value) {
+    changedBusinessplan: function(value) {
       this.dynamicComponentEOD = false;
       this.dynamicComponentOpening = false;
       this.dynamicComponentSOD = false;
@@ -67,11 +64,10 @@ export default {
       }
 
       this.journalData = this.$store.state.journal.journalData;
-      this.journalData.businessplan = value
+      this.journalData.businessplan = value;
       this.$store.commit("journal/setJournalData", this.journalData);
-     
-    },
-  },
+    }
+  }
 };
 </script>
 
@@ -80,4 +76,3 @@ export default {
   font-size: 12px !important;
 }
 </style>
-
