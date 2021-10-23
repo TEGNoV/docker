@@ -90,7 +90,6 @@ export default {
     },
     getFiles: function() {},
     afterComplete(file) {
-      console.log("delete!");
       this.$refs.myVueDropzone.removeFile(file);
       this.uploaded.push({ name: file.name });
     },

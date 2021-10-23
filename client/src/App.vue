@@ -29,6 +29,8 @@ export default {
     }
   },
   methods: {
+    
+
     setAuthenticated(status) {
       this.$store.commit("setAuthentication", status);
     },

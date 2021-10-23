@@ -3,6 +3,9 @@ const journal = {
   state: () => ({
     list: [],
     history: [],
+    riskData: {
+    riskUpdateNeeded: false,
+    },
     journalData: {
       symbol: "",
       businessplan: "",
@@ -60,6 +63,9 @@ const journal = {
     }
   }),
   mutations: {
+    setRiskData(state, riskData) {
+      state.riskData = riskData;
+    },
     setJournalData(state, journalData) {
       state.journalData = journalData;
     },
@@ -68,9 +74,6 @@ const journal = {
     },
 
     resetJournalData(state) {
-      console.log("reset data");
-      console.log(state.journalData);
-      console.log("reset data2");
       state.journalData = {
         symbol: "",
         businessplan: "",
@@ -126,7 +129,7 @@ const journal = {
         mylabels: [],
         alllabels: []
       };
-      console.log(state.journalData);
+    
     }
   },
   getters: {

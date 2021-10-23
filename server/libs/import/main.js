@@ -138,13 +138,18 @@ if(process.env.DOCKER == 'true'){
 async function readCSV(path) {
     const fs = require('fs')
     var contents = fs.readFileSync(path , 'utf8');
-    let news = contents.split('"').join('')
+    let news = contents.split('","').join('";"')
+
+     news = news.split('"').join('')
+     
+
     let lineBr = news.split("\n");
     let array = []
     for (let i = 0; i < lineBr.length; i++) {
         let tempArray = lineBr[i].split(";")
         array.push(tempArray)
     }
+    console.log(array)
     return array
 }
 

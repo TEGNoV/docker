@@ -31,9 +31,11 @@ export default {
     cssPrimary() {
       return this.$vuetify.theme.themes[this.$store.getters.usedTheme].blue
         .accent2;
-    }
+    },
+    
   }),
-  watch: {},
+ 
+ 
   created() {
     this.interval = setInterval(() => this.getData(), 60000);
   },
@@ -42,26 +44,9 @@ export default {
   },
   methods: {
     fillData() {
-      (this.performanceDatacollection = {
-        labels: this.linechartLabels,
-        datasets: [
-          {
-            backgroundColor: hexToRgbA(
-              this.$vuetify.theme.themes[this.$store.getters.usedTheme].blue
-                .accent2,
-              0.1
-            ),
-
-            borderColor: this.$vuetify.theme.themes[
-              this.$store.getters.usedTheme
-            ].blue.accent2,
-            data: this.linechartData,
-
-            label: "Data One"
-          }
-        ]
-      }),
-        (this.options.loaded = true);
+      
+    
+              
     },
     getData() {}
   }

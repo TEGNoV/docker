@@ -14,6 +14,7 @@ export const store = new Vuex.Store({
         LinechartPeriod: "Days"
       }
     },
+  
     flavor: 2,
     journalCreatePopUp: false,
     journalInfoPopUp: false,

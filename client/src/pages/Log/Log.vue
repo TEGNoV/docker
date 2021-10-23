@@ -46,7 +46,6 @@ export default {
           response => {
             // eslint-disable-next-line
             this.myLog = response.data.log;
-            console.log(response.data);
           },
           error => {
             // eslint-disable-next-line

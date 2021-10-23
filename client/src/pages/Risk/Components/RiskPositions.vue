@@ -1,46 +1,55 @@
 <template>
   <div>
     <div class="md-layout">
-      <div
-        class="md-layout-item md-medium-size-50 md-xsmall-size-50 md-size-50"
-      >
+      <div class="md-layout-item md-medium-size-50 md-xsmall-size-50 md-size-50">
         <vue-stats-card data-background-color="blue">
           <template slot="header">
-            <v-icon>mdi-arrow-top-right-thick</v-icon>
-          </template>
-          <template slot="content">
-            <p class="category">Best Case</p>
-            <h3 class="title">{{ bestCase }} €</h3>
-          </template>
-          <template slot="content"> </template>
-          <template slot="footer">
-            <div class="stats">
-              <v-icon>mdi-date-range</v-icon>
-              Last 24 Hours
-            </div>
-          </template>
+                  <v-icon>mdi-arrow-top-right-thick</v-icon>
+</template>
+
+<template slot="content">
+  <p class="category">
+    Best Case</p>
+  <h3 class="title">{{ bestCase }} €</h3>
+</template>
+
+<template slot="content">
+  
+</template>
+
+<template slot="footer">
+  <div class="stats">
+    <v-icon>mdi-date-range</v-icon>
+    Last 24 Hours
+  </div>
+</template>
         </vue-stats-card>
       </div>
       <div
         class="md-layout-item md-medium-size-50 md-xsmall-size-50 md-size-50"
       >
         <vue-stats-card data-background-color="blue">
-          <template slot="header">
-            <v-icon>mdi-arrow-bottom-right-thick</v-icon>
-          </template>
+<template slot="header">
+  <v-icon>
+    mdi-arrow-bottom-right-thick</v-icon>
+</template>
 
-          <template slot="content">
-            <p class="category">Worst Case</p>
-            <h3 class="title">{{ worstCase }} €</h3>
-          </template>
-          <template slot="content"> </template>
+<template slot="content">
+  <p class="category">
+    Worst Case</p>
+  <h3 class="title">{{ worstCase }} €</h3>
+</template>
 
-          <template slot="footer">
-            <div class="stats">
-              <v-icon>mdi-date-range</v-icon>
-              Last 24 Hours
-            </div>
-          </template>
+<template slot="content">
+  
+</template>
+
+<template slot="footer">
+  <div class="stats">
+    <v-icon>mdi-date-range</v-icon>
+    Last 24 Hours
+  </div>
+</template>
         </vue-stats-card>
       </div>
     </div>
@@ -140,9 +149,21 @@
                     :table-header-color="tableHeaderColor"
                   >
                     <md-table-row slot="md-table-row" slot-scope="{ item }">
+
                       <md-table-cell md-label="Symbol">{{
                         item.symbol
                       }}</md-table-cell>
+
+           <md-table-cell md-label="Ignore">
+           <v-checkbox
+              true-value="true"
+              false-value="false"
+              :input-value="item.ignore"
+              color="red"
+              @change="setIgnore($event , item.ordernr)"
+            ></v-checkbox>
+           </md-table-cell>
+
                       <md-table-cell md-label="Order Nr">{{
                         item.ordernr
                       }}</md-table-cell>
@@ -163,6 +184,9 @@
                       <md-table-cell md-label="Profit">{{
                         item.profit
                       }}</md-table-cell>
+
+           
+
                     </md-table-row>
                   </md-table>
                 </md-card-content>
@@ -176,40 +200,40 @@
 </template>
 
 <script>
-import axios from "axios";
-//import StatsCardWrapper from "./../../../components/Cards/StatsCardWrapper";
-//import CircleCard from "./../../../components/Circle/CircleCard";
-import VueStatsCard from "./../../../components/Cards/VueStatsCard";
-//import ChartCard from "./../../../components/Cards/ChartCard";
-export default {
-  name: "simple-table",
-  components: {
-    //CircleCard,
-    //StatsCardWrapper
-    VueStatsCard
-  },
-  props: {
-    tableHeaderColor: {
-      type: String,
-      default: ""
-    }
-  },
-  data() {
-    return {
-      riskpercent: false,
-      sumMaxDayRisk: 10,
-      currentDayRiskPercent: 10,
-      selected: [],
-      tester: 10,
-      totalRisk: 10,
-      konto: 10,
-      tp: 0,
-      worstCase: 0,
-      bestCase: 0,
-      kontostandDayStart: 0,
-      sumOpenDayRisk: 0,
-      positions: [
-        {
+  import axios from "axios";
+  //import StatsCardWrapper from "./../../../components/Cards/StatsCardWrapper";
+  //import CircleCard from "./../../../components/Circle/CircleCard";
+  import VueStatsCard from "./../../../components/Cards/VueStatsCard";
+  //import ChartCard from "./../../../components/Cards/ChartCard";
+  export default {
+    name: "simple-table",
+    components: {
+      //CircleCard,
+      //StatsCardWrapper
+      VueStatsCard
+    },
+    props: {
+      tableHeaderColor: {
+        type: String,
+        default: ""
+      }
+    },
+    data() {
+      return {
+        riskpercent: false,
+        sumMaxDayRisk: 10,
+        currentDayRiskPercent: 10,
+        selected: [],
+        tester: 10,
+        totalRisk: 10,
+        konto: 10,
+        tp: 0,
+        worstCase: 0,
+        bestCase: 0,
+        kontostandDayStart: 0,
+        sumOpenDayRisk: 0,
+        positions: [{
+          ignore: "false",
           symbol: "none",
           ordernr: "Dakota Rice",
           bought: "$36,738",
@@ -218,50 +242,79 @@ export default {
           risk: "Oud-Turnhout",
           tp: "Oud-Turnhout",
           profit: "Oud-Turnhout"
-        }
-      ]
-    };
-  },
-  created() {
-    this.interval = setInterval(() => this.getData(), 60000);
-  },
-  mounted() {
-    this.getData();
-  },
-  methods: {
-    getData() {
-      axios.get("/api/dashboardPositions").then(
-        response => {
-          // eslint-disable-next-line
+        }]
+      };
+    },
+    created() {
+      this.interval = setInterval(() => this.getData(), 60000);
+    },
+    mounted() {
+      this.getData();
+    },
 
-          this.positions = response.data.position.positions;
-          this.totalRisk = response.data.position.total.risk;
-          this.worstCase = response.data.position.total.worstCase;
-          this.bestCase = response.data.position.total.bestCase;
-          this.tp = response.data.position.total.tp;
-          this.konto = response.data.position.total.konto;
-          this.kontostandDayStart =
-            response.data.position.total.kontostandDayStart;
-          this.sumMaxDayRisk = response.data.position.total.sumMaxDayRisk;
-          this.currentDayRiskPercent =
-            response.data.position.total.currentDayRiskPercent;
-          this.sumOpenDayRisk = response.data.position.total.sumOpenDayRisk;
-          this.totalCRV = response.data.position.total.totalCRV;
-          if (this.currentDayRiskPercent < 20) {
-            this.riskpercent = true;
+    methods: {
+      test()
+      {},
+      setIgnore(e, id) {
+        axios
+          .get("/api/setPositionIgnore", {
+            params: {
+              myValues:  {
+                ignore: e,
+                id: id
+              }
+            }
+          })
+          .then(
+            response => {
+              this.getData()
+                  
+              this.riskData = this.$store.state.journal.riskData;
+              this.riskData.riskUpdateNeeded = true;
+              this.$store.commit("journal/setRiskData", this.riskData);
+    
+            },
+            error => {
+              // eslint-disable-next-line
+              console.log(error);
+            }
+          );
+  
+      },
+      getData() {
+        axios.get("/api/dashboardPositions").then(
+          response => {
+            // eslint-disable-next-line
+  
+            this.positions = response.data.position.positions;
+            this.totalRisk = response.data.position.total.risk;
+            this.worstCase = response.data.position.total.worstCase;
+            this.bestCase = response.data.position.total.bestCase;
+            this.tp = response.data.position.total.tp;
+            this.konto = response.data.position.total.konto;
+            this.kontostandDayStart =
+              response.data.position.total.kontostandDayStart;
+            this.sumMaxDayRisk = response.data.position.total.sumMaxDayRisk;
+            this.currentDayRiskPercent =
+              response.data.position.total.currentDayRiskPercent;
+            this.sumOpenDayRisk = response.data.position.total.sumOpenDayRisk;
+            this.totalCRV = response.data.position.total.totalCRV;
+            if (this.currentDayRiskPercent < 20) {
+              this.riskpercent = true;
+            }
+          },
+          error => {
+            // eslint-disable-next-line
+            console.log(error);
           }
-        },
-        error => {
-          // eslint-disable-next-line
-          console.log(error);
-        }
-      );
+        );
+      }
     }
-  }
-};
+  };
 </script>
+
 <style>
-.text {
-  font-weight: bold;
-}
+  .text {
+    font-weight: bold;
+  }
 </style>

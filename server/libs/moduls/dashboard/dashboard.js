@@ -38,6 +38,14 @@ function getTargetsDataPoints(percent, startbalance, lineChartData, name) {
 
 }
 
+
+const setPositionIgnore = async (position , ignore) => {
+    const updateSQL = "UPDATE POSITION "
+    + " SET IGNORE = '" + ignore + "' "
+    + " WHERE POSITION = '" + position + "'  "
+    const ret = await myDB.run(updateSQL)   
+}
+
 const getAllowedRisk = async (kontostand , starttime, endtime , percent , openRisk) => {
 
     const sqlLineChartData = 'select BETRAG as betrag , BETRAG as label from HISTORY where  BETRAG != 0 AND BETRAG != "-"  and TYP != "Einzahlung"  and TIMESTAMP BETWEEN  ' + starttime + ' and ' + endtime
@@ -875,15 +883,23 @@ const getPositions = async () => {
     let worstCase = 0
 
     for (let i = 0; i < position.length; i++) {
+  
         let risk = (((1 - (Number(position[i].SL) / Number(position[i].KURS))) * Number(position[i].BETRAG)) * -1)
         if (position[i].KV == 'V') risk = risk * -1
 
+        if(position[i].IGNORE == "true"){
+            risk = 0
+        }
+        
         riskSum = Number(riskSum) + risk
         var myTP = ((1 - (Number(position[i].TP) / Number(position[i].KURS))) * Number(position[i].BETRAG)) * -1 // ((Number(position[i].TP) * Number(position[i].ANZAHL)) - (Number(position[i].KURS) * Number(position[i].ANZAHL)))
         if (!isNaN(myTP)) tpSum = Number(tpSum) + myTP
         if (position[i].KV == 'V') myTP = myTP * -1
 
+
+
         let temp = {
+            ignore: position[i].IGNORE,
             symbol: position[i].SYMBOL,
             ordernr: position[i].POSITION,
             bought: position[i].KURS,
@@ -895,6 +911,7 @@ const getPositions = async () => {
             profit: myTP.toFixed(2),
             riskcheck: getSingleRiskCheck(risk, kontostand)
         }
+        
         aPositions.push(temp)
     }
 
@@ -962,3 +979,4 @@ exports.getPerformanceLineFlow = getPerformanceLineFlow
 exports.getWinlossdistribution = getWinlossdistribution
 exports.getWinlosspercentile = getWinlosspercentile
 exports.getDayRisk = getDayRisk
+exports.setPositionIgnore = setPositionIgnore
