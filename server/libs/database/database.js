@@ -66,7 +66,7 @@ async function dbOpen() {
         if(cfg.customDatabase){
             path = cfg.customDatabaseFolder
         }
-        path = cfg.customDatabaseFolder
+        //path = cfg.customDatabaseFolder
         //path = "/db/journal.db"
         if(process.env.DOCKER == 'true'){
             console.log("Change for Docker DB Patch")
