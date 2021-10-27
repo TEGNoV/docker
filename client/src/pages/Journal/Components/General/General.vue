@@ -86,7 +86,6 @@ export default {
     funcMylabels: function(value) {
       this.journalData = this.$store.state.journal.journalData;
       this.journalData.mylabels = value;
-      console.log(value);
       this.$store.commit("journal/setJournalData", this.journalData);
     },
     funcSymbol: function(value) {

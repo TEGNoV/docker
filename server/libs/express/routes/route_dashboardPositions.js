@@ -12,5 +12,4 @@ route_index.get('/api/dashboardPositions', async (req, res) => {
         console.log("no Login")
     }
 }) 
-
 module.exports = route_index;

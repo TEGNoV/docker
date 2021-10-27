@@ -882,6 +882,8 @@ const getPositions = async () => {
     let bestCase = 0
     let worstCase = 0
 
+    let positionTotalRisk = 0
+    let lastSymbole = ''
     for (let i = 0; i < position.length; i++) {
   
         let risk = (((1 - (Number(position[i].SL) / Number(position[i].KURS))) * Number(position[i].BETRAG)) * -1)
@@ -896,8 +898,8 @@ const getPositions = async () => {
         if (!isNaN(myTP)) tpSum = Number(tpSum) + myTP
         if (position[i].KV == 'V') myTP = myTP * -1
 
-
-
+        
+        positionTotalRisk = (Number(positionTotalRisk) + Number(risk)).toFixed(2)
         let temp = {
             ignore: position[i].IGNORE,
             symbol: position[i].SYMBOL,
@@ -906,20 +908,34 @@ const getPositions = async () => {
             count: position[i].ANZAHL,
             betrag: position[i].BETRAG,
             sl: position[i].SL,
-            risk: risk.toFixed(2),
+            risk: positionTotalRisk,
             tp: position[i].TP,
             profit: myTP.toFixed(2),
             riskcheck: getSingleRiskCheck(risk, kontostand)
         }
+        console.log("----------------------------------")
+        console.log(position[i].SYMBOL )
+        console.log(positionTotalRisk + "  " + risk.toFixed(2))
+        // zusammenfassen? To Do
+        if(position.length-1 > i){
+            if(position[i].SYMBOL != position[i+1].SYMBOL){
+               
+                aPositions.push(temp)
+                positionTotalRisk = 0
+                
+            }
+            else{
+                console.log("Skipppp")
+            }
+        }else{
+            //aPositions.push(temp)
+        }
+        lastSymbole = position[i].SYMBOL
         
-        aPositions.push(temp)
     }
 
     worstCase = konto.currentkontostand + riskSum
     bestCase = konto.currentkontostand + tpSum
-
-
-
 
     let ret = {
         position: {
