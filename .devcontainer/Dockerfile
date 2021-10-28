@@ -28,7 +28,9 @@ RUN apt-get update \
     # Clean up
     && apt-get autoremove -y && apt-get clean -y && rm -rf /var/lib/apt/lists/* /tmp/library-scripts/
 
-RUN apk add g++ make python
+RUN apt-get install nodejs 
+RUN apt-get install npm 
+RUN apt-get install build-essential 
 
 WORKDIR "/server"
 RUN npm install 
