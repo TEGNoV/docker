@@ -31,6 +31,10 @@ RUN apt-get update \
 RUN apt-get install nodejs 
 RUN apt-get install npm 
 RUN apt-get install build-essential 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 3adad933230fdea3eed8d3be7af508bce598866b
 
 WORKDIR "/server"
 RUN npm install 
