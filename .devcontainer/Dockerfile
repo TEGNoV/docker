@@ -26,12 +26,11 @@ RUN apt-get update \
     # Use Docker script from script library to set things up
     && /bin/bash /tmp/library-scripts/docker-in-docker-debian.sh "${ENABLE_NONROOT_DOCKER}" "${USERNAME}" "${USE_MOBY}" "${DOCKER_VERSION}" \
     # Clean up
-    && apt-get autoremove -y && apt-get clean -y && rm -rf /var/lib/apt/lists/* /tmp/library-scripts/
-
-RUN apt-get install nodejs 
-RUN apt-get install npm 
-RUN apt-get install build-essential 
-
+    && apt-get autoremove -y 
+    && apt-get nodejs 
+    && apt-get npm 
+    && pt-get build-essential 
+    && apt-get clean -y && rm -rf /var/lib/apt/lists/* /tmp/library-scripts/
 
 WORKDIR "/server"
 RUN npm install 
