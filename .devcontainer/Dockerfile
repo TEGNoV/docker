@@ -41,6 +41,8 @@ CMD [ "sleep", "infinity" ]
 #     && apt-get -y install --no-install-recommends <your-package-list-here>
 
 RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
-    && apt-get -y install --no-install-recommends npm  \
-    && apt-get -y install --no-install-recommends node \
-    && apt-get -y install --no-install-recommends build-essential
+    && apt-get -y install npm \
+    && apt-get -y install python
+
+
+
