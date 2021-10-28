@@ -27,9 +27,9 @@ RUN apt-get update \
     && /bin/bash /tmp/library-scripts/docker-in-docker-debian.sh "${ENABLE_NONROOT_DOCKER}" "${USERNAME}" "${USE_MOBY}" "${DOCKER_VERSION}" \
     # Clean up
     && apt-get autoremove -y 
-    && apt-get nodejs 
-    && apt-get npm 
-    && pt-get build-essential 
+    && apt-get nodejs -y 
+    && apt-get npm -y 
+    && pt-get build-essential -y 
     && apt-get clean -y && rm -rf /var/lib/apt/lists/* /tmp/library-scripts/
 
 WORKDIR "/server"
