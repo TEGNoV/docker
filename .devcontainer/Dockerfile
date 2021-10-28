@@ -26,17 +26,7 @@ RUN apt-get update \
     # Use Docker script from script library to set things up
     && /bin/bash /tmp/library-scripts/docker-in-docker-debian.sh "${ENABLE_NONROOT_DOCKER}" "${USERNAME}" "${USE_MOBY}" "${DOCKER_VERSION}" \
     # Clean up
-    && apt-get autoremove -y 
-    && apt-get nodejs -y 
-    && apt-get npm -y 
-    && pt-get build-essential -y 
-    && apt-get clean -y && rm -rf /var/lib/apt/lists/* /tmp/library-scripts/
-
-WORKDIR "/server"
-RUN npm install 
-
-
-
+    && apt-get autoremove -y && apt-get clean -y && rm -rf /var/lib/apt/lists/* /tmp/library-scripts/
 
 VOLUME [ "/var/lib/docker" ]
 
@@ -49,3 +39,8 @@ CMD [ "sleep", "infinity" ]
 # [Optional] Uncomment this section to install additional OS packages.
 # RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
 #     && apt-get -y install --no-install-recommends <your-package-list-here>
+
+RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
+    && apt-get -y install --no-install-recommends npm  \
+    && apt-get -y install --no-install-recommends node \
+    && apt-get -y install --no-install-recommends build-essential
