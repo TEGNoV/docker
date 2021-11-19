@@ -155,13 +155,9 @@ const login = async (app) => {
     //   curl -v -d "username=bob&password=secret" http://127.0.0.1:3000/login
     app.post('/api/login',
         passport.authenticate('local', { failureRedirect: '/login', failureFlash: true }),
-      
         function (req, res, next) {
             // Issue a remember me cookie if the option was checked
-            console.log("req.body.remember_me")
-            console.log(req.body.remember_me)
             if (!req.body.remember_me) { return next(); }
-
             issueToken(req.user, function (err, token) {
                 if (err) { return next(err); }
                 res.cookie('remember_me', token, { path: '/', httpOnly: true, maxAge: 604800000 });

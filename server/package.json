@@ -31,7 +31,7 @@
     "vue2-dropzone": "^3.6.0"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "find ./libs -name '*_test.js' | xargs mocha -R spec",
     "dev": "nodemon index --ignore sessions/",
     "prod": "node index.js ",
     "build": "sudo docker build -t reg.flopar.de/journal .",
@@ -47,5 +47,8 @@
   "bugs": {
     "url": "https://github.com/TEGNoV/Tradingcheck/issues"
   },
-  "homepage": "https://github.com/TEGNoV/Tradingcheck#readme"
+  "homepage": "https://github.com/TEGNoV/Tradingcheck#readme",
+  "devDependencies": {
+    "mocha": "^9.1.3"
+  }
 }

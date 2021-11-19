@@ -5,6 +5,10 @@ const cfg = require('./../../config/config.json');
 
 const path = require("path")
 
+const log = require("../moduls/logging/log")
+const MODUL = "main.js"
+const LEVEL = 10
+
 const unwatch = async (sql) => {
   watcher.clear()
 }
@@ -18,18 +22,11 @@ const watch = async (sql) => {
 
   watcher = hound.watch(path)
   watcher.on('create', async file => {
-
-
-
-    console.log("-------------------------------")
-    console.log("import file: " + file)
-    console.log("-------------------------------")
-
-
+    const FUNCTION = "watcher"
+    log.log("import file: " + file , MODUL, FUNCTION, LEVEL, "EntryExit","DEBUG")
     let filename = file.split(path).join("");
     await sleep(2000)
     await importFile(file, await checkFile(file) , filename)
-
   })
 }
 
@@ -66,21 +63,14 @@ function compareArray(array1 , array2){
   return check
 }
 
-async function importFile(path, typ , filename, myArray) {
+async function importFile(path, typ , filename) {
+  const FUNCTION = "importFile"
   try {
-
-    console.log("try import")
-    console.log(myArray)
-    let myArr = null
-    if(myArray != undefined){
-      myArr = myArray
-    }else{
-       myArr = await readCSV(path)
-    }
-    
+    log.log("import file: " + filename , MODUL, FUNCTION, LEVEL, "EntryExit","DEBUG")
+    let myArr = await readCSV(path)
 
     if(compareArray(aHistoryCheckArray, myArr[0] )){
-      console.log("History File!!!!!!!")
+      log.log("History File Detected: " + filename , MODUL, FUNCTION, LEVEL, "EntryExit","DEBUG")
       await myDB.importCMCHistory(myArr)
       await sleep(2000)
       if(myArray == undefined)
@@ -92,7 +82,7 @@ async function importFile(path, typ , filename, myArray) {
       await sleep(2000)
     }
     else if(compareArray(aPositionCheckArray, myArr[0] )){
-      console.log("Position File!!!!!!!")
+      log.log("Position File Detected: " + filename , MODUL, FUNCTION, LEVEL, "EntryExit","DEBUG")
       await myDB.importCMCPosition(myArr)
       await sleep(2000)
       if(myArray == undefined)
@@ -104,13 +94,13 @@ async function importFile(path, typ , filename, myArray) {
       await sleep(2000)
     } 
     else if(checkPicture(path)){
-      console.log("Picture")
+      log.log("Picture File Detected: " + filename , MODUL, FUNCTION, LEVEL, "EntryExit","DEBUG")
       await sleep(2000)
       await movefile(path , filename)
 
     } 
     else{
-      console.log("No Idea File!!!!!!!")
+      log.log("No Idea File Detected: " + filename , MODUL, FUNCTION, LEVEL, "EntryExit","DEBUG")
       await sleep(2000)
       await deleteFile(path)
     }
@@ -127,19 +117,15 @@ function checkPicture(filename){
 }
 
 async function deleteFile(path) {
+  const FUNCTION = "deleteFile"
   try {
     fs.unlinkSync(path)
-    console.log("Delete: " + path)
+    log.log("Delete: " + path , MODUL, FUNCTION, LEVEL, "EntryExit","DEBUG")
+
   } catch (err) {
     console.error(err)
   }
 }
-
-
-
-
-
-
 
 async function movefile(path , filename) {
   try {
@@ -158,17 +144,9 @@ if(process.env.DOCKER == 'true'){
   }
 }
 
-
-async function readCSV(path , direct) {
-  const fs = require('fs')
-  var contents = ""
-  if(direct == undefined){
-    contents = fs.readFileSync(path , 'utf8');
-  }else{
-    contents = path
-  }
-    
-
+async function readCSV(path) {
+    const fs = require('fs')
+    var contents = fs.readFileSync(path , 'utf8');
     let news = contents.split('","').join('";"')
 
      news = news.split('"').join('')

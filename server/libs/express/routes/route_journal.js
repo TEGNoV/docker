@@ -10,16 +10,17 @@ zip = require('express-easy-zip');
 const bodyParser = require('body-parser')
 // create application/json parser
 var jsonParser = bodyParser.json()
+const log = require("../../moduls/logging/log")
+const MODUL = "journal.js"
+const LEVEL = 99
 
 
 route_index.get('/api/journal', async (req, res) => {
+  const FUNCTION = "/api/journal"
+    log.log("Start" , MODUL, FUNCTION, LEVEL, "Route","DEBUG")
   if (req.isAuthenticated()) {
-  
-  
     let ret = await journal.getAllJournal(req.query.startTime, req.query.endTime)
-  
     res.send(ret)
-   
   } else {
     console.log("no Login")
   }
@@ -28,6 +29,8 @@ route_index.get('/api/journal', async (req, res) => {
 
 
 route_index.get('/api/getSinglePictures', async (req, res) => {
+  const FUNCTION = "/api/getSinglePictures"
+  log.log("Start" , MODUL, FUNCTION, LEVEL, "Route","DEBUG")
   if (req.isAuthenticated()) {
     let ret = await journal.getSinglePictures(req.query.id)
     res.send( ret)
@@ -37,6 +40,8 @@ route_index.get('/api/getSinglePictures', async (req, res) => {
 })
 
 route_index.get('/api/getSingleJournal', async (req, res) => {
+  const FUNCTION = "/api/getSingleJournal"
+  log.log("Start" , MODUL, FUNCTION, LEVEL, "Route","DEBUG")
   if (req.isAuthenticated()) {
     let ret = await journal.getSingleJournal(req.query.journalid)
     console.log("ret")

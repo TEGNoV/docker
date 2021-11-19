@@ -1,4 +1,8 @@
 const myDB = require('../../database/database');
+const log = require("../../moduls/logging/log")
+const MODUL = "Dashboard.js"
+const LEVEL = 1001
+
 const singleRiskPerTrade = 0.04
 const maxDayRisk = 0.1
 
@@ -17,6 +21,8 @@ const dayT2 = 0.3
 const startDate = '2021-10-21'
 
 function extrapolate(limit, lineChartData) {
+    const FUNCTION = "extrapolate"
+    log.log("Start" , MODUL, FUNCTION, LEVEL, "EntryExit","DEBUG")
     for (let i = 0; i < limit; i++) {
         let count = i + 1
         let temp = {
@@ -25,29 +31,35 @@ function extrapolate(limit, lineChartData) {
         }
         lineChartData.push(temp)
     }
+    log.log("End" , MODUL, FUNCTION, LEVEL, "EntryExit","DEBUG")
     return lineChartData
 }
 function getTargetsDataPoints(percent, startbalance, lineChartData, name) {
+    const FUNCTION = "getTargetsDataPoints"
+    log.log("Start" , MODUL, FUNCTION, LEVEL, "EntryExit","DEBUG")
     let lastValue = startbalance
     for (let i = 0; i < lineChartData.length; i++) {
-
         if (lineChartData[i].deposit == undefined) lineChartData[i].deposit = 0
         lastValue = (lastValue * (1 + percent / 100) + Number(lineChartData[i].deposit)).toFixed(0)
         lineChartData[i][name] = lastValue
     }
-
+    log.log("End" , MODUL, FUNCTION, LEVEL, "EntryExit","DEBUG")
 }
 
 
 const setPositionIgnore = async (position , ignore) => {
+    const FUNCTION = "setPositionIgnore"
+    log.log("Start" , MODUL, FUNCTION, LEVEL, "EntryExit","DEBUG")
     const updateSQL = "UPDATE POSITION "
     + " SET IGNORE = '" + ignore + "' "
     + " WHERE POSITION = '" + position + "'  "
     const ret = await myDB.run(updateSQL)   
+    log.log("End" , MODUL, FUNCTION, LEVEL, "EntryExit" , "DEBUG")
 }
 
 const getAllowedRisk = async (kontostand , starttime, endtime , percent , openRisk) => {
-
+    const FUNCTION = "getAllowedRisk"
+    log.log("Start" , MODUL, FUNCTION, LEVEL, "EntryExit","DEBUG")
     const sqlLineChartData = 'select BETRAG as betrag , BETRAG as label from HISTORY where  BETRAG != 0 AND BETRAG != "-"  and TYP != "Einzahlung"  and TIMESTAMP BETWEEN  ' + starttime + ' and ' + endtime
     let lineChartData = await myDB.get(sqlLineChartData)
     let current = 0
@@ -93,12 +105,14 @@ const getAllowedRisk = async (kontostand , starttime, endtime , percent , openRi
         maxRisk: dayMaxRisk.toFixed(2),
         chartdata: [dayLose,dayAvailable,chartDayOpen,dayWin,dayOverBudget ,chartStartRisk.toFixed(2) ]
     }
-
+    log.log("End" , MODUL, FUNCTION, LEVEL, "EntryExit" , "DEBUG")
     return ret
-
 }
 
 const getDayRisk = async () => {
+    const FUNCTION = "getDayRisk"
+    log.log("Start" , MODUL, FUNCTION, LEVEL, "EntryExit","DEBUG")
+
     let getPositions = await this.getPositions() 
     let getPositionTotal = getPositions.position.total
 
@@ -132,10 +146,14 @@ const getDayRisk = async () => {
             availableRisk: 0
         }
     }
+    log.log("End" , MODUL, FUNCTION, LEVEL, "EntryExit" , "DEBUG")
     return ret
 }
 
 const getTimestamps = () => {
+    const FUNCTION = "getTimestamps"
+    log.log("Start" , MODUL, FUNCTION, LEVEL, "EntryExit","DEBUG")
+
 var startYesterdayDayly = new Date();
 startYesterdayDayly.setDate(startYesterdayDayly.getDate() - 1);
 startYesterdayDayly.setHours(0, 0, 0, 0);
@@ -196,6 +214,9 @@ return ret
 }
 
 const getTargetCharts = async (options) => {
+    const FUNCTION = "getTargetCharts"
+    log.log("Start" , MODUL, FUNCTION, LEVEL, "EntryExit","DEBUG")
+
     let lineChartLimit = 5
     let periodSelect = "start of day"
     let targetPercent1 = 0
@@ -280,6 +301,9 @@ const getTargetCharts = async (options) => {
 }
 
 const getDashboardStats = async (options) => {
+    const FUNCTION = "getDashboardStats"
+    log.log("Start" , MODUL, FUNCTION, LEVEL, "EntryExit","DEBUG")
+
     var dashboard = {
         stats: {
             earnings: 1000,
@@ -334,6 +358,9 @@ const getDashboardStats = async (options) => {
 
 
 const getWinlosspercentile = async (options) => {
+    const FUNCTION = "getWinlosspercentile"
+    log.log("Start" , MODUL, FUNCTION, LEVEL, "EntryExit","DEBUG")
+
     let lineChartLimit = 50
     let periodSelect = "start of day"
     let timestamp = 0
@@ -428,6 +455,9 @@ const getWinlosspercentile = async (options) => {
 }
 
 function calSum(percentile, result){
+    const FUNCTION = "calSum"
+    log.log("Start" , MODUL, FUNCTION, LEVEL, "EntryExit","DEBUG")
+
     for(let i=percentile.end; i<percentile.start;i++){
         percentile.sum = percentile.sum + Number(result[i].betrag)
     }
@@ -435,6 +465,9 @@ function calSum(percentile, result){
 }
 
 const getWinlossdistribution = async (options) => {
+    const FUNCTION = "getWinlossdistribution"
+    log.log("Start" , MODUL, FUNCTION, LEVEL, "EntryExit","DEBUG")
+
     let lineChartLimit = 50
     let periodSelect = "start of day"
     let timestamp = 0
@@ -482,6 +515,9 @@ const getWinlossdistribution = async (options) => {
 }
 
 const getPerformanceLineFlow = async (options) => {
+    const FUNCTION = "getPerformanceLineFlow"
+    log.log("Start" , MODUL, FUNCTION, LEVEL, "EntryExit","DEBUG")
+
     let lineChartLimit = 50
     let periodSelect = "start of day"
     if (options != undefined) {
@@ -538,6 +574,9 @@ const getPerformanceLineFlow = async (options) => {
 
 
 const getPerformanceLine = async (options) => {
+    const FUNCTION = "getPerformanceLine"
+    log.log("Start" , MODUL, FUNCTION, LEVEL, "EntryExit","DEBUG")
+
     let lineChartLimit = 50
     let periodSelect = "start of day"
     if (options != undefined) {
@@ -605,6 +644,9 @@ const getPerformanceLine = async (options) => {
 }
 
 const getCurrentDailyStats = async (options) => {
+    const FUNCTION = "getCurrentDailyStats"
+    log.log("Start" , MODUL, FUNCTION, LEVEL, "EntryExit","DEBUG")
+
     var startDayly = new Date();
     startDayly.setHours(0, 0, 0, 0);
 
@@ -689,6 +731,10 @@ const getCurrentDailyStats = async (options) => {
 }
 
 function getSingleRiskCheck(risk, balance) {
+    const FUNCTION = "getSingleRiskCheck"
+    log.log("Start" , MODUL, FUNCTION, LEVEL, "EntryExit","DEBUG")
+
+
     var maxRisk = Number(balance) * singleRiskPerTrade
     var ret = 'mdi-check-circle-outline'
     risk = Number(risk) * -1
@@ -701,6 +747,8 @@ function getSingleRiskCheck(risk, balance) {
 
 
 const getTargets = async (options) => {
+    const FUNCTION = "getTargets"
+    log.log("Start" , MODUL, FUNCTION, LEVEL, "EntryExit","DEBUG")
     let konto = await this.getKontostand(options)
     var ret = konto
 
@@ -761,6 +809,8 @@ const getTargets = async (options) => {
 
 
 const getKontostand = async (options) => {
+        const FUNCTION = "getKontostand"
+    log.log("Start" , MODUL, FUNCTION, LEVEL, "EntryExit","DEBUG")
     var yearStart = "2021-01-01"
 
     let dateKontostand = null
@@ -865,6 +915,9 @@ const getKontostand = async (options) => {
 }
 
 const getPositions = async () => {
+    const FUNCTION = "getPositions"
+    log.log("Start" , MODUL, FUNCTION, LEVEL, "EntryExit","DEBUG")
+
     const sqlPosition = 'select * from POSITION '
     let position = await myDB.get(sqlPosition)
 
@@ -917,9 +970,6 @@ const getPositions = async () => {
             profit: myTP.toFixed(2),
             riskcheck: getSingleRiskCheck(risk, kontostand)
         }
-        console.log("----------------------------------")
-        console.log(position[i].SYMBOL )
-        console.log(positionTotalRisk + "  " + risk.toFixed(2))
         // zusammenfassen? To Do
         if(position.length-1 > i){
             if(position[i].SYMBOL != position[i+1].SYMBOL){
@@ -929,7 +979,7 @@ const getPositions = async () => {
                 
             }
             else{
-                console.log("Skipppp")
+                //console.log("Skipppp")
             }
         }else{
             //aPositions.push(temp)
@@ -963,10 +1013,14 @@ const getPositions = async () => {
 }
 
 function getTotalCRV(tp, risk) {
+    const FUNCTION = "getTotalCRV"
+    log.log("Start" , MODUL, FUNCTION, LEVEL, "EntryExit","DEBUG")
     return tp / risk * 100 * -1
 }
 
 function getSumOpenDayRisk(balance, risk) {
+    const FUNCTION = "getSumOpenDayRisk"
+    log.log("Start" , MODUL, FUNCTION, LEVEL, "EntryExit","DEBUG")
     var maxSumRisk = getSumDayRisk(balance)
     risk = Number(risk) * -1
     var ret = (Number(maxSumRisk) - Number(risk))
@@ -975,6 +1029,8 @@ function getSumOpenDayRisk(balance, risk) {
 }
 
 function getCurrentDayRiskPercent(balance, risk) {
+    const FUNCTION = "getCurrentDayRiskPercent"
+    log.log("Start" , MODUL, FUNCTION, LEVEL, "EntryExit","DEBUG")
     risk = Number(risk) * -1
     var percent = risk / balance * 100
     percent = percent.toFixed(2)
@@ -982,6 +1038,8 @@ function getCurrentDayRiskPercent(balance, risk) {
 }
 
 function getSumDayRisk(balance) {
+    const FUNCTION = "getSumDayRisk"
+    log.log("Start" , MODUL, FUNCTION, LEVEL, "EntryExit","DEBUG")
     return (Number(maxDayRisk) * Number(balance)).toFixed(2)
 }
 

@@ -13,7 +13,6 @@ const Server = () =>  {
     picpath = cfg.customPictureFolder
   }
   if(process.env.DOCKER == 'true'){
-    console.log("Change for Docker picture path")
     picpath = "/picture"
   }
 
