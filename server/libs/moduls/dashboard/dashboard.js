@@ -8,13 +8,13 @@ const yearT2 = 500
 const monthT1 = 9
 const monthT2 = 42
 
-const weakT1 = 2
-const weakT2 = 10
+const weakT1 = 1
+const weakT2 = 2
 
-const dayT1 = 0.4
-const dayT2 = 2
+const dayT1 = 0.15
+const dayT2 = 0.3
 
-const startDate = '2021-03-01'
+const startDate = '2021-10-21'
 
 function extrapolate(limit, lineChartData) {
     for (let i = 0; i < limit; i++) {
@@ -67,6 +67,7 @@ const getAllowedRisk = async (kontostand , starttime, endtime , percent , openRi
         dayLose = current
         dayWin = 0.0
     }
+   
     let dayAvailable = (Number(dayMaxRisk) +  Number(dayWin)) -  (Number(dayLose) + Number(dayOpen))
     let dayOverBudget = 0
     let currentAvailable = dayAvailable
@@ -75,10 +76,22 @@ const getAllowedRisk = async (kontostand , starttime, endtime , percent , openRi
         dayAvailable = 0
     }
 
+    let chartDayOpen = dayOpen
+    if (dayOpen < 0)
+        chartDayOpen = 0 
+       
+    let chartDayAvailable = dayAvailable
+    if (dayAvailable < 0)
+        chartDayAvailable = 0
+
+    let chartStartRisk = dayMaxRisk
+    if (dayAvailable < 0)
+        chartStartRisk = chartStartRisk - dayAvailable
+
     let ret = {
         total: currentAvailable.toFixed(2),
         maxRisk: dayMaxRisk.toFixed(2),
-        chartdata: [dayLose,dayAvailable,dayOpen,dayWin,dayOverBudget]
+        chartdata: [dayLose,dayAvailable,chartDayOpen,dayWin,dayOverBudget ,chartStartRisk.toFixed(2) ]
     }
 
     return ret
@@ -109,9 +122,9 @@ const getDayRisk = async () => {
         // 'Green'   // Win
         // 'DeepRed // over budget
         
-        chartDataDay: await getAllowedRisk(dayStartKontostand , timestamps.day.start, timestamps.day.end, 0.04 , openRisk),
-        chartDataWeek: await getAllowedRisk(weekStartKontostand , timestamps.week.start, timestamps.week.end, 0.10 , openRisk),
-        chartDataMonth:await getAllowedRisk(monthtartKontostand , timestamps.month.start, timestamps.month.end, 0.2 , openRisk),
+        chartDataDay: await getAllowedRisk(dayStartKontostand , timestamps.day.start, timestamps.day.end, 0.01 , openRisk),
+        chartDataWeek: await getAllowedRisk(weekStartKontostand , timestamps.week.start, timestamps.week.end, 0.02 , openRisk),
+        chartDataMonth:await getAllowedRisk(monthtartKontostand , timestamps.month.start, timestamps.month.end, 0.05 , openRisk),
         risk:{
             allowedLose:0,
             openRisk: 0,
@@ -253,28 +266,17 @@ const getTargetCharts = async (options) => {
         lineChartData[i].deposit = deposit
     }
 
-    //let startbalance = Number(lineChartData[0].kontostand)
-    
+    options.myDate = startDate
     let konto = await this.getKontostand(options)
-    let startbalance = konto.kontostand
-
+    let startbalance = konto.dateKontostand
     lineChartData = extrapolate(lineChartLimit, lineChartData)
-
-
-
-
-
 
     let daily = {
         lineChartData: lineChartData,
         t1: getTargetsDataPoints(targetPercent1, startbalance, lineChartData, 't1'),
         t2: getTargetsDataPoints(targetPercent2, startbalance, lineChartData, 't2')
     }
-
-
     return daily
-
-
 }
 
 const getDashboardStats = async (options) => {
@@ -294,7 +296,6 @@ const getDashboardStats = async (options) => {
 
     var endDayly = new Date(options.endDate);
     endDayly.setHours(23, 59, 59, 999);
-
 
     var wStrategy = ""
     if (options.strategy != "" && (options.strategy != undefined || options.strategy != "undefined")) {
@@ -394,7 +395,6 @@ const getWinlosspercentile = async (options) => {
         sum:0
     }
 
-
     let lowPercentile = {
         start: midPercentile.end - 1, // 30% - 10%
         end: midPercentile.end - Math.round(counter * 0.2),
@@ -412,7 +412,6 @@ const getWinlosspercentile = async (options) => {
     lowPercentile = calSum(lowPercentile , lineChartData)
     lowestPercentile = calSum(lowestPercentile , lineChartData)
 
-
     let ret = [
         {betrag: highestPercentile.sum, label: "90%"},
         {betrag: highPercentile.sum, label: "90%"},
@@ -421,9 +420,6 @@ const getWinlosspercentile = async (options) => {
         {betrag: lowestPercentile.sum, label: "90%"},
     ]
     // berechne die anzahl der gesamt trades und teile die in percentile ein
-
-
-
 
     let daily = {
         lineChartData: ret,
@@ -528,7 +524,6 @@ const getPerformanceLineFlow = async (options) => {
                     sumDeposit = sumDeposit + Number(depositData[n].deposit)
                 }
             }
-
         }
         let temp = Number(lineChartData[i].kontostand) - Number(sumDeposit)
         aAggregated.push(temp)
@@ -538,7 +533,6 @@ const getPerformanceLineFlow = async (options) => {
     let daily = {
         lineChartData: lineChartData,
     }
-
     return daily
 }
 
@@ -611,7 +605,6 @@ const getPerformanceLine = async (options) => {
 }
 
 const getCurrentDailyStats = async (options) => {
-
     var startDayly = new Date();
     startDayly.setHours(0, 0, 0, 0);
 
@@ -770,6 +763,16 @@ const getTargets = async (options) => {
 const getKontostand = async (options) => {
     var yearStart = "2021-01-01"
 
+    let dateKontostand = null
+    if(options.myDate != undefined){
+        var myDate = new Date(options.myDate);
+        myDate.setHours(23, 59, 59, 999);
+        let sqlKontostandMyDate = 'select TIMESTAMP,   KONTOSTAND as kontostand from HISTORY where TIMESTAMP <  ' + myDate.getTime() + '  and  KONTOSTAND != 0 AND KONTOSTAND != "-" order by TIMESTAMP  DESC   '
+   
+        let temp = await myDB.get(sqlKontostandMyDate)
+        dateKontostand = temp[0].kontostand
+    }
+
     const sqlKontostandCurrent = 'select TIMESTAMP,   KONTOSTAND as kontostand from HISTORY where  KONTOSTAND != 0 AND KONTOSTAND != "-" order by TIMESTAMP  DESC   '
     let currentkontostand = await myDB.get(sqlKontostandCurrent)
    
@@ -856,7 +859,8 @@ const getKontostand = async (options) => {
         kontostandYearstart: kontostandYearstart,
         kontostandWeekstart: kontostandWeekstart,
         kontostandMonthstart: kontostandMonthstart,
-        currentkontostand: currentkontostand
+        currentkontostand: currentkontostand,
+        dateKontostand: dateKontostand,
     }
 }
 
@@ -980,9 +984,6 @@ function getCurrentDayRiskPercent(balance, risk) {
 function getSumDayRisk(balance) {
     return (Number(maxDayRisk) * Number(balance)).toFixed(2)
 }
-
-
-
 
 exports.getCurrentDailyStats = getCurrentDailyStats;
 exports.getPositions = getPositions;

@@ -19,12 +19,23 @@ const global = {
       r4: 1,
       r5: 0.5
     },
-
+    //this.$store.state.global.alerts.msg
+    alerts: {
+      msg: "test msg",
+      active: false,
+    },
     options: {
       yearStart: "2021-01-10"
     },
     dashboardStatsUpdate: false
   }),
-  mutations: {}
+  mutations: {
+
+
+      setAlerts(state, alerts) {
+        state.alerts = alerts;
+      },
+
+  }
 };
 export default global;

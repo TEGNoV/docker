@@ -2,6 +2,8 @@ const express = require('express');
 const route_index = express.Router();
 const path = require("path")
 const journal = require(path.join(__dirname, "../../moduls/journal/journal"));
+const importer = require(path.join(__dirname, "../../import/main"));
+
 const log = require("../../moduls/logging/log")
 
 const bodyParser = require('body-parser')  
@@ -59,14 +61,20 @@ route_index.use(fileUpload({
 // POST /api/users gets JSON bodies
 route_index.post('/api/upload', jsonParser, async function  (req, res) {
   console.log("recieved upload")
-  let avatar = req.files.file;
-  avatar.mv(path.join(__dirname, "../../../IMPORT/" + avatar.name))
+  let file = req.files.file;
+
+  let string = new ReadSharpString(req.files.file.data)
+  let myArray = await importer.readCSV(string.toString(), true)
+
+  await importer.importFile(file, await importer.checkFile(myArray) , "filename" , myArray)
+
+  //file.mv(path.join(__dirname, "../../../IMPORT/" + file.name))
   const myJ = {
     journalId:req.body.journalId,
   }
   const ret = await journal.deleteSingleJournal(myJ)
   res.send(
-    ret
+    true
   )
 })
 
@@ -111,6 +119,31 @@ route_index.post('/api/unlinkHistory', jsonParser, async function  (req, res) {
   )
 })
 
+function ReadSharpString(buffer)
+{
+    let length = 0, shift = 0, offset = 0;
+    let byte;
+
+    do
+    {
+        byte = buffer[offset++];
+        length |= (byte & 0x7F) << shift;
+        shift += 7;
+    }
+    while (byte >= 0x80);
+
+    this.length = () => {
+        return length;
+    };
+
+    this.toBuffer = () => {
+        return buffer.slice(offset, offset + length)
+    };
+
+    this.toString = () => {
+        return this.toBuffer().toString()
+    };
+}
 
 function checkPicture(ext){
   if(ext == ".png"){return true}

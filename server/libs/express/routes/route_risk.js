@@ -25,9 +25,7 @@ route_index.get('/api/setPositionIgnore', async (req, res) => {
             let ignore = values.ignore
             console.log(values)
             let ret = await stats.setPositionIgnore(id ,ignore )
-            res.send(
-                ret 
-            )
+            res.send(ret)
         }
     }else{
         console.log("No Login")

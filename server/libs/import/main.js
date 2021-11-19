@@ -47,14 +47,18 @@ async function checkFile(path) {
 }
 
 function compareArray(array1 , array2){
-  
+  console.log(array1)
+  console.log(array2)
   if(array1.length != array2.length){
       return false
   }
 
   let check = true
   for (var i = 0; i<array1.length-1; i++) {
-      if(array1[i] != array2[i]){
+      if(" " + array1[i].toString() != " " + array2[i].toString()){
+        console.log(array1[i] + " != " + array2[i])
+        console.log(array1[i].toString())
+        console.log(array2[i].toString())
           check = false
       }
   }
@@ -62,29 +66,49 @@ function compareArray(array1 , array2){
   return check
 }
 
-async function importFile(path, typ , filename) {
+async function importFile(path, typ , filename, myArray) {
   try {
+
     console.log("try import")
-    let myArr = await readCSV(path)
+    console.log(myArray)
+    let myArr = null
+    if(myArray != undefined){
+      myArr = myArray
+    }else{
+       myArr = await readCSV(path)
+    }
+    
 
     if(compareArray(aHistoryCheckArray, myArr[0] )){
       console.log("History File!!!!!!!")
       await myDB.importCMCHistory(myArr)
       await sleep(2000)
+      if(myArray == undefined)
       await deleteFile(path)
+    }
+    else if(compareArray(aHistoryCheckArray2, myArr[0] )){
+      console.log("History File!!!!!!!")
+      await myDB.importCMCHistory(myArr)
+      await sleep(2000)
     }
     else if(compareArray(aPositionCheckArray, myArr[0] )){
       console.log("Position File!!!!!!!")
       await myDB.importCMCPosition(myArr)
       await sleep(2000)
-      await deleteFile(path)
+      if(myArray == undefined)
+        await deleteFile(path)
+    } 
+    else if(compareArray(aPositionCheckArray2, myArr[0] )){
+      console.log("Position File!!!!!!!")
+      await myDB.importCMCPosition(myArr)
+      await sleep(2000)
     } 
     else if(checkPicture(path)){
       console.log("Picture")
       await sleep(2000)
       await movefile(path , filename)
 
-    }   
+    } 
     else{
       console.log("No Idea File!!!!!!!")
       await sleep(2000)
@@ -135,9 +159,16 @@ if(process.env.DOCKER == 'true'){
 }
 
 
-async function readCSV(path) {
-    const fs = require('fs')
-    var contents = fs.readFileSync(path , 'utf8');
+async function readCSV(path , direct) {
+  const fs = require('fs')
+  var contents = ""
+  if(direct == undefined){
+    contents = fs.readFileSync(path , 'utf8');
+  }else{
+    contents = path
+  }
+    
+
     let news = contents.split('","').join('";"')
 
      news = news.split('"').join('')
@@ -155,7 +186,9 @@ async function readCSV(path) {
 
 exports.watch = watch;
 exports.unwatch = unwatch;
-
+exports.importFile = importFile;
+exports.checkFile = checkFile;
+exports.readCSV = readCSV
 
 const aHistoryCheckArray = [
   '﻿DATUM/ZEIT',
@@ -200,9 +233,68 @@ const aHistoryCheckArray = [
   'GEWINN ',
   'VERLUST'
 ]
-
+const aHistoryCheckArray2 = [
+  'DATUM/ZEIT',
+  'TYP',
+  'AUFTRAGSNR.',
+  'TRADENR.',
+  'ZUG. AUFTRAGSNR.',
+  'PRODUKT',
+  'ANZAHL/BETRAG',
+  'KURS',
+  'PREISGRENZE',
+  'STOP-LOSS',
+  'TAKE-PROFIT',
+  'MARGIN (EUR)',
+  'WECHSELKURS',
+  'WERT (EUR)',
+  'BETRAG (EUR)',
+  'KONTOSTAND (EUR)',
+  'BETRAG EXKLUSIVE DER GEBÜHR',
+  'GEBÜHR',
+  'HALTEKOSTEN - BETRAG',
+  'HALTEKOSTENSATZ',
+  'HALTEKOSTEN (EUR)',
+  'HALTEKOSTEN - AUSGLEICH (EUR)',
+  'HALTEKOSTEN - GESAMT (EUR)',
+  'PRÄMIE',
+  'RÜCKZAHLUNG %',
+  'ZIEL',
+  'GEWINN AUSZAHLEN',
+  'GLEICHSTANDS-AUSZAHLUNG',
+  'OFFEN',
+  'LAUFZEIT',
+  'ABSCHLUSS',
+  'ENDPREIS',
+  'ERGEBNIS',
+  'AUSZAHLUNG',
+  'TYP',
+  'LAUFZEIT',
+  'STRIKE-KURS',
+  'ABSCHLUSS',
+  'ENDPREIS',
+  'GEWINN ',
+  'VERLUST'
+]
 const aPositionCheckArray = [
   '﻿POSITION/AUFTRAGSNR.',
+  'K/V',
+  'ANZAHL',
+  'BETRAG',
+  'KURS',
+  'WECHSELKURS',
+  'MARGIN',
+  'GESAMT-PERF. G&V - %',
+  'GESAMT-PERF. G&V - Pkt.',
+  'GESAMT G&V',
+  'STOP-LOSS',
+  'TAKE-PROFIT',
+  'VERKAUF',
+  'KAUF'
+]
+
+const aPositionCheckArray2 = [
+  'POSITION/AUFTRAGSNR.',
   'K/V',
   'ANZAHL',
   'BETRAG',

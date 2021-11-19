@@ -62,7 +62,6 @@ export default {
       if ("Opening" == value) {
         this.dynamicComponentOpening = true;
       }
-
       this.journalData = this.$store.state.journal.journalData;
       this.journalData.businessplan = value;
       this.$store.commit("journal/setJournalData", this.journalData);

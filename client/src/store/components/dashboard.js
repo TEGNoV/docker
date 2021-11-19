@@ -1,6 +1,7 @@
 const journal = {
   namespaced: true,
   state: () => ({
+    //this.$store.state.dashboard.dashupdates.winloss
     dashboardStatsFilter: {
       startDate: "",
       endDate: "",

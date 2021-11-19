@@ -19,7 +19,9 @@
               :include-styling="false"
               :options="dropzoneOptions"
               @vdropzone-complete="afterComplete"
-               id="customdropzone">
+               id="customdropzone"
+                v-on:vdropzone-success="uploadSuccess"
+               >
             ></vue-dropzone>
           </v-col>
         </v-row>
@@ -106,12 +108,26 @@ export default {
       }
     };
   },
+   /*
+      this.alert = this.$store.state.global.alerts;
+      this.alert.msg = value;
+      this.alert.active = true;
+      this.$store.commit("global/setAlerts", this.alert);
+      */
   methods: {
     getFiles: function() {},
     afterComplete(file) {
       this.$refs.myVueDropzone.removeFile(file);
       this.uploaded.push({ name: file.name });
+      this.alert = this.$store.state.global.alerts;
+      this.alert.msg = "Upload Done";
+      this.alert.active = true;
+      this.$store.commit("global/setAlerts", this.alert);
     },
+     uploadSuccess: function(file, response) {
+      console.log("jop")
+
+   },
     getData() {
       this.$store.commit("setJournalUpdateNeeded", false);
       axios.get("/api/journal").then(
