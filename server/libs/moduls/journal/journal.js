@@ -1,6 +1,11 @@
 const myDB = require('../../database/database');
+const myTime = require('../../moduls/time/myTime');
 const cfg = require('./../../../config/config.json');
 const fs = require('fs')
+
+const log = require("../../moduls/logging/log")
+const MODUL = "journal.js"
+const LEVEL = 9999
 
 const createInitalJournalEntry = async (myJ) => {
     if(myJ.verlinken == true){
@@ -192,13 +197,12 @@ const getAllTrades = async (startTime, endTime) => {
 }
 
 const getAllJournal = async (startTime, endTime) => {
+    const FUNCTION = "getAllJournal"
+    log.log("Start" , MODUL, FUNCTION, LEVEL, "EntryExit","DEBUG")
     if(startTime == undefined || endTime == undefined){
-        var s = new Date();
-        s.setHours(0,0,0,0);
-        var e = new Date();
-        e.setHours(24,0,0,0);        
-        startTime = s.getTime()
-        endTime = e.getTime()
+        let time = await myTime.getDayTimes()
+        startTime = time.start
+        endTime = time.end
     }else{
         var s = new Date(startTime);
         s.setHours(0,0,0,0);
@@ -209,6 +213,7 @@ const getAllJournal = async (startTime, endTime) => {
     }
 
     const journalSQL = "select * from JOURNAL WHERE ID BETWEEN " + startTime + "  and " + endTime +  "  "
+    log.log("journalSQL: " + journalSQL , MODUL, FUNCTION, LEVEL, "SQL","DEBUG")
     const result = await myDB.get(journalSQL)
 
     for (let i = 0; i < result.length; i++) {
