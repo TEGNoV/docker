@@ -1,12 +1,15 @@
 const Database = require('sqlite-async')
 const cfg = require('./../../config/config.json');
 
+const log = require("./../../libs/moduls/logging/log")
+const MODUL = "Dashboard.js"
+const LEVEL = 1001
+
 /* ---------------------------------------- 
 Public functions
 ---------------------------------------- */
 
 const importCMCHistory = async (myArr) => {
-
     await dbwriteHistory(myArr)
 }
 
@@ -15,11 +18,14 @@ const importCMCPosition = async (myArr) => {
 }
 
 const init = async () => {
+    const FUNCTION = "init"
+    log.log("Start" , MODUL, FUNCTION, LEVEL, "EntryExit","DEBUG")
     await createPosition()
     await createJournalHistoryMap()
     await createHistory()
     await createJournal()
     await createLabels()
+    await createTime()
 }
 
 const get = async (sql) => {
@@ -110,6 +116,30 @@ async function createLabels() {
     await dbClose()
     return result
 }
+
+async function createTime() {
+    const FUNCTION = "createTime"
+    log.log("Start" , MODUL, FUNCTION, LEVEL, "EntryExit","DEBUG")
+    let result = null
+    if (this.DB == null) {
+        await dbOpen()
+    }
+    try {
+        await DB.run(`
+            CREATE TABLE IF NOT EXISTS TIME 
+            (
+                OVERWRITE Text,
+                TIMESTAMP Text
+            )
+        `);
+    } catch (error) {
+        log.log("Could not create table: " + error , MODUL, FUNCTION, LEVEL, "MSG","ERROR")
+        throw Error('Could not create table')
+    }
+    await dbClose()
+    return result
+}
+
 async function createJournal() {
     let result = null
     if (this.DB == null) {
@@ -261,8 +291,6 @@ function myNum(value) {
     }else{
         return value
     }
-
-    
 }
 
 function myTimestamp(value) {
@@ -303,9 +331,6 @@ async function dbwriteHistory(myArr) {
     if (this.DB == null) {
         await dbOpen()
     }
-    console.log("--------------------------------------")
-    console.log("Start dbwriteHistory")
-    console.log("--------------------------------------")
     for (let i = 1; i < myArr.length; i++) {
         let arr = await formatValues(myArr)
         let isNewLine = await checkExists(arr[i])
@@ -316,15 +341,12 @@ async function dbwriteHistory(myArr) {
                 + ' VALUES '
                 + ' ("' + arr[i][0] + '","' + arr[i][1] + '" ,"' + arr[i][2] + '" ,"' + arr[i][3] + '" ,"' + arr[i][4] + '" ,"' + arr[i][5] + '" ,"' + arr[i][6] + '" ,"' + myNum(arr[i][7]) + '" ,"' + arr[i][8] + '" ,"' + arr[i][9] + '" ,"' + arr[i][10] + '" ,"' + arr[i][11] + '" ,"' + arr[i][12] + '" ,"' + arr[i][13] + '" ,"' + myNum(arr[i][14]) + '" ,"' + myNum(arr[i][15]) + '" ,"' + arr[i][16] + '" ,"' + arr[i][17] + '" ,"' + arr[i][18] + '" ,"' + arr[i][19] + '" ,"' + arr[i][20] + '" ,"' + arr[i][21] + '" ,"' + arr[i][22] + '" ,"' + arr[i][23] + '" ,"' + arr[i][24] + '" ,"' + arr[i][25] + '" ,"' + arr[i][26] + '" ,"' + arr[i][27] + '" ,"' + arr[i][28] + '" ,"' + arr[i][29] + '" ,"' + arr[i][30] + '"  ,"' + arr[i][31] + '" ,"' + arr[i][32] + '" ,"' + arr[i][33] + '" ,"' + arr[i][34] + '" ,"' + arr[i][35] + '" ,"' + arr[i][36] + '" ,"' + arr[i][37] + '" ,"' + arr[i][38] + '" ,"' + arr[i][39] + '" , "' + myTimestamp(arr[i][0]) + '") '
             try {
-                // zum arbeitena usgeschaltet
-                console.log("working on: " + i + " out of: " + myArr.length)
                 let ret = await this.DB.run(sql)
-
             } catch (error) {
                 throw Error('dbwriteHistory: can not access sqlite database');
             }
         } else {
-            //console.log("Dateisatz bereits vorhanden")
+
         }
     }
     if (this.DB != null) {
@@ -380,8 +402,6 @@ async function dbwritePosition(myArr) {
             }
         }
     }
-
-
 }
 
 
@@ -421,9 +441,6 @@ async function getProductStatistic(arg) {
 
     let myReturn = []
     for (var i in ret) {
-
-        console.log(ret[i]['PRODUKT'])
-
         let winrate = Number(ret[i]['WIN']) / Number(ret[i]['COUNTER']) * 100
         winrate = Math.round(winrate * 10) / 10;
         let temp = {
@@ -436,8 +453,6 @@ async function getProductStatistic(arg) {
         }
         myReturn.push(temp)
     }
-    //console.log(ret)
-    //console.log(myReturn)
     return myReturn
 }
 

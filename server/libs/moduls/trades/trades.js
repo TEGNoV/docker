@@ -1,6 +1,11 @@
 const myDB = require('../../database/database');
 const cfg = require('./../../../config/config.json');
 const fs = require('fs')
+const myTime = require('../../moduls/time/myTime');
+
+const log = require("../../moduls/logging/log")
+const MODUL = "trades.js"
+const LEVEL = 99
 
 // glaub das ist etwas ineffizent
 const checkPictures = async (auftragsnr , id) => {
@@ -147,13 +152,12 @@ const getOpenOnlyData = async (filter, startTime , endTime , settings, aPosition
 }
 
 const getTrades = async (filter, startTime , endTime , settings ) => {
+    const FUNCTION = "getTrades"
+    log.log("Start" , MODUL, FUNCTION, LEVEL, "EntryExit","DEBUG")
     if(startTime == undefined || endTime == undefined){
-        var s = new Date();
-        s.setHours(0,0,0,0);
-        var e = new Date();
-        e.setHours(24,0,0,0);        
-        startTime = s.getTime()
-        endTime = e.getTime()
+        let time = await myTime.getDayTimes()
+        startTime = time.start
+        endTime = time.end
     }else{
         var s = new Date(startTime);
         s.setHours(0,0,0,0);
@@ -162,15 +166,16 @@ const getTrades = async (filter, startTime , endTime , settings ) => {
         startTime = s.getTime()
         endTime = e.getTime()
     }
-
-     
     let productSQL = " 1=1 "
+    if(settings == undefined){
+        settings = {product: "all"}
+    }
     if(settings.product != "all"){
         productSQL = productSQL + " and produkt = '" + settings.product + "'"
     }
     
     const sqlPosition = "select DISTINCT datum , auftragsnr , zugauftragsnr , tradenr ,  betrag , produkt, typ from HISTORY as h  where " + productSQL + " and betrag != '-' and h.betrag != 0 and h.timestamp BETWEEN " + startTime + "  and " + endTime +  "  and h.typ != 'Haltekosten'  and h.typ != 'GSLO'   "
-
+    log.log("SQL: " + sqlPosition , MODUL, FUNCTION, LEVEL, "SQL","DEBUG")
     let position = await myDB.get(sqlPosition)
     let aPositions = []
 

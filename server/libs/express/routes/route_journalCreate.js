@@ -77,8 +77,7 @@ route_index.post('/api/picUpload', jsonParser, async function  (req, res) {
   randomId = randomId.toString()
   randomId = randomId.substring(randomId.length-8)
   const newname = req.body.journalId + "_" + req.body.historyId + "_" + randomId
-  log.log(1 , "route_express" , "upload")
-  console.log("hier!!")
+
   if(checkPicture(extention)){
     if(checkAlreadyExists()){
       await myFile.mv(    path.join(__dirname, "../../../TEMP/"   + myFile.name))
