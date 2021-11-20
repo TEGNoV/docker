@@ -1,4 +1,5 @@
 const myDB = require('../../database/database');
+const myTime = require('../../moduls/time/myTime');
 const log = require("../../moduls/logging/log")
 const MODUL = "Dashboard.js"
 const LEVEL = 1001
@@ -122,13 +123,10 @@ const getDayRisk = async () => {
     let weekStartKontostand = konto.kontostandWeekstart
     let monthtartKontostand = konto.kontostandMonthstart
 
-    var startDayly = new Date();
-    startDayly.setHours(0, 0, 0, 0);
-    var endDayly = new Date();
-    endDayly.setHours(23, 59, 59, 999);
+
     let openRisk = Number(getPositionTotal.risk)
 
-    let timestamps = getTimestamps()
+    let timestamps = await getTimestamps()
     let ret = {
         // 'Red',    // Lost
         // 'Blue',   // Availible to lose  -  ( Win + Max Lose ) - ( Open Risk + Lost )
@@ -150,66 +148,38 @@ const getDayRisk = async () => {
     return ret
 }
 
-const getTimestamps = () => {
-    const FUNCTION = "getTimestamps"
-    log.log("Start" , MODUL, FUNCTION, LEVEL, "EntryExit","DEBUG")
+const getTimestamps = async () => {
 
-var startYesterdayDayly = new Date();
-startYesterdayDayly.setDate(startYesterdayDayly.getDate() - 1);
-startYesterdayDayly.setHours(0, 0, 0, 0);
-var endYesterdayDayly = new Date();
-endYesterdayDayly.setDate(endYesterdayDayly.getDate() - 1);
-endYesterdayDayly.setHours(23, 59, 59, 999);
-
-var startDayly = new Date();
-startDayly.setHours(0, 0, 0, 0);
-var endDayly = new Date();
-endDayly.setHours(23, 59, 59, 999);
-
-
-var startWeek = new Date();
-for (i = 0; i < 8; i++) {
-    var n = startWeek.getDay()
-    if (n == 1) {
-        startWeek.setHours(0, 0, 0, 0);
-    } else {
-        startWeek.setDate(startWeek.getDate() - 1);
-    }
-}
-var endWeek = new Date(startWeek.getTime())
-endWeek.setDate(endWeek.getDate() + 5)
-
-
-
-var date = new Date(), y = date.getFullYear(), m = date.getMonth();
-var firstDay = new Date(y, m, 1);
-
-var yearStart = "2021-01-01"
-var startYear = new Date(yearStart);
-    startYear.setHours(0, 0, 0, 0);
+    let day = await myTime.getDayTimes()
+    let yesterday = await myTime.getYesterdayTimes()
+    let week = await myTime.getWeekTimes()
+    let month = await myTime.getMonthTimes()
+    let year = await myTime.getYearTimes()
 
     ret = {
         day:{
-            start: startDayly.getTime(),
-            end: endDayly.getTime()
+            start: day.start,
+            end: day.end
         },
         yesterday:{
-            start: startYesterdayDayly.getTime(),
-            end: endYesterdayDayly.getTime()
+            start: yesterday.start,
+            end: yesterday.end
         },
         week:{
-            start: startWeek.getTime(),
-            end: endWeek.getTime()
+            start: week.start,
+            end: week.end
         },
         month:{
-            start: firstDay.getTime(),
-            end: endDayly.getTime()
+            start: month.start,
+            end: month.end
         },
         year:{
-            start: startYear.getTime(),
-            end: endDayly.getTime()
+            start: year.start,
+            end: year.end
         },
     }
+
+    console.log(ret)
 return ret
 }
 
@@ -364,7 +334,7 @@ const getWinlosspercentile = async (options) => {
     let lineChartLimit = 50
     let periodSelect = "start of day"
     let timestamp = 0
-    var date = new Date();
+    var date = await myTime.getDateObjectToday()
     if (options != undefined) {
         if (options.lineChart != undefined) {
             if (Number(options.lineChart.limit) != 0 && Number(options.lineChart.limit) != NaN) {
@@ -377,6 +347,7 @@ const getWinlosspercentile = async (options) => {
                     timestamp = startDayly.getTime()
                 }
                 if (options.lineChart.period == "Weeks") {
+                    
                     var startWeek = new Date();
                     for (i = 0; i < 8; i++) {
                         var n = startWeek.getDay()
@@ -809,7 +780,7 @@ const getTargets = async (options) => {
 
 
 const getKontostand = async (options) => {
-        const FUNCTION = "getKontostand"
+    const FUNCTION = "getKontostand"
     log.log("Start" , MODUL, FUNCTION, LEVEL, "EntryExit","DEBUG")
     var yearStart = "2021-01-01"
 
@@ -832,22 +803,15 @@ const getKontostand = async (options) => {
         currentkontostand = Number(currentkontostand[0].kontostand)
     }
     
-
-    var startDayly = new Date();
-    startDayly.setDate(startDayly.getDate() - 1);
-    startDayly.setHours(0, 0, 0, 0);
-    var endDayly = new Date();
-    endDayly.setDate(endDayly.getDate() - 1);
-    endDayly.setHours(23, 59, 59, 999);
-
-    let sqlKontostand = 'select TIMESTAMP,   KONTOSTAND as kontostand from HISTORY where TIMESTAMP BETWEEN  ' + startDayly.getTime() + ' and ' + endDayly.getTime() + '  and  KONTOSTAND != 0 AND KONTOSTAND != "-" order by TIMESTAMP  DESC   '
+    let myDayTime = await myTime.getDayTimes()
+    let sqlKontostand = 'select TIMESTAMP,   KONTOSTAND as kontostand from HISTORY where TIMESTAMP BETWEEN  ' + myDayTime.start + ' and ' + myDayTime.end + '  and  KONTOSTAND != 0 AND KONTOSTAND != "-" order by TIMESTAMP  DESC   '
     let kontostand = await myDB.get(sqlKontostand)
     if (kontostand[0] == undefined) {
-        startDayly = new Date();
+        startDayly = await myTime.getDateObjectToday()
         startDayly.setHours(0, 0, 0, 0);
-        endDayly = new Date();
+        endDayly = await myTime.getDateObjectToday()
         endDayly.setHours(23, 59, 59, 999);
-        sqlKontostand = 'select TIMESTAMP,   KONTOSTAND as kontostand from HISTORY where TIMESTAMP BETWEEN  ' + startDayly.getTime() + ' and ' + endDayly.getTime() + '  and  KONTOSTAND != 0 AND KONTOSTAND != "-" order by TIMESTAMP  DESC   '
+        sqlKontostand = 'select TIMESTAMP,   KONTOSTAND as kontostand from HISTORY where TIMESTAMP BETWEEN  ' + myDayTime.start + ' and ' + myDayTime.end + '  and  KONTOSTAND != 0 AND KONTOSTAND != "-" order by TIMESTAMP  DESC   '
         kontostand = await myDB.get(sqlKontostand)
         if (kontostand[0] == undefined) {
             sqlKontostand = 'select TIMESTAMP,   KONTOSTAND as kontostand from HISTORY where  KONTOSTAND != 0 AND KONTOSTAND != "-" order by TIMESTAMP  DESC   '
@@ -860,19 +824,8 @@ const getKontostand = async (options) => {
         kontostand = Number(kontostand[0].kontostand)
     }
    
-
-    var startWeek = new Date();
-    for (i = 0; i < 8; i++) {
-        var n = startWeek.getDay()
-        if (n == 1) {
-            startWeek.setHours(0, 0, 0, 0);
-        } else {
-            startWeek.setDate(startWeek.getDate() - 1);
-        }
-    }
-    var endWeek = new Date(startWeek.getTime())
-    endWeek.setDate(endWeek.getDate() + 5)
-    const sqlKontostandWeekstart = 'select TIMESTAMP,   KONTOSTAND as kontostand from HISTORY where  KONTOSTAND != 0 AND KONTOSTAND != "-" AND betrag != "-" AND  TIMESTAMP BETWEEN  ' + startWeek.getTime() + ' and ' + endWeek.getTime() + '  order by TIMESTAMP  ASC   '
+    let myWeekTime = await myTime.getWeekTimes()
+    const sqlKontostandWeekstart = 'select TIMESTAMP,   KONTOSTAND as kontostand from HISTORY where  KONTOSTAND != 0 AND KONTOSTAND != "-" AND betrag != "-" AND  TIMESTAMP BETWEEN  ' + myWeekTime.start + ' and ' + myWeekTime.end + '  order by TIMESTAMP  ASC   '
     let kontostandWeekstart = await myDB.get(sqlKontostandWeekstart)
     if (kontostandWeekstart[0] == undefined) {
         kontostandWeekstart = 1
@@ -880,10 +833,8 @@ const getKontostand = async (options) => {
         kontostandWeekstart = kontostand
     }
    
-
-    var date = new Date(), y = date.getFullYear(), m = date.getMonth();
-    var firstDay = new Date(y, m, 1);
-    const sqlKontostandMonthstart = 'select TIMESTAMP,   KONTOSTAND as kontostand from HISTORY where  KONTOSTAND != 0 AND KONTOSTAND != "-" AND betrag != "-" AND  TIMESTAMP BETWEEN  ' + firstDay.getTime() + ' and ' + endDayly.getTime() + '  order by TIMESTAMP  ASC   '
+    let myMonthTime = await myTime.getMonthTimes()
+    const sqlKontostandMonthstart = 'select TIMESTAMP,   KONTOSTAND as kontostand from HISTORY where  KONTOSTAND != 0 AND KONTOSTAND != "-" AND betrag != "-" AND  TIMESTAMP BETWEEN  ' + myMonthTime.start + ' and ' + myMonthTime.end + '  order by TIMESTAMP  ASC   '
     let kontostandMonthstart = await myDB.get(sqlKontostandMonthstart)
     if (kontostandMonthstart[0] == undefined) { 
         kontostandMonthstart = 1
@@ -891,10 +842,8 @@ const getKontostand = async (options) => {
         kontostandMonthstart = Number(kontostandMonthstart[0].kontostand) 
     }
 
-
-    var startYear = new Date(yearStart);
-    startYear.setHours(0, 0, 0, 0);
-    const sqlKontostandYearstart = 'select TIMESTAMP,   KONTOSTAND as kontostand from HISTORY where  KONTOSTAND != 0 AND KONTOSTAND != "-" AND betrag != "-" AND  TIMESTAMP BETWEEN  ' + startYear.getTime() + ' and ' + endDayly.getTime() + '  order by TIMESTAMP  ASC   '
+    let myYearTime = await myTime.getYearTimes()
+    const sqlKontostandYearstart = 'select TIMESTAMP,   KONTOSTAND as kontostand from HISTORY where  KONTOSTAND != 0 AND KONTOSTAND != "-" AND betrag != "-" AND  TIMESTAMP BETWEEN  ' + myYearTime.start + ' and ' + myYearTime.end + '  order by TIMESTAMP  ASC   '
     let kontostandYearstart = await myDB.get(sqlKontostandYearstart)
   
     if(kontostandYearstart[0] == undefined){
@@ -903,7 +852,6 @@ const getKontostand = async (options) => {
         kontostandYearstart = Number(kontostandYearstart[0].kontostand)
     }
    
-
     return {
         kontostand: kontostand,
         kontostandYearstart: kontostandYearstart,
@@ -926,10 +874,10 @@ const getPositions = async () => {
     let konto = await this.getKontostand(options)
     let kontostand = konto.kontostand
 
-    var startDayly = new Date();
+    var startDayly = await myTime.getDateObjectToday()
     startDayly.setHours(0, 0, 0, 0);
 
-    var endDayly = new Date();
+    var endDayly = await myTime.getDateObjectToday()
     endDayly.setHours(23, 59, 59, 999);
 
 
@@ -938,9 +886,8 @@ const getPositions = async () => {
     let tpSum = 0
     let bestCase = 0
     let worstCase = 0
-
     let positionTotalRisk = 0
-    let lastSymbole = ''
+  
     for (let i = 0; i < position.length; i++) {
   
         let risk = (((1 - (Number(position[i].SL) / Number(position[i].KURS))) * Number(position[i].BETRAG)) * -1)

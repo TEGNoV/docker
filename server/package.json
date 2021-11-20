@@ -32,6 +32,7 @@
   },
   "scripts": {
     "test": "find ./libs -name '*_test.js' | xargs mocha -R spec",
+    "singletest": "npm test -- --grep '#Trades'",
     "dev": "nodemon index --ignore sessions/",
     "prod": "node index.js ",
     "build": "sudo docker build -t reg.flopar.de/journal .",

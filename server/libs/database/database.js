@@ -36,6 +36,8 @@ const get = async (sql) => {
     try {
         result = await DB.all(sql)
     } catch (error) {
+        console.log(sql)
+        console.log(error)
         console.log("Error in get function of Database.js")
         throw Error(error);
     }

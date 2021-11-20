@@ -1,7 +1,7 @@
 const myDB = require('../../database/database');
 const log = require("../logging/log")
 const MODUL = "Time.js"
-const LEVEL = 99
+const LEVEL = 1001
 
 const getWeekTimes = async ( ) => {
     var start = new Date(await this.getTimestampToday());
@@ -18,6 +18,18 @@ const getWeekTimes = async ( ) => {
     return {end: end.getTime(), start: start.getTime()}
 }
 
+const getYesterdayTimes = async ( ) => {
+    const FUNCTION = "getDayTimes"
+    let start = new Date(await this.getTimestampToday())
+    start.setDate(start.getDate() - 1);
+    start.setHours(0, 0, 0, 0);
+    var end = new Date(await this.getTimestampToday());
+    end.setDate(end.getDate() - 1);
+    end.setHours(23, 59, 59, 999);
+    log.log("end.getTime(): " + end.getTime()  , MODUL, FUNCTION, LEVEL, "MSG","DEBUG")
+    return {end: end.getTime(), start: start.getTime()}
+}
+
 const getDayTimes = async ( ) => {
     const FUNCTION = "getDayTimes"
     let start = new Date(await this.getTimestampToday())
@@ -27,6 +39,7 @@ const getDayTimes = async ( ) => {
     log.log("end.getTime(): " + end.getTime()  , MODUL, FUNCTION, LEVEL, "MSG","DEBUG")
     return {end: end.getTime(), start: start.getTime()}
 }
+
 
 const getMonthTimes = async ( ) => {
     var date = new Date(await this.getTimestampToday())
@@ -46,13 +59,19 @@ const getYearTimes = async ( ) => {
     return {end: end.getTime(), start: start.getTime()}
 }
 
-const  getTimestampToday = async (id ) => {
+const  getDateObjectToday = async () => {
+    const FUNCTION = "getDateObjectToday"
+    log.log("Start" , MODUL, FUNCTION, LEVEL, "EntryExit","DEBUG")
+    let myDate = new Date(await this.getTimestampToday())
+    return myDate
+}
+
+const  getTimestampToday = async () => {
     const FUNCTION = "getTimestampToday"
     log.log("Start" , MODUL, FUNCTION, LEVEL, "EntryExit","DEBUG")
 
     const sqlTS = "select TIMESTAMP , OVERWRITE  from TIME"
     const time = await myDB.get(sqlTS)
-    console.log(time[0])
     log.log("time: " + time , MODUL, FUNCTION, LEVEL, "Return","DEBUG")
     let overwrite = "false"
     let timestamp = new Date().getTime()
@@ -107,3 +126,5 @@ exports.getYearTimes = getYearTimes;
 exports.getMonthTimes = getMonthTimes;
 exports.getDayTimes = getDayTimes;
 exports.getWeekTimes = getWeekTimes;
+exports.getYesterdayTimes = getYesterdayTimes; 
+exports.getDateObjectToday = getDateObjectToday

@@ -5,7 +5,7 @@ const myTime = require('../../moduls/time/myTime');
 
 const log = require("../../moduls/logging/log")
 const MODUL = "trades.js"
-const LEVEL = 99
+const LEVEL = 1001
 
 // glaub das ist etwas ineffizent
 const checkPictures = async (auftragsnr , id) => {
@@ -20,12 +20,9 @@ const checkPictures = async (auftragsnr , id) => {
       }
     const aPicsinFolder = await fs.readdirSync(picpath)
     for (let i = 0; i < aPicsinFolder.length; i++) {
-       
         let searchString = aPicsinFolder[i].toUpperCase()
         if (searchString.includes(id) || searchString.includes(auftragsnr) ) {
-
             ret = true
-            
         }
     }
     return ret
@@ -85,7 +82,6 @@ const getJournalOnlyData = async (filter, startTime , endTime , settings, aPosit
         }
         aPositions.push(temp)
     }
-
     return aPositions
 
 }

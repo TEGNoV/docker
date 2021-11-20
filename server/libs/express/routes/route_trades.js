@@ -17,6 +17,7 @@ route_index.get('/api/trades', async (req, res) => {
         log.log("req.query.endTime: " + req.query.endTime  , MODUL, FUNCTION, LEVEL, "Value","DEBUG")
         log.log("req.query.settings: " + req.query.settings  , MODUL, FUNCTION, LEVEL, "Value","DEBUG")
         let ret = await trades.getTrades(req.query.filter , req.query.startTime  , req.query.endTime , JSON.parse(req.query.settings))
+        console.log(ret)
         res.send(
             ret 
         )
