@@ -12,21 +12,21 @@ const bodyParser = require('body-parser')
 var jsonParser = bodyParser.json()
 const log = require("../../moduls/logging/log")
 const MODUL = "journal.js"
-const LEVEL = 99
+const LEVEL = 1001
 
 
+// unused ?!
 route_index.get('/api/journal', async (req, res) => {
   const FUNCTION = "/api/journal"
     log.log("Start" , MODUL, FUNCTION, LEVEL, "Route","DEBUG")
   if (req.isAuthenticated()) {
+    console.log(req.query)
     let ret = await journal.getAllJournal(req.query.startTime, req.query.endTime)
     res.send(ret)
   } else {
     console.log("no Login")
   }
 })
-
-
 
 route_index.get('/api/getSinglePictures', async (req, res) => {
   const FUNCTION = "/api/getSinglePictures"
