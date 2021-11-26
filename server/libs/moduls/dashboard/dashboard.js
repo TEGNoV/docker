@@ -868,8 +868,6 @@ const getPositions = async () => {
 
     const sqlPosition = 'select * from POSITION '
     let position = await myDB.get(sqlPosition)
-
-
     let options = {}
     let konto = await this.getKontostand(options)
     let kontostand = konto.kontostand
@@ -880,7 +878,6 @@ const getPositions = async () => {
     var endDayly = await myTime.getDateObjectToday()
     endDayly.setHours(23, 59, 59, 999);
 
-
     let aPositions = []
     let riskSum = 0
     let tpSum = 0
@@ -889,20 +886,16 @@ const getPositions = async () => {
     let positionTotalRisk = 0
   
     for (let i = 0; i < position.length; i++) {
-  
         let risk = (((1 - (Number(position[i].SL) / Number(position[i].KURS))) * Number(position[i].BETRAG)) * -1)
         if (position[i].KV == 'V') risk = risk * -1
 
         if(position[i].IGNORE == "true"){
             risk = 0
         }
-        
         riskSum = Number(riskSum) + risk
         var myTP = ((1 - (Number(position[i].TP) / Number(position[i].KURS))) * Number(position[i].BETRAG)) * -1 // ((Number(position[i].TP) * Number(position[i].ANZAHL)) - (Number(position[i].KURS) * Number(position[i].ANZAHL)))
         if (!isNaN(myTP)) tpSum = Number(tpSum) + myTP
         if (position[i].KV == 'V') myTP = myTP * -1
-
-        
         positionTotalRisk = (Number(positionTotalRisk) + Number(risk)).toFixed(2)
         let temp = {
             ignore: position[i].IGNORE,
@@ -920,19 +913,16 @@ const getPositions = async () => {
         // zusammenfassen? To Do
         if(position.length-1 > i){
             if(position[i].SYMBOL != position[i+1].SYMBOL){
-               
                 aPositions.push(temp)
                 positionTotalRisk = 0
-                
             }
             else{
                 //console.log("Skipppp")
             }
         }else{
-            //aPositions.push(temp)
+            aPositions.push(temp)
         }
         lastSymbole = position[i].SYMBOL
-        
     }
 
     worstCase = konto.currentkontostand + riskSum
