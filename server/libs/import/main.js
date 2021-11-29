@@ -62,12 +62,15 @@ function compareArray(array1 , array2){
 
   return check
 }
+//(file, await importer.checkFile(myArray) , "filename" , myArray
 
-async function importFile(path, typ , filename) {
+async function importFile(path, typ , filename , myArr) {
   const FUNCTION = "importFile"
   try {
     log.log("import file: " + filename , MODUL, FUNCTION, LEVEL, "EntryExit","DEBUG")
-    let myArr = await readCSV(path)
+    if(myArr == undefined){
+      myArr = await readCSV(path)
+    }
 
     if(compareArray(aHistoryCheckArray, myArr[0] )){
       log.log("History File Detected: " + filename , MODUL, FUNCTION, LEVEL, "EntryExit","DEBUG")
@@ -144,11 +147,17 @@ if(process.env.DOCKER == 'true'){
   }
 }
 
-async function readCSV(path) {
-    const fs = require('fs')
-    var contents = fs.readFileSync(path , 'utf8');
-    let news = contents.split('","').join('";"')
+async function readCSV(path , isString) {
+  var contents = path
+  if(isString){
 
+  }else{
+    const fs = require('fs')
+     contents = fs.readFileSync(path , 'utf8');
+   
+  }
+
+  let news = contents.split('","').join('";"')
      news = news.split('"').join('')
      
 

@@ -125,7 +125,7 @@ export default {
       this.$store.commit("global/setAlerts", this.alert);
     },
      uploadSuccess: function(file, response) {
-      console.log("jop")
+      //console.log("jop")
 
    },
     getData() {
