@@ -4,8 +4,10 @@ const login = require("./login2")
 const cfg = require('./../../config/config.json');
 require('events').EventEmitter.defaultMaxListeners = 15;
 
-const Server = () =>  {
+const Server = async() =>  {
+  
   let app = express()
+  const app_route = express.Router();
   login.login(app)
   app.use("/",express.static(path.join(__dirname, "../../dist/")));
   let picpath = "./PICTURE"
@@ -23,11 +25,34 @@ const Server = () =>  {
     }
     next(); 
 });
+
   app.use('/images', express.static(picpath));
   
   /* --------------------------------------------------------
                           Dashboard
   ----------------------------------------------------------- */
+  const bodyParser = require('body-parser')  
+  var jsonParser = bodyParser.json()
+
+  app.use(express.text());
+  app.post('/api/webhook', jsonParser, async function  (req, res) {
+    const myTelegram = require(path.join(__dirname, "../moduls/telegram/index"));
+    this.tg_msg =  new myTelegram()
+    await this.tg_msg.initTG("549451708:AAEpQPD_DcKOJRsoyDlBvRV5dp5RjckyKak", '' , true , "message") 
+  
+    console.log(req.body); // If the request has Content-Type text/plain, the body will be parsed as text.
+    if(req.body != undefined){
+      await this.tg_msg.sendMSG(req.body)
+    }else{
+      console.log(req)
+      console.log("Body is undefined")
+
+    }
+    
+
+  })
+
+
   const overview = require("./routes/route_dashboard");
   app.use("/", overview);
 
@@ -60,8 +85,8 @@ const Server = () =>  {
     res.sendFile(path.join(__dirname, "../../dist/index.html"))
   });
 
-  app.listen(3000, function () {
-    console.log('Example app listening on port 3000!')
+  app.listen(8080, function () {
+    console.log('Example app listening on port 8080!')
   });
 }
 

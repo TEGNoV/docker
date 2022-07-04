@@ -16,6 +16,7 @@
     "hound": "^1.0.5",
     "lodash": "^4.17.20",
     "morgan": "^1.10.0",
+    "node-telegram-bot-api": "^0.58.0",
     "nodemon": "^2.0.2",
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
