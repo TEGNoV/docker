@@ -33,13 +33,11 @@ const Server = async() =>  {
   ----------------------------------------------------------- */
   const bodyParser = require('body-parser')  
   var jsonParser = bodyParser.json()
-
+  const myTelegram = require(path.join(__dirname, "../moduls/telegram/index"));
+  const tg_msg =  new myTelegram()
   app.use(express.text());
   app.post('/api/webhook', jsonParser, async function  (req, res) {
-    const myTelegram = require(path.join(__dirname, "../moduls/telegram/index"));
-    this.tg_msg =  new myTelegram()
-    await this.tg_msg.initTG("549451708:AAEpQPD_DcKOJRsoyDlBvRV5dp5RjckyKak", '' , true , "message") 
-  
+    await tg_msg.initTG("549451708:AAEpQPD_DcKOJRsoyDlBvRV5dp5RjckyKak", '' , true , "message")   
     console.log(req.body); // If the request has Content-Type text/plain, the body will be parsed as text.
     if(req.body != undefined){
       await this.tg_msg.sendMSG(req.body)
